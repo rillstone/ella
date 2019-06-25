@@ -309,21 +309,6 @@
                 "name": "Skinny",
                 "type": "debit"
             }
-        },{
-            "_id": "trans_cjwhxjrgm000v07jpumgdqb29",
-            "_account": "acc_cju1oxtae000001l6dj98vsq2",
-            "logo": "https://static.jude.io/merchants/countdown_logo_cjjxao60h00025joj45xst381.jpg",
-            "location": false,
-            "amount": -32.81,
-            "name": "Countdown",
-            "created_at": "2019-06-04T15:00:28.795Z",
-            "date": "2019-06-02T02:49:14Z",
-            "status": "POSTED",
-            "type": "eftpos",
-            "raw": {
-                "name": "Countdown Auckland C",
-                "type": "debit"
-            }
         },
         {
             "_id": "trans_cjw7vbo2a000207mfcxbhke3i",
@@ -338,106 +323,11 @@
             "type": "payment",
             "raw": {
                 "name": "My Food Bag",
-                "type": "debit"
-            }
-        },
-        {
-            "_id": "trans_cjwqi6v53000b07moz4s8anqf",
-            "_account": "acc_cju1oxtae000001l6dj98vsq2",
-            "logo": "https://static.jude.io/merchants/burgerking_logo_cji9nqsxt0007g2msnz06o0x8.jpg",
-            "location": false,
-            "amount": -10.6,
-            "name": "Burger King",
-            "created_at": "2019-06-10T15:00:26.993Z",
-            "date": "2019-06-07T00:52:38Z",
-            "status": "POSTED",
-            "type": "eftpos",
-            "raw": {
-                "name": "Burger King",
-                "type": "debit"
-            }
-        },
-        {
-            "_id": "trans_cjwhxjrgn000y07jpqhhhwq36",
-            "_account": "acc_cju1oxtae000001l6dj98vsq2",
-            "logo": "https://static.jude.io/connections/anz.jpg",
-            "location": false,
-            "amount": -10.99,
-            "name": "Inta Liquor Shop",
-            "created_at": "2019-06-04T15:00:28.795Z",
-            "date": "2019-06-01T09:01:44Z",
-            "status": "POSTED",
-            "type": "eftpos",
-            "raw": {
-                "name": "Inta Liquor Shop",
                 "type": "debit"
             }
         }
     ],
     "Clothing": [
-        {
-            "_id": "trans_cjwhxjrgm000v07jpumgdqb29",
-            "_account": "acc_cju1oxtae000001l6dj98vsq2",
-            "logo": "https://static.jude.io/merchants/countdown_logo_cjjxao60h00025joj45xst381.jpg",
-            "location": false,
-            "amount": -32.81,
-            "name": "Countdown",
-            "created_at": "2019-06-04T15:00:28.795Z",
-            "date": "2019-06-02T02:49:14Z",
-            "status": "POSTED",
-            "type": "eftpos",
-            "raw": {
-                "name": "Countdown Auckland C",
-                "type": "debit"
-            }
-        },
-        {
-            "_id": "trans_cjw7vbo2a000207mfcxbhke3i",
-            "_account": "acc_cju1oxtae000101l6m6zgiyef",
-            "logo": "https://static.jude.io/merchants/myfood bag_logo_cjjwldlxe003mguzyabmnu017.jpg",
-            "location": false,
-            "amount": -142.99,
-            "name": "My Food Bag",
-            "created_at": "2019-05-28T14:00:30.847Z",
-            "date": "2019-05-28T11:16:35Z",
-            "status": "POSTED",
-            "type": "payment",
-            "raw": {
-                "name": "My Food Bag",
-                "type": "debit"
-            }
-        },
-        {
-            "_id": "trans_cjwqi6v53000b07moz4s8anqf",
-            "_account": "acc_cju1oxtae000001l6dj98vsq2",
-            "logo": "https://static.jude.io/merchants/burgerking_logo_cji9nqsxt0007g2msnz06o0x8.jpg",
-            "location": false,
-            "amount": -10.6,
-            "name": "Burger King",
-            "created_at": "2019-06-10T15:00:26.993Z",
-            "date": "2019-06-07T00:52:38Z",
-            "status": "POSTED",
-            "type": "eftpos",
-            "raw": {
-                "name": "Burger King",
-                "type": "debit"
-            }
-        },
-        {
-            "_id": "trans_cjwhxjrgn000y07jpqhhhwq36",
-            "_account": "acc_cju1oxtae000001l6dj98vsq2",
-            "logo": "https://static.jude.io/connections/anz.jpg",
-            "location": false,
-            "amount": -10.99,
-            "name": "Inta Liquor Shop",
-            "created_at": "2019-06-04T15:00:28.795Z",
-            "date": "2019-06-01T09:01:44Z",
-            "status": "POSTED",
-            "type": "eftpos",
-            "raw": {
-                "name": "Inta Liquor Shop",
-                "type": "debit"
-            }
-        }
+        
     ]
 }
