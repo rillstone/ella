@@ -49,15 +49,15 @@ const navigation = createBottomTabNavigator({
 }, {
     tabBarOptions: {
       activeTintColor: '#FF2D55',
-      inactiveTintColor: '#ffc1cd',
+      inactiveTintColor: '#B2B2B2',
       showLabel: false,
       style: {
-        backgroundColor: 'white',
+        backgroundColor: '#f6f5f7',
         borderTopWidth: 0,
-        shadowOffset: { width: 5, height: 3 },
+        shadowOffset: { width: 0, height: 3 },
         shadowColor: 'black',
-        shadowOpacity: 0.5,
-        elevation: 5
+        shadowOpacity: 0.4,
+        elevation: 5,
       }
     }
   })

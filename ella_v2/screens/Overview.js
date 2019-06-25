@@ -18,6 +18,7 @@ import { sliderWidth, itemWidth } from '../styles/SliderEntry.style';
 import SvgAnimatedLinearGradient from 'react-native-svg-animated-linear-gradient'
 import Svg, {Circle, Rect } from 'react-native-svg'
 import { ScrollView } from "react-native-gesture-handler";
+import AnimateNumber from 'react-native-countup'
 
 const MyLoader = () => (
 <SvgAnimatedLinearGradient
@@ -27,7 +28,7 @@ const MyLoader = () => (
     <Rect x="70" y="99" rx="0" ry="0" width="134" height="17" transform="rotate(-49.5, 32.5, 32.5)"/>
 </SvgAnimatedLinearGradient>
   )
-
+const DATE_OPTIONS = { weekday: 'short', month: 'short', day: 'numeric' };
 class Overview extends Component {
     mounted = false;
     constructor(props){
@@ -37,11 +38,13 @@ class Overview extends Component {
           transactions: []
         }
         this.props = props;
+
         this._carousel = {};
         this.init();
         // this.transactions = [];
         this.sum =0
         this.transactionState('Entertainment');
+        
     }
 
     init(){
@@ -74,10 +77,11 @@ class Overview extends Component {
                 image: require('../assets/images/clothes_icon.jpg')
               }
           ],
-          transactions: []
+          transactions: [],
+          spendings: 0
         };
     
-        console.log("ThumbnailCarousel Props: ", this.props)
+        // console.log("ThumbnailCarousel Props: ", this.props)
       }
 
     _renderItem ({item, index}) {
@@ -92,7 +96,34 @@ class Overview extends Component {
         if (Platform.OS == 'android') {
             this.startHeaderHeight = 100 + StatusBar.currentHeight
         }
+    
+        
     }
+
+    componentDidMount() {
+        this.transactionState('Entertainment');
+
+    }
+    // countTotals() {
+    //     // console.log(this.sum)
+    //     totPay = 0
+    //     Object.keys(payments).forEach(function (key) {
+    //         // console.log(Object.values(payments[key]));
+    //         Object.values(payments[key]).forEach(function (tr) {
+    //             this.totPay+=Math.abs(parseInt(tr.amount));
+    //             // console.log(Math.abs(parseInt(tr.amount)));
+    //         })
+
+    //         // [key].forEach(function (transaction) {
+    //         //     
+    //         //     // this.sum+=transaction.amount
+    //         // })
+    //     })
+    //     return this.totPay;
+    //     // this.sum = Math.abs(this.sum);
+
+    // }
+
     transactionState(transaction_cat) {
         if (this.mounted) {
             this.setState({
@@ -102,26 +133,34 @@ class Overview extends Component {
     }
 
     transactionData(transaction_cat) {
-        // console.log(payments)
-        return payments[transaction_cat].map(tr => ( this.sum+=tr.amount,
-                <View style={[styles.balance2, styles.shadow]} key={tr._id}>
-                <Text h4 bold style={{     flex:2, justifyContent: 'center',    alignItems: 'center' }}>{tr.name}</Text> 
-                <Text h4 bold style={{      flex:1, justifyContent: 'center',    alignItems: 'center'}}>{tr.amount.toString().startsWith('-') ? '-' + tr.amount.toString().replace('-', '$') : '$' + tr.amount}</Text>
-                <Image
-                style={{width: 50, height: 50, alignSelf: 'flex-end', position: 'absolute', top: 20, right: 20, borderRadius: 10}}
-                source={{uri: tr.logo}}
-                />
+
+        return payments[transaction_cat].map(tr => ( this.sum+= tr.amount,
+                <View style={[styles.balance2]} key={tr._id}>
+                    <View style={{flex: 1.3, }}>
+                        <Image style={{width: 50, height: 50, alignSelf:'flex-start', justifyContent: 'center',position: 'absolute', borderRadius: 25}} source={{uri: tr.logo}}/>
+                    </View>
+                    <View style={{flex: 5, flexDirection: 'row'}}>
+                        <View style={{flex: 4, flexDirection: 'column', justifyContent: 'center'}}>
+                            <Text style={{ fontWeight: '700', justifyContent: 'center' }}>{tr.name}</Text> 
+                            <Text h4 bold style={{ fontWeight: '400', justifyContent: 'center' }}>{(new Date(tr.date)).toLocaleDateString('en-NZ', DATE_OPTIONS).toString() }</Text> 
+                        </View>
+                        <View style={{ flex: 1.5 ,justifyContent: 'center' }}>
+                            <Text style={{ textAlign: 'right', fontWeight: '600', justifyContent: 'center',    alignItems: 'center', paddingRight: 5 }}>{tr.amount.toString().startsWith('-') ? '-' + tr.amount.toString().replace('-', '$') : '$' + tr.amount}</Text>
+                        </View>
+                    </View>
+               
                 </View>
         ))  
     }
 
     render() {
+
         return (
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f5f7' }}>
                 <View style={{ flex: 1.2 }}>
                     <View style={styles.titleContain}>
                         <Text style={styles.subtitle}>Total spendings</Text>
-                        <Text style={styles.title}>$259.49</Text>
+                        {this.sum == 0 ? <Text style={styles.title}>$0.00</Text> : <AnimateNumber style={styles.title} value={Math.abs(this.sum)} formatter={(val) => {return '$' + parseFloat(val).toFixed(2)}} />}
                         <Text style={styles.microtitle}>$53.94 spent today</Text>
                     </View>
                 </View>
@@ -158,7 +197,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#f6f5f7'
     },
     titleContain: {
         paddingLeft: 20,
@@ -213,7 +253,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        top: 0, left: 0, right: 0, bottom: 0,
+        top: 0, left: 20, right: 20, bottom: 0,
         // backgroundColor: 'yellow',
         // flex: 5
         // height: 90,
@@ -223,13 +263,14 @@ const styles = StyleSheet.create({
         // position: 'relative',
         borderRadius: theme.sizes.radius,
         paddingHorizontal: 15,
-        paddingVertical: 30 / 2,
+        paddingVertical: 10,
+        flexDirection: 'row',
         // bottom: 0,
         // left: 0,
-        top: 15,
-        backgroundColor: theme.colors.white,
-        height: 90,
-        marginBottom: 10
+        // top: 15,
+
+        height: 70,
+        // marginBottom: 10
       },
       shadow: {
         shadowColor: 'black',
