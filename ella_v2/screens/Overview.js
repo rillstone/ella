@@ -54,27 +54,32 @@ class Overview extends Component {
               id: "WpIAc9by5iU",
               title: "Transport",
               subtitle: "~$25.99 per month",
-              image: require('../assets/images/transport_icon.jpg')
+              image: require('../assets/images/transport_icon.jpg'),
+              graph: require('../assets/images/graph.png')
             }, {
               id: "sNPnbI1arSE",
               title: "Entertainment",
               subtitle: "~$32.49 per month",
-              image: require('../assets/images/game_icon.jpg')
+              image: require('../assets/images/game_icon.jpg'),
+              graph: require('../assets/images/graph3.png')
             }, {
               id: "VOgFZfRVaww",
               title: "Food",
               subtitle: "~$10.39 per month",
-              image: require('../assets/images/food_icon.jpg')
+              image: require('../assets/images/food_icon.jpg'),
+              graph: require('../assets/images/graph2.png')
             }, {
                 id: "VOgXXfRVaww",
                 title: "Bills",
                 subtitle: "~$100.39 per month",
-                image: require('../assets/images/bill_icon.jpg')
+                image: require('../assets/images/bill_icon.jpg'),
+                graph: require('../assets/images/graph3.png')
             }, {
                 id: "VOgYYfRVaww",
                 title: "Clothing",
                 subtitle: "~$25.39 per month",
-                image: require('../assets/images/clothes_icon.jpg')
+                image: require('../assets/images/clothes_icon.jpg'),
+                graph: require('../assets/images/graph.png')
               }
           ],
           transactions: [],
@@ -157,7 +162,10 @@ class Overview extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f5f7' }}>
-                <View style={{ flex: 1.2 }}>
+                <View style={{position: 'absolute', height: 200, top: 10, width: sliderWidth}}>
+                <Image source={ this.state.graph} style={styles.image} />
+                </View>
+                <View style={{ flex: 1.2}}>
                     <View style={styles.titleContain}>
                         <Text style={styles.subtitle}>Total spendings</Text>
                         {this.sum == 0 ? <Text style={styles.title}>$0.00</Text> : <AnimateNumber style={styles.title} value={Math.abs(this.sum)} formatter={(val) => {return '$' + parseFloat(val).toFixed(2)}} />}
@@ -179,7 +187,13 @@ class Overview extends Component {
                         layout={'default'}
                         firstItem={1}
                         loop={true}
-                        onSnapToItem={(index) => this.transactionState(this.state.categories[index].title) }
+                        onSnapToItem={(index) => {
+                            this.transactionState(this.state.categories[index].title)
+                            this.setState({
+                                graph: this.state.categories[index].graph
+                            })
+                            } 
+                        }
                     />
                 </View>
                 <View style={{ flex: 6.2}}>
@@ -199,6 +213,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#f6f5f7'
+    },
+    image: {
+        // resizeMode: 'cover',
+        flex: 1,
+        height: undefined,
+        width: undefined,
     },
     titleContain: {
         paddingLeft: 20,
