@@ -19,7 +19,9 @@
     "react-native-svg": "^9.5.1",
     "react-native-svg-animated-linear-gradient": "^0.3.0",
     "react-native-web": "^0.11.4",
-    "react-navigation": "^3.11.0"
+    "react-navigation": "^3.11.0",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.1.1"

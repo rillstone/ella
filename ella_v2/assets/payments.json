@@ -83,7 +83,39 @@
             }
         },
         {
-            "_id": "trans_cjx65w2r4000m08laxori7s4b",
+            "_id": "trans_cjx65w2r4000m2308laxori7s4b",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
+            "location": false,
+            "amount": -13.45,
+            "name": "AliExpress",
+            "created_at": "2019-06-21T14:00:26.876Z",
+            "date": "2019-06-21T11:15:23Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Aliexpress.C",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjwaq7cja001s053457l6e0jry3ev",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/apple_logo_cjjxnte25003g720hqr1ori9s.jpg",
+            "location": "apple.com",
+            "amount": -1.69,
+            "name": "Apple",
+            "created_at": "2019-05-30T14:00:27.466Z",
+            "date": "2019-05-30T11:14:51Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Apple Nz Gcs",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjx65w2r43654000m08laxori7s4b",
             "_account": "acc_cju1oxtae000101l6m6zgiyef",
             "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
             "location": false,
@@ -116,6 +148,70 @@
         },
         {
             "_id": "trans_cjx0i9v89000007ici5qbuhal",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/amazon_logo_cji3zgkgc000cf50hzwyulnou.jpg",
+            "location": false,
+            "amount": -26.11,
+            "name": "Amazon",
+            "created_at": "2019-06-17T15:00:28.86Z",
+            "date": "2019-06-17T11:25:36Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Amzn Mktp Us",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjx4slf27000sdgh6708l7n28bkktz",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
+            "location": false,
+            "amount": -7.25,
+            "name": "AliExpress",
+            "created_at": "2019-06-20T15:00:28.38Z",
+            "date": "2019-06-20T11:17:04Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Aliexpress.C",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjx0i9v89jhg3000007ici5qbuhal",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/amazon_logo_cji3zgkgc000cf50hzwyulnou.jpg",
+            "location": false,
+            "amount": -26.11,
+            "name": "Amazon",
+            "created_at": "2019-06-17T15:00:28.86Z",
+            "date": "2019-06-17T11:25:36Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Amzn Mktp Us",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjx4slf27dfh4000708l7n28bkktz",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
+            "location": false,
+            "amount": -7.25,
+            "name": "AliExpress",
+            "created_at": "2019-06-20T15:00:28.38Z",
+            "date": "2019-06-20T11:17:04Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Aliexpress.C",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjx0i9v890234dg00007ici5qbuhal",
             "_account": "acc_cju1oxtae000101l6m6zgiyef",
             "logo": "https://static.jude.io/merchants/amazon_logo_cji3zgkgc000cf50hzwyulnou.jpg",
             "location": false,

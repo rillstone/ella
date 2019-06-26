@@ -92,7 +92,7 @@ class Overview extends Component {
 
     _renderItem ({item, index}) {
         return (
-            <SliderEntry data={item} />
+            <SliderEntry navigation={this.props.navigation} data={item} />
         );
     }
 
@@ -152,7 +152,7 @@ class Overview extends Component {
                             <Text h4 bold style={{ fontWeight: '400', justifyContent: 'center' }}>{(new Date(tr.date)).toLocaleDateString('en-NZ', DATE_OPTIONS).toString() }</Text> 
                         </View>
                         <View style={{ flex: 1.5 ,justifyContent: 'center' }}>
-                            <Text style={{ textAlign: 'right', fontWeight: '600', justifyContent: 'center',    alignItems: 'center', paddingRight: 5, fontSize: 16}}>{tr.amount.toString().startsWith('-') ? '-' + tr.amount.toString().replace('-', '$') : '$' + tr.amount}</Text>
+                            <Text style={{ textAlign: 'right', fontWeight: '600', justifyContent: 'center',    alignItems: 'center', paddingRight: 5 }}>{tr.amount.toString().startsWith('-') ? '-' + tr.amount.toString().replace('-', '$') : '$' + tr.amount}</Text>
                         </View>
                     </View>
                
@@ -174,11 +174,11 @@ class Overview extends Component {
                         <Text style={styles.microtitle}> - $12.94 today</Text>
                     </View>
                 </View>
-                <View style={{ flex:1.3, zIndex: 99,}}>
+                <View style={{ flex:1.3}}>
                     <Carousel
                         ref={(c) => { this._carousel = c; }}
                         data={this.state.categories}
-                        renderItem={this._renderItem}
+                        renderItem={this._renderItem.bind(this)}
                         inactiveSlideShift={0}
                         inactiveSlideScale={1}
                     inactiveSlideOpacity={1}
@@ -198,7 +198,7 @@ class Overview extends Component {
                         }
                     />
                 </View>
-                <View style={{ flex: 5.3, zIndex: 1}}>
+                <View style={{ flex: 4}}>
                     <ScrollView style={{ flex: 1}}>
                         {this.state.transactions}
                     </ScrollView>
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // bottom: 0,
         // left: 0,
-        top: 20,
+        // top: 15,
 
         height: 70,
         // marginBottom: 10
