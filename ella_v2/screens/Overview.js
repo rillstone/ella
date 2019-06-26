@@ -35,7 +35,8 @@ class Overview extends Component {
         super();
         this.state = {
           errors: [],
-          transactions: []
+          transactions: [],
+          
         }
         this.props = props;
 
@@ -55,31 +56,31 @@ class Overview extends Component {
               title: "Transport",
               subtitle: "~$25.99 per month",
               image: require('../assets/images/transport_icon.jpg'),
-              graph: require('../assets/images/graph.png')
+              graph: require('../assets/images/graph6.png')
             }, {
               id: "sNPnbI1arSE",
               title: "Entertainment",
               subtitle: "~$32.49 per month",
               image: require('../assets/images/game_icon.jpg'),
-              graph: require('../assets/images/graph3.png')
+              graph: require('../assets/images/graph5.png')
             }, {
               id: "VOgFZfRVaww",
               title: "Food",
               subtitle: "~$10.39 per month",
               image: require('../assets/images/food_icon.jpg'),
-              graph: require('../assets/images/graph2.png')
+              graph: require('../assets/images/graph4.png')
             }, {
                 id: "VOgXXfRVaww",
                 title: "Bills",
                 subtitle: "~$100.39 per month",
                 image: require('../assets/images/bill_icon.jpg'),
-                graph: require('../assets/images/graph3.png')
+                graph: require('../assets/images/graph6.png')
             }, {
                 id: "VOgYYfRVaww",
                 title: "Clothing",
                 subtitle: "~$25.39 per month",
                 image: require('../assets/images/clothes_icon.jpg'),
-                graph: require('../assets/images/graph.png')
+                graph: require('../assets/images/graph4.png')
               }
           ],
           transactions: [],
@@ -132,7 +133,8 @@ class Overview extends Component {
     transactionState(transaction_cat) {
         if (this.mounted) {
             this.setState({
-                transactions: this.transactionData(transaction_cat)
+                transactions: this.transactionData(transaction_cat),
+                graph: this.state.categories[1].graph
             })
          }
     }
@@ -146,11 +148,11 @@ class Overview extends Component {
                     </View>
                     <View style={{flex: 5, flexDirection: 'row'}}>
                         <View style={{flex: 4, flexDirection: 'column', justifyContent: 'center'}}>
-                            <Text style={{ fontWeight: '700', justifyContent: 'center' }}>{tr.name}</Text> 
+                            <Text style={{ fontWeight: '700', justifyContent: 'center', fontSize: 18}}>{tr.name}</Text> 
                             <Text h4 bold style={{ fontWeight: '400', justifyContent: 'center' }}>{(new Date(tr.date)).toLocaleDateString('en-NZ', DATE_OPTIONS).toString() }</Text> 
                         </View>
                         <View style={{ flex: 1.5 ,justifyContent: 'center' }}>
-                            <Text style={{ textAlign: 'right', fontWeight: '600', justifyContent: 'center',    alignItems: 'center', paddingRight: 5 }}>{tr.amount.toString().startsWith('-') ? '-' + tr.amount.toString().replace('-', '$') : '$' + tr.amount}</Text>
+                            <Text style={{ textAlign: 'right', fontWeight: '600', justifyContent: 'center',    alignItems: 'center', paddingRight: 5, fontSize: 16}}>{tr.amount.toString().startsWith('-') ? '-' + tr.amount.toString().replace('-', '$') : '$' + tr.amount}</Text>
                         </View>
                     </View>
                
@@ -162,17 +164,17 @@ class Overview extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f5f7' }}>
-                <View style={{position: 'absolute', height: 200, top: 10, width: sliderWidth}}>
+                <View style={{position: 'absolute', height: 250, top: 20, width: sliderWidth}}>
                 <Image source={ this.state.graph} style={styles.image} />
                 </View>
-                <View style={{ flex: 1.2}}>
+                <View style={{ flex: 1.3}}>
                     <View style={styles.titleContain}>
                         <Text style={styles.subtitle}>Total spendings</Text>
-                        {this.sum == 0 ? <Text style={styles.title}>$0.00</Text> : <AnimateNumber style={styles.title} value={Math.abs(this.sum)} formatter={(val) => {return '$' + parseFloat(val).toFixed(2)}} />}
-                        <Text style={styles.microtitle}>$53.94 spent today</Text>
+                        <AnimateNumber style={styles.title} value={397.40} formatter={(val) => {return '$' + val.toFixed(2)}} />
+                        <Text style={styles.microtitle}> - $12.94 today</Text>
                     </View>
                 </View>
-                <View style={{ flex: 2}}>
+                <View style={{ flex:1.3, zIndex: 99,}}>
                     <Carousel
                         ref={(c) => { this._carousel = c; }}
                         data={this.state.categories}
@@ -196,7 +198,7 @@ class Overview extends Component {
                         }
                     />
                 </View>
-                <View style={{ flex: 6.2}}>
+                <View style={{ flex: 5.3, zIndex: 1}}>
                     <ScrollView style={{ flex: 1}}>
                         {this.state.transactions}
                     </ScrollView>
@@ -222,7 +224,7 @@ const styles = StyleSheet.create({
     },
     titleContain: {
         paddingLeft: 20,
-        paddingTop: 20,
+        paddingTop: 30,
         flex: 1
     },
     cardContainer: {
@@ -287,7 +289,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // bottom: 0,
         // left: 0,
-        // top: 15,
+        top: 20,
 
         height: 70,
         // marginBottom: 10
