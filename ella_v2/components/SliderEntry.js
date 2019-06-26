@@ -11,7 +11,7 @@ export default class SliderEntry extends Component {
     };
 
     render () {
-        const { data: { title, subtitle, image }} = this.props;
+        const { data: { title, subtitle, image }, navigation} = this.props;
         
         const uppercaseTitle = <Text
         style={[styles.title]}
@@ -25,6 +25,7 @@ export default class SliderEntry extends Component {
         return (
             <TouchableOpacity
               activeOpacity={1}
+              onPress={() => navigation.navigate('Category')}
               style={styles.slideInnerContainer}>
                 <View style={styles.shadow} />
                 <View style={styles.imageContainer}>
