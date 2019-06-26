@@ -90,7 +90,7 @@ export default StyleSheet.create({
     },
     title: {
         color: '#1E2127',
-        fontSize: 18,
+        fontSize: 24,
         fontWeight: 'bold',
         letterSpacing: 0.5
     },
@@ -98,9 +98,9 @@ export default StyleSheet.create({
         color: 'white'
     },
     subtitle: {
-        marginTop: 6,
+        marginTop: 2,
         color: '#1E2127',
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: '500',
     },
     subtitleEven: {

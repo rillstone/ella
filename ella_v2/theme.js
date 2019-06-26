@@ -12,10 +12,10 @@ const colors = {
     font: 14,
     padding: 36,
     margin: 36,
-    title: 36,
-    subtitle: 18,
-    subtitle_two: 14,
-    microsub: 12,
+    title: 40,
+    subtitle: 20,
+    subtitle_two: 16,
+    microsub: 14,
     radius: 12,
   };
   
