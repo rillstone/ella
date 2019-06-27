@@ -11,7 +11,7 @@ export default class SliderEntry extends Component {
     };
 
     render () {
-        const { data: { title, subtitle, image, back,color,lineData}, navigation} = this.props;
+        const { data: { title, subtitle, image, back,color,lineData,textColor}, navigation} = this.props;
         
         const uppercaseTitle = <Text
         style={[styles.title]}
@@ -25,7 +25,7 @@ export default class SliderEntry extends Component {
         return (
             <TouchableOpacity
               activeOpacity={1}
-              onPress={() => navigation.navigate('Category', {data: back, chartColor: color, lineD: lineData})}
+              onPress={() => navigation.navigate('Category', {data: back, chartColor: color, lineD: lineData, fontColor: textColor})}
               style={styles.slideInnerContainer}>
                 <View style={styles.shadow} />
                 <View style={styles.imageContainer}>
