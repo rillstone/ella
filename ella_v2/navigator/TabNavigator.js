@@ -96,6 +96,8 @@ const TabNavigator = createBottomTabNavigator({
   PlannerStack,
   TransactionsStack,
   SettingsStack
-});
+}, {tabBarOptions: {
+  showLabel: false
+}});
 
 export default TabNavigator;

@@ -7,7 +7,8 @@ import {
     TextInput,
     Platform,
     StatusBar,
-    Image
+    Image,
+    Dimensions
 } from "react-native";
 import * as theme from '../theme';
 import payments from '../assets/payments.json';
@@ -19,16 +20,20 @@ import SvgAnimatedLinearGradient from 'react-native-svg-animated-linear-gradient
 import Svg, {Circle, Rect } from 'react-native-svg'
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from 'react-native-countup'
-
-const MyLoader = () => (
-<SvgAnimatedLinearGradient
-    height={100}>
-    <Circle cx="20" cy="90" r="30" transform="rotate(-49.5, 32.5, 32.5)"/> 
-    <Rect x="70" y="67" rx="0" ry="0" width="197" height="19" transform="rotate(-49.5, 32.5, 32.5)"/> 
-    <Rect x="70" y="99" rx="0" ry="0" width="134" height="17" transform="rotate(-49.5, 32.5, 32.5)"/>
-</SvgAnimatedLinearGradient>
-  )
+import { Paragraph } from "rn-placeholder";
+import { StackedAreaChart, YAxis, Grid } from 'react-native-svg-charts'
+import * as shape from 'd3-shape'
+import { Defs, LinearGradient, Stop } from 'react-native-svg'
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const DATE_OPTIONS = { weekday: 'short', month: 'short', day: 'numeric' };
+const Gradient = ({ index }) => (
+    <Defs key={index}>
+        <LinearGradient id={'gradient'} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
+            <Stop offset={'0%'} stopColor={'#D7D8DC'} stopOpacity={1}/>
+            <Stop offset={'100%'} stopColor={'#DFE0E4'} stopOpacity={0}/>
+        </LinearGradient>
+    </Defs>
+)
 class Overview extends Component {
     mounted = false;
     constructor(props){
@@ -36,6 +41,10 @@ class Overview extends Component {
         this.state = {
           errors: [],
           transactions: [],
+          loading: false,
+          data: [],
+          colors:[ 'url(#gradient)','#CBCCCF'],
+          keys:[ 'current', 'average']
           
         }
         this.props = props;
@@ -56,35 +65,224 @@ class Overview extends Component {
               title: "Transport",
               subtitle: "~$25.99 per month",
               image: require('../assets/images/transport_icon.jpg'),
-              graph: require('../assets/images/graph6.png')
+              graph: require('../assets/images/graph6.png'),
+              back: require('../assets/images/transport_back.jpg'),
+              color: '#F64ea2',
+              data: [
+                {
+                    month: new Date(2015, 0, 1),
+                    current: 3840,
+                    average: 1920,
+                },
+                {
+                    month: new Date(2015, 1, 1),
+                    current: 1600,
+                    average: 1440,
+                },
+                {
+                    month: new Date(2015, 2, 1),
+                    current: 640,
+                    average: 960,
+                },
+                {
+                    month: new Date(2015, 3, 1),
+                    current: 3320,
+                    average: 480,
+                },
+                {
+                    month: new Date(2015, 4, 1),
+                    current: 100,
+                    average: 4830,
+                },
+                {
+                    month: new Date(2015, 5, 1),
+                    current: 2320,
+                    average: 680,
+                },
+              ],
+              colors:[ 'url(#gradient)','#CBCCCF'],
+              keys:[ 'current', 'average'],
+              lineData: [ 38, 20, 16, 10, 6, 15, 33, 10, 1, 10, 15, 23]
             }, {
               id: "sNPnbI1arSE",
               title: "Entertainment",
               subtitle: "~$32.49 per month",
               image: require('../assets/images/game_icon.jpg'),
-              graph: require('../assets/images/graph5.png')
+              graph: require('../assets/images/graph5.png'),
+              back: require('../assets/images/entertainment_back.jpg'),
+              color: '#FCE38A',
+              data: [
+                {
+                    month: new Date(2015, 0, 1),
+                    current: 500,
+                    average: 400,
+                },
+                {
+                    month: new Date(2015, 1, 1),
+                    current: 600,
+                    average: 1000,
+                },
+                {
+                    month: new Date(2015, 2, 1),
+                    current: 1000,
+                    average: 2000,
+                },
+                {
+                    month: new Date(2015, 3, 1),
+                    current: 1500,
+                    average: 1200,
+                },
+                {
+                    month: new Date(2015, 4, 1),
+                    current: 2000,
+                    average: 2300,
+                },
+                {
+                    month: new Date(2015, 5, 1),
+                    current: 800,
+                    average: 100,
+                },
+              ],
+              colors:[ 'url(#gradient)','#CBCCCF'],
+              keys:[ 'current', 'average'],
+              lineData: [ 5, 5, 6, 8, 10, 13, 15, 18, 20, 10, 8, 7]
             }, {
               id: "VOgFZfRVaww",
               title: "Food",
               subtitle: "~$10.39 per month",
               image: require('../assets/images/food_icon.jpg'),
-              graph: require('../assets/images/graph4.png')
+              graph: require('../assets/images/graph4.png'),
+              back: require('../assets/images/food_back.jpg'),
+              color: '#A8F7FF',
+              data: [
+                {
+                    month: new Date(2015, 0, 1),
+                    current: 640,
+                    average: 920,
+                },
+                {
+                    month: new Date(2015, 1, 1),
+                    current: 800,
+                    average: 140,
+                },
+                {
+                    month: new Date(2015, 2, 1),
+                    current: 640,
+                    average: 960,
+                },
+                {
+                    month: new Date(2015, 3, 1),
+                    current: 920,
+                    average: 480,
+                },
+                {
+                    month: new Date(2015, 4, 1),
+                    current: 100,
+                    average: 830,
+                },
+                {
+                    month: new Date(2015, 5, 1),
+                    current: 320,
+                    average: 680,
+                },
+              ],
+              colors:[ 'url(#gradient)','#CBCCCF'],
+              keys:[ 'current', 'average'],
+              lineData: [ 6, 7, 8, 7, 6, 8, 9, 5, 1, 2, 2, 3 ]
             }, {
                 id: "VOgXXfRVaww",
                 title: "Bills",
                 subtitle: "~$100.39 per month",
                 image: require('../assets/images/bill_icon.jpg'),
-                graph: require('../assets/images/graph6.png')
+                graph: require('../assets/images/graph6.png'),
+                back: require('../assets/images/bill_back.jpg'),
+                color: '#184e68',
+                data: [
+                    {
+                        month: new Date(2015, 0, 1),
+                        current: 500,
+                        average: 400,
+                    },
+                    {
+                        month: new Date(2015, 1, 1),
+                        current: 600,
+                        average: 1000,
+                    },
+                    {
+                        month: new Date(2015, 2, 1),
+                        current: 1000,
+                        average: 2000,
+                    },
+                    {
+                        month: new Date(2015, 3, 1),
+                        current: 1500,
+                        average: 1200,
+                    },
+                    {
+                        month: new Date(2015, 4, 1),
+                        current: 2000,
+                        average: 2300,
+                    },
+                    {
+                        month: new Date(2015, 5, 1),
+                        current: 800,
+                        average: 100,
+                    },
+                  ],
+                  colors:[ 'url(#gradient)','#CBCCCF'],
+                  keys:[ 'current', 'average'],
+                  lineData: [ 5, 6, 7, 8, 9, 10, 14, 15,17, 20, 10, 8 ]
             }, {
                 id: "VOgYYfRVaww",
                 title: "Clothing",
                 subtitle: "~$25.39 per month",
                 image: require('../assets/images/clothes_icon.jpg'),
-                graph: require('../assets/images/graph4.png')
+                graph: require('../assets/images/graph4.png'),
+                back: require('../assets/images/clothes_back.jpg'),
+                color: '#17ead9',
+                data: [
+                    {
+                        month: new Date(2015, 0, 1),
+                        current: 140,
+                        average: 120,
+                    },
+                    {
+                        month: new Date(2015, 1, 1),
+                        current: 600,
+                        average: 140,
+                    },
+                    {
+                        month: new Date(2015, 2, 1),
+                        current: 640,
+                        average: 260,
+                    },
+                    {
+                        month: new Date(2015, 3, 1),
+                        current: 320,
+                        average: 50,
+                    },
+                    {
+                        month: new Date(2015, 4, 1),
+                        current: 1000,
+                        average: 330,
+                    },
+                    {
+                        month: new Date(2015, 5, 1),
+                        current: 220,
+                        average: 680,
+                    },
+                  ],
+                  colors:[ 'url(#gradient)','#CBCCCF'],
+                  keys:[ 'current', 'average'],
+                  lineData: [ 1, 4, 6, 6, 5, 3, 4, 6, 10, 5, 3, 2 ]
               }
           ],
           transactions: [],
-          spendings: 0
+          spendings: 0,
+          data: [],
+          colors:[ 'url(#gradient)','#CBCCCF'],
+          keys:[ 'current', 'average']
+          
         };
     
         // console.log("ThumbnailCarousel Props: ", this.props)
@@ -108,6 +306,7 @@ class Overview extends Component {
 
     componentDidMount() {
         this.transactionState('Entertainment');
+        setTimeout(() => this.setState({ loading: true }), 2000);
 
     }
     // countTotals() {
@@ -134,7 +333,7 @@ class Overview extends Component {
         if (this.mounted) {
             this.setState({
                 transactions: this.transactionData(transaction_cat),
-                graph: this.state.categories[1].graph
+                data: this.state.categories[1].data
             })
          }
     }
@@ -142,6 +341,7 @@ class Overview extends Component {
     transactionData(transaction_cat) {
 
         return payments[transaction_cat].map(tr => ( this.sum+= tr.amount,
+            
                 <View style={[styles.balance2]} key={tr._id}>
                     <View style={{flex: 1.3, }}>
                         <Image style={{width: 50, height: 50, alignSelf:'flex-start', justifyContent: 'center',position: 'absolute', borderRadius: 25}} source={{uri: tr.logo}}/>
@@ -165,7 +365,17 @@ class Overview extends Component {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f5f7' }}>
                 <View style={{position: 'absolute', height: 250, top: 20, width: sliderWidth}}>
-                <Image source={ this.state.graph} style={styles.image} />
+                <StackedAreaChart
+                    style={ { flex: 1, width:viewportWidth } }
+                    contentInset={ { top: 10, bottom: 10 } }
+                    data={ this.state.data }
+                    keys={ this.state.keys }
+                    width={viewportWidth}
+                    colors={ this.state.colors }
+                    curve={ shape.curveNatural }>
+<Gradient/>
+                </StackedAreaChart>   
+                {/* <Image source={ this.state.graph} style={styles.image} /> */}
                 </View>
                 <View style={{ flex: 1.3}}>
                     <View style={styles.titleContain}>
@@ -192,7 +402,10 @@ class Overview extends Component {
                         onSnapToItem={(index) => {
                             this.transactionState(this.state.categories[index].title)
                             this.setState({
-                                graph: this.state.categories[index].graph
+                                graph: this.state.categories[index].graph,
+                                data: this.state.categories[index].data,
+                                keys: this.state.categories[index].keys,
+                                colors: this.state.categories[index].colors
                             })
                             } 
                         }
@@ -200,7 +413,28 @@ class Overview extends Component {
                 </View>
                 <View style={{ flex: 4}}>
                     <ScrollView style={{ flex: 1}}>
-                        {this.state.transactions}
+                    <Paragraph
+                        style={{left: 20, top: 20}} animation="fade" lineNumber={3} 
+                        textSize={16} color="#DAD7D7" width="80%" 
+                        lastLineWidth="70%" firstLineWidth="50%" 
+                        isReady={this.state.loading}>              
+                            {this.state.transactions}
+                        </Paragraph>
+                        <Paragraph
+                        style={{left: 20, top: 45}} animation="fade" lineNumber={3} 
+                        textSize={16} color="#DAD7D7" width="80%" 
+                        lastLineWidth="90%" firstLineWidth="10%" 
+                        isReady={this.state.loading}>
+                            {null}
+                        </Paragraph>
+                        <Paragraph
+                        style={{left: 20, top: 70}} animation="fade" lineNumber={3} 
+                        textSize={16} color="#DAD7D7" width="80%" 
+                        lastLineWidth="50%" firstLineWidth="30%" 
+                        isReady={this.state.loading}>
+                            {null}
+                        </Paragraph>
+                    
                     </ScrollView>
                 </View>
             </SafeAreaView>
