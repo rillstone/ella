@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
+import { mapping, light as lightTheme } from '@eva-design/eva';
+import { ApplicationProvider, Layout } from 'react-native-ui-kitten';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Overview from './screens/Overview'
@@ -14,9 +15,11 @@ import Settings from './screens/Settings'
 
 
 const App = () => (
-
+    <ApplicationProvider
+    mapping={mapping}
+    theme={lightTheme}>
       <AppNavigator />
-
+</ApplicationProvider>
 );
 
 export default App;
