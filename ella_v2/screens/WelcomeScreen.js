@@ -8,15 +8,15 @@ import {
   Platform,
   StatusBar,
   Image,
-  Dimensions,
-  Button,
+  Dimensions
 } from "react-native";
 import * as theme from "../theme";
-import PropTypes from 'prop-types';
+import { Transition } from "react-navigation-fluid-transitions";
+import { Button } from 'react-native-elements';
+import PropTypes from "prop-types";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-    "window"
-  );
-
+  "window"
+);
 
 class WelcomeScreen extends Component {
   mounted = false;
@@ -36,16 +36,29 @@ class WelcomeScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
-        <Image style={[styles.backgroundImage]} source={require('../assets/splash.png')} > 
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#D21D65" }}>
 
-        </Image>
-        <View style={{flex:1}}>
-            <Button title="login" onPress={() => this.props.navigation.navigate('SignIn')} />
-            <Button title="signup" onPress={() => this.props.navigation.navigate('SignUp')} />
+        <View style={{ flex: 1, flexDirection: 'column', alignContent: 'flex-end', justifyContent: 'flex-end'}}>
+        <Transition appear='scale' shared='logo'>
+        <Image
+          style={[styles.backgroundImage]}
+          source={require("../assets/images/ella_logo_text.png")}
+        />
+        </Transition>
         </View>
-        <View style={{flex:1}}>
-            
+        <View style={{ flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+        <Button
+            buttonStyle={styles.button}
+            titleStyle={{fontWeight: 'bold'}}
+            title="LOGIN"
+            onPress={() => this.props.navigation.navigate("SignIn")}
+          />
+          <Button
+          buttonStyle={styles.button}
+          titleStyle={{fontWeight: 'bold'}}
+            title="SIGN UP"
+            onPress={() => this.props.navigation.navigate("SignUp")}
+          />
         </View>
       </SafeAreaView>
     );
@@ -66,13 +79,27 @@ const styles = StyleSheet.create({
     flex: 1
   },
   backgroundImage: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
+    // position: "absolute",
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    flex: 0.9,
     width: null,
-    height: viewportHeight,
-    resizeMode: "cover"
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    height: null,
+    resizeMode: "contain"
+
+
+    // resizeMode: "cover"
+  },
+  button: {
+    
+    marginLeft: 10,
+    marginRight: 10,
+    width: viewportWidth/3,
+    backgroundColor: "#60C3EB",
+    borderRadius: 10,
   },
   title: {
     fontSize: theme.sizes.title,
