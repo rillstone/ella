@@ -13,6 +13,7 @@ import Planner from "../screens/Planner";
 import Transactions from "../screens/Transactions";
 import TransactionsCategoryView from "../screens/TransactionCategoryView";
 import Settings from "../screens/Settings";
+import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 const activeColor = "#FF2D55";
 const inactiveColor = "#B2B2B2";
@@ -125,7 +126,7 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
-const SignInStack = createStackNavigator(
+const SignInStack = FluidNavigator(
   {
     Welcome: WelcomeScreen,
     SignIn: SignInScreen,
