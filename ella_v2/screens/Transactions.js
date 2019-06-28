@@ -10,6 +10,7 @@ import {
   Dimensions
 } from "react-native";
 import * as theme from "../theme";
+import moment from 'moment'
 import payments from "../assets/payments.json";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel from "react-native-snap-carousel";
@@ -20,7 +21,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { Paragraph } from "rn-placeholder";
 import * as Animatable from 'react-native-animatable';
-import { StackedAreaChart, YAxis, Grid } from "react-native-svg-charts";
+import { StackedAreaChart, XAxis, Grid } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -51,7 +52,7 @@ class Transactions extends Component {
     this._carousel = {};
     this.init();
     this.sum = 0;
-    this.transactionState("Entertainment");
+    this.transactionState("Leisure");
   }
 
   init() {
@@ -68,32 +69,32 @@ class Transactions extends Component {
           textColor: "#F38181",
           data: [
             {
-              month: new Date(2015, 0, 1),
+              month: '2019-06-03',
               current: 1840,
               average: 1920
             },
             {
-              month: new Date(2015, 1, 1),
+              month: '2019-06-04',
               current: 1600,
               average: 1440
             },
             {
-              month: new Date(2015, 2, 1),
+              month: '2019-06-05',
               current: 640,
               average: 960
             },
             {
-              month: new Date(2015, 3, 1),
+              month: '2019-06-06',
               current: 720,
               average: 180
             },
             {
-              month: new Date(2015, 4, 1),
+              month: '2019-06-07',
               current: 700,
               average: 2830
             },
             {
-              month: new Date(2015, 5, 1),
+              month: '2019-06-08',
               current: 2320,
               average: 680
             }
@@ -104,7 +105,7 @@ class Transactions extends Component {
         },
         {
           id: "sNPnbI1arSE",
-          title: "Entertainment",
+          title: "Leisure",
           subtitle: "~$32.49 per month",
           image: require("../assets/images/game_icon.jpg"),
           graph: require("../assets/images/graph5.png"),
@@ -113,32 +114,32 @@ class Transactions extends Component {
           textColor: "#FF7676",
           data: [
             {
-              month: new Date(2015, 0, 1),
+              month: '2019-06-03',
               current: 500,
               average: 400
             },
             {
-              month: new Date(2015, 1, 1),
+              month: '2019-06-04',
               current: 600,
               average: 1000
             },
             {
-              month: new Date(2015, 2, 1),
+              month: '2019-06-05',
               current: 1000,
               average: 2000
             },
             {
-              month: new Date(2015, 3, 1),
+              month: '2019-06-06',
               current: 1500,
               average: 1200
             },
             {
-              month: new Date(2015, 4, 1),
+              month: '2019-06-07',
               current: 2000,
               average: 2300
             },
             {
-              month: new Date(2015, 5, 1),
+              month: '2019-06-08',
               current: 800,
               average: 100
             }
@@ -158,32 +159,32 @@ class Transactions extends Component {
           textColor: "#6078ea",
           data: [
             {
-              month: new Date(2015, 0, 1),
+              month: '2019-06-03',
               current: 640,
               average: 920
             },
             {
-              month: new Date(2015, 1, 1),
+              month: '2019-06-04',
               current: 800,
               average: 140
             },
             {
-              month: new Date(2015, 2, 1),
+              month: '2019-06-05',
               current: 1040,
               average: 960
             },
             {
-              month: new Date(2015, 3, 1),
+              month: '2019-06-06',
               current: 920,
               average: 480
             },
             {
-              month: new Date(2015, 4, 1),
+              month: '2019-06-07',
               current: 100,
               average: 830
             },
             {
-              month: new Date(2015, 5, 1),
+              month: '2019-06-08',
               current: 320,
               average: 680
             }
@@ -203,32 +204,32 @@ class Transactions extends Component {
           textColor: "#3bb2b8",
           data: [
             {
-              month: new Date(2015, 0, 1),
+              month: '2019-06-03',
               current: 500,
               average: 400
             },
             {
-              month: new Date(2015, 1, 1),
+              month: '2019-06-04',
               current: 600,
               average: 1000
             },
             {
-              month: new Date(2015, 2, 1),
+              month: '2019-06-05',
               current: 1000,
               average: 2000
             },
             {
-              month: new Date(2015, 3, 1),
+              month: '2019-06-06',
               current: 1500,
               average: 1200
             },
             {
-              month: new Date(2015, 4, 1),
+              month: '2019-06-07',
               current: 2000,
               average: 2300
             },
             {
-              month: new Date(2015, 5, 1),
+              month: '2019-06-08',
               current: 800,
               average: 100
             }
@@ -248,32 +249,32 @@ class Transactions extends Component {
           textColor: "#6094ea",
           data: [
             {
-              month: new Date(2015, 0, 1),
+              month: '2019-06-03',
               current: 140,
               average: 120
             },
             {
-              month: new Date(2015, 1, 1),
+              month: '2019-06-04',
               current: 600,
               average: 140
             },
             {
-              month: new Date(2015, 2, 1),
+              month: '2019-06-05',
               current: 640,
               average: 260
             },
             {
-              month: new Date(2015, 3, 1),
+              month: '2019-06-06',
               current: 320,
               average: 50
             },
             {
-              month: new Date(2015, 4, 1),
+              month: '2019-06-07',
               current: 1000,
               average: 330
             },
             {
-              month: new Date(2015, 5, 1),
+              month: '2019-06-08',
               current: 220,
               average: 680
             }
@@ -304,7 +305,7 @@ class Transactions extends Component {
   }
 
   componentDidMount() {
-    this.transactionState("Entertainment");
+    this.transactionState("Leisure");
     setTimeout(() => this.setState({ loading: true }), 2000);
   }
 
@@ -329,6 +330,8 @@ class Transactions extends Component {
   }
 
   render() {
+    const axesSvg = { fontSize: 10};
+    const xAxisHeight = 30
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
         <View
@@ -343,6 +346,7 @@ class Transactions extends Component {
             style={{ flex: 1, width: viewportWidth}}
             contentInset={{ top: 25, bottom: 30 }}
             data={this.state.data}
+            numberOfTicks={12}
             keys={this.state.keys}
             width={viewportWidth}
             colors={this.state.colors}
@@ -351,6 +355,7 @@ class Transactions extends Component {
           >
             <Gradient />
           </StackedAreaChart>
+          
           {/* <Image source={ this.state.graph} style={styles.image} /> */}
         </View>
         <View style={{ flex: 1.3 }}>
@@ -366,7 +371,7 @@ class Transactions extends Component {
             <Text style={styles.microtitle}> - $12.94 today</Text>
           </View>
         </View>
-        <View style={{ flex: 1.3 }}>
+        <View style={{ flex: 1.3}}>
           <Carousel
             ref={c => {
               this._carousel = c;
@@ -376,6 +381,7 @@ class Transactions extends Component {
             inactiveSlideShift={0}
             inactiveSlideScale={1}
             inactiveSlideOpacity={1}
+            enableSnap
             containerCustomStyle={styles.slider}
             contentContainerCustomStyle={styles.sliderContentContainer}
             sliderWidth={sliderWidth}

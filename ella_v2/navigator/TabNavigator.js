@@ -5,6 +5,9 @@ import {
 } from "react-navigation";
 import Overview from "../screens/Overview";
 import CategoryView from "../screens/CategoryView";
+import WelcomeScreen from "../screens/WelcomeScreen";
+import SignInScreen from "../screens/SignInScreen";
+import SignUpScreen from "../screens/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import Planner from "../screens/Planner";
 import Transactions from "../screens/Transactions";
@@ -13,6 +16,8 @@ import Settings from "../screens/Settings";
 
 const activeColor = "#FF2D55";
 const inactiveColor = "#B2B2B2";
+
+
 
 const HomeStack = createStackNavigator(
   {
@@ -120,4 +125,18 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
-export default TabNavigator;
+const SignInStack = createStackNavigator(
+  {
+    Welcome: WelcomeScreen,
+    SignIn: SignInScreen,
+    SignUp: SignUpScreen,
+    HomePage: TabNavigator
+  },
+  {
+    mode: "card",
+    headerMode: "none"
+  }
+);
+
+
+export default SignInStack;

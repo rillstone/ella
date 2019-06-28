@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { Button, ButtonProps } from "react-native-ui-kitten";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
+import TransitionView from '../components/TransitionView';
 import { LineChart, Grid } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import * as theme from "../theme";
@@ -57,11 +58,14 @@ class TransactionCategoryView extends Component {
   _renderScrollViewContent() {
     const data = Array.from({ length: 30 });
     return (
+      
       <View style={styles.scrollViewContent}>
         {data.map((_, i) => (
-          <View key={i} style={styles.row}>
+          <TransitionView style={styles.row} index={i} key={i} >
+          {/* <View key={i} style={styles.row}> */}
             <Text>{i}</Text>
-          </View>
+          {/* </View> */}
+          </TransitionView>
         ))}
       </View>
     );
