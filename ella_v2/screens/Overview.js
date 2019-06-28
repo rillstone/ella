@@ -50,7 +50,7 @@ class Overview extends Component {
     this._carousel = {};
     this.init();
     this.sum = 0;
-    this.transactionState("Entertainment");
+    this.transactionState("Leisure");
   }
 
   init() {
@@ -103,7 +103,7 @@ class Overview extends Component {
         },
         {
           id: "sNPnbI1arSE",
-          title: "Entertainment",
+          title: "Leisure",
           subtitle: "~$32.49 per month",
           image: require("../assets/images/game_icon.jpg"),
           graph: require("../assets/images/graph5.png"),
@@ -305,7 +305,7 @@ class Overview extends Component {
   }
 
   componentDidMount() {
-    this.transactionState("Entertainment");
+    this.transactionState("Leisure");
     setTimeout(() => this.setState({ loading: true }), 2000);
   }
 
