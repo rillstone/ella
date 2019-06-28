@@ -25,7 +25,7 @@ export default class SliderEntry extends Component {
         return (
             <TouchableOpacity
               activeOpacity={1}
-              onPress={() => navigation.navigate('Category', {data: back, chartColor: color, lineD: lineData, fontColor: textColor})}
+              onPress={() => navigation.navigate('TransactionCategory', {data: back, chartColor: color, lineD: lineData, fontColor: textColor})}
               style={styles.slideInnerContainer}>
                 <View style={styles.shadow} />
                 <View style={styles.imageContainer}>
