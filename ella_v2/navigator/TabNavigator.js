@@ -8,6 +8,7 @@ import CategoryView from "../screens/CategoryView";
 import Icon from "react-native-vector-icons/Ionicons";
 import Planner from "../screens/Planner";
 import Transactions from "../screens/Transactions";
+import TransactionsCategoryView from "../screens/TransactionCategoryView";
 import Settings from "../screens/Settings";
 
 const activeColor = "#FF2D55";
@@ -61,18 +62,33 @@ PlannerStack.navigationOptions = {
 };
 
 const TransactionsStack = createStackNavigator({
-  TransactionsScreen: Transactions
+  TransactionsScreen: Transactions,
+  TransactionCategory: TransactionsCategoryView
+},  
+{
+  mode: "modal",
+  headerMode: "none"
 });
 
-TransactionsStack.navigationOptions = {
-  tabBarLabel: "Transactions",
-  tabBarIcon: ({ focused }) => (
-    <Icon
-      name="ios-card"
-      size={26}
-      color={focused ? activeColor : inactiveColor}
-    />
-  )
+TransactionsStack.navigationOptions = ({ navigation }) => {
+  var tabBarVisible = true;
+  const routeName = navigation.state.routes[navigation.state.index].routeName;
+
+  if (routeName == "TransactionCategory") {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: "Transactions",
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="ios-card"
+        size={26}
+        color={focused ? activeColor : inactiveColor}
+      />
+    )
+  };
 };
 
 const SettingsStack = createStackNavigator({
