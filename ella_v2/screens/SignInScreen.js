@@ -8,16 +8,25 @@ import {
   Platform,
   StatusBar,
   Image,
-  Dimensions
+  Dimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import * as theme from "../theme";
-import { Button } from "react-native-elements";
+import * as Animatable from "react-native-animatable";
+import Icon from "react-native-vector-icons/Ionicons";
+import { Button, Input } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";
 import PropTypes from "prop-types";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 class SignInScreen extends Component {
   mounted = false;
   constructor(props) {
@@ -36,25 +45,104 @@ class SignInScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#D21D65" }}>
-  
-  <View style={{ flex: 1, flexDirection: 'column', alignContent: 'flex-end', justifyContent: 'flex-end'}}>
-        <Transition appear='scale' shared='logo'>
-        <Image
-          style={[styles.backgroundImage]}
-          source={require("../assets/images/ella_logo_text.png")}
-        />
-        </Transition>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'center' }}>
-        <Button
-            buttonStyle={styles.button}
-            titleStyle={{ fontWeight: "bold" }}
-            title="Enter"
-            onPress={() => this.props.navigation.navigate("HomePage")}
-          />
-        </View>
-      </SafeAreaView>
+      <Transition shared="back">
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+          <DismissKeyboard>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                alignContent: "flex-end",
+                justifyContent: "flex-end"
+              }}
+            >
+              <Transition shared="logo">
+                <Image
+                  style={[styles.backgroundImage]}
+                  source={require("../assets/images/ella_logo_text_pink.png")}
+                />
+              </Transition>
+            </View>
+          </DismissKeyboard>
+          <DismissKeyboard>
+            <KeyboardAvoidingView
+              behavior="padding"
+              enabled
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                alignContent: "center",
+                justifyContent: "flex-start"
+              }}
+            >
+              <Animatable.View
+                animation="slideInUp"
+                duration={700}
+                delay={300}
+                useNativeDriver
+              >
+                <TextInput
+                  style={styles.input}
+                  autoCapitalize="none"
+                  placeholderTextColor={"#FFF"}
+                  keyboardType="email-address"
+                  placeholder="username"
+                  textContentType="emailAddress"
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholderTextColor={"#FFF"}
+                  placeholder="password"
+                  secureTextEntry
+                  textContentType="password"
+                />
+              </Animatable.View>
+              <Animatable.View
+                style={{
+                  alignContent: "center",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                animation="fadeIn"
+                duration={900}
+                delay={800}
+                useNativeDriver
+              >
+                <Text style={styles.new_user}>
+                  New user?{" "}
+                  <Text
+                    onPress={() => this.props.navigation.navigate("SignUp")}
+                    style={{ color: "#F6699A" }}
+                  >
+                    Sign up
+                  </Text>
+                </Text>
+              </Animatable.View>
+
+              <View
+                style={{
+                  flex: 0.8,
+                  top: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Transition delay={500} shared="enter">
+                  <Button
+                    buttonStyle={styles.button}
+                    // raised
+                    titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+                    icon={
+                      <Icon name="ios-arrow-forward" size={30} color="white" />
+                    }
+                    onPress={() => this.props.navigation.navigate("HomePage")}
+                  />
+                </Transition>
+              </View>
+            </KeyboardAvoidingView>
+          </DismissKeyboard>
+        </SafeAreaView>
+      </Transition>
     );
   }
 }
@@ -72,25 +160,55 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     flex: 1
   },
+  new_user: {
+    color: "#C9C9CE",
+    fontSize: 14
+  },
   button: {
-    marginLeft: 10,
-    marginRight: 10,
-    width: viewportWidth / 3,
-    backgroundColor: "#60C3EB",
-    borderRadius: 10
+    borderRadius: 30,
+    width: 60,
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    height: 60,
+    backgroundColor: "#F6699A",
+    shadowColor: "#F6699A",
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 0
+  },
+  input: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F6699A70",
+    borderBottomWidth: 0,
+    // borderWidth: .5,
+    // borderColor: '#000',
+    paddingLeft: 10,
+    height: 40,
+    borderRadius: 10,
+    margin: 10,
+    marginHorizontal: 30
   },
   backgroundImage: {
-       // position: "absolute",
+    // position: "absolute",
     // top: 0,
     // left: 0,
     // right: 0,
+    bottom: 80,
     flex: 0.8,
     width: null,
-    alignContent: 'flex-end',
-    justifyContent: 'flex-end',
+    alignContent: "flex-end",
+    justifyContent: "flex-end",
     height: null,
     resizeMode: "contain"
-
   },
   title: {
     fontSize: theme.sizes.title,
