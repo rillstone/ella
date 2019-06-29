@@ -6,6 +6,7 @@ import {
 import Overview from "../screens/Overview";
 import CategoryView from "../screens/CategoryView";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import NewUserWelcomeScreen from "../screens/NewUserWelcomeScreen";
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -17,8 +18,6 @@ import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 const activeColor = "#FF2D55";
 const inactiveColor = "#B2B2B2";
-
-
 
 const HomeStack = createStackNavigator(
   {
@@ -67,14 +66,16 @@ PlannerStack.navigationOptions = {
   )
 };
 
-const TransactionsStack = createStackNavigator({
-  TransactionsScreen: Transactions,
-  TransactionCategory: TransactionsCategoryView
-},  
-{
-  mode: "modal",
-  headerMode: "none"
-});
+const TransactionsStack = createStackNavigator(
+  {
+    TransactionsScreen: Transactions,
+    TransactionCategory: TransactionsCategoryView
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
+  }
+);
 
 TransactionsStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
@@ -128,16 +129,17 @@ const TabNavigator = createBottomTabNavigator(
 
 const SignInStack = FluidNavigator(
   {
+    NewUser: NewUserWelcomeScreen,
     Welcome: WelcomeScreen,
     SignIn: SignInScreen,
     SignUp: SignUpScreen,
     HomePage: TabNavigator
-  },
+  },{ navigationOptions: { gesturesEnabled: false } },
   {
     mode: "card",
     headerMode: "none"
   }
+  
 );
-
 
 export default SignInStack;

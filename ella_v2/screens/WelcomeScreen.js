@@ -11,8 +11,10 @@ import {
   Dimensions
 } from "react-native";
 import * as theme from "../theme";
+import Icon from "react-native-vector-icons/Ionicons";
 import { Transition } from "react-navigation-fluid-transitions";
-import { Button } from 'react-native-elements';
+import * as Animatable from "react-native-animatable";
+import { Button, Input } from "react-native-elements";
 import PropTypes from "prop-types";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -36,31 +38,69 @@ class WelcomeScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#D21D65" }}>
-
-        <View style={{ flex: 1, flexDirection: 'column', alignContent: 'flex-end', justifyContent: 'flex-end'}}>
-        <Transition appear='scale' shared='logo'>
-        <Image
-          style={[styles.backgroundImage]}
-          source={require("../assets/images/ella_logo_text.png")}
-        />
-        </Transition>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-        <Button
-            buttonStyle={styles.button}
-            titleStyle={{fontWeight: 'bold'}}
-            title="LOGIN"
-            onPress={() => this.props.navigation.navigate("SignIn")}
-          />
-          <Button
+      <Transition shared="back">
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
+          <StatusBar barStyle="dark-content" />
+          <Animatable.View
+            animation="fadeIn"
+            duration={900}
+            delay={700}
+            useNativeDriver
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              alignContent: "flex-end",
+              justifyContent: "flex-end"
+            }}
+          >
+            <Transition shared="logo">
+              <Image
+                style={[styles.backgroundImage]}
+                source={require("../assets/images/ella_logo_text_pink.png")}
+              />
+            </Transition>
+          </Animatable.View>
+          <Animatable.View
+            animation="fadeIn"
+            duration={900}
+            delay={900}
+            useNativeDriver
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <View
+              style={{
+                flex: 0.8,
+                top: 40,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <Transition delay={500} shared="enter">
+                <Button
+                  buttonStyle={styles.button}
+                  // raised
+                  titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+                  icon={
+                    <Icon name="ios-arrow-forward" size={30} color="white" />
+                  }
+                  onPress={() => this.props.navigation.navigate("SignIn")}
+                />
+              </Transition>
+            </View>
+            {/* <Button
           buttonStyle={styles.button}
-          titleStyle={{fontWeight: 'bold'}}
+          titleStyle={{fontWeight: 'bold', color: '#FFF'}}
             title="SIGN UP"
             onPress={() => this.props.navigation.navigate("SignUp")}
-          />
-        </View>
-      </SafeAreaView>
+          /> */}
+          </Animatable.View>
+        </SafeAreaView>
+      </Transition>
     );
   }
 }
@@ -83,24 +123,33 @@ const styles = StyleSheet.create({
     // top: 0,
     // left: 0,
     // right: 0,
-    flex: 0.9,
+    flex: 0.8,
     width: null,
-    alignContent: 'flex-end',
-    justifyContent: 'flex-end',
+    alignContent: "flex-end",
+    justifyContent: "flex-end",
     height: null,
     resizeMode: "contain"
-
 
     // resizeMode: "cover"
   },
   button: {
-    
-    marginLeft: 10,
-    marginRight: 10,
-    width: viewportWidth/3,
-    backgroundColor: "#60C3EB",
-    borderRadius: 10,
+    borderRadius: 30,
+    width: 60,
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    height: 60,
+    backgroundColor: "#F6699A",
+    shadowColor: "#F6699A",
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 0
   },
+  // borderRadius: 10,
   title: {
     fontSize: theme.sizes.title,
     fontWeight: "800",
