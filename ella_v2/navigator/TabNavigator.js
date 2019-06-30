@@ -16,7 +16,7 @@ import TransactionsCategoryView from "../screens/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
-const activeColor = "#FF2D55";
+const activeColor = "#F6699A";
 const inactiveColor = "#B2B2B2";
 
 const HomeStack = createStackNavigator(
@@ -122,17 +122,20 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      showLabel: false
+      showLabel: false,
+      style: {
+
+      }
     }
   }
 );
 
 const SignInStack = FluidNavigator(
   {
-    NewUser: NewUserWelcomeScreen,
-    Welcome: WelcomeScreen,
-    SignIn: SignInScreen,
-    SignUp: SignUpScreen,
+    // NewUser: NewUserWelcomeScreen,
+    // Welcome: WelcomeScreen,
+    // SignIn: SignInScreen,
+    // SignUp: SignUpScreen,
     HomePage: TabNavigator
   },{ navigationOptions: { gesturesEnabled: false } },
   {

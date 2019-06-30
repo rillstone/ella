@@ -7,12 +7,18 @@ import {
   Platform,
   StatusBar,
   Image,
-  Dimensions
+  ScrollView,
+  Dimensions,
+  ImageBackground,
+  Animated
 } from "react-native";
 import * as theme from "../theme";
+import * as shape from "d3-shape";
+import { LineChart, Grid } from "react-native-svg-charts";
 import payments from "../assets/payments.json";
+import SlidingUpPanel from "rn-sliding-up-panel";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Button, Input, Avatar } from "react-native-elements";
+import { Button, Input, Avatar, Card } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -43,40 +49,223 @@ class Overview extends Component {
   }
 
   componentDidMount() {}
-
+  _draggedValue = new Animated.Value(180);
   render() {
+    const data = [50, 10, 40, 30, 20, 85, 91, 35, 53];
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
+        <SlidingUpPanel
+          onDragStart={() => console.log("start")}
+          onDragEnd={() => console.log("end")}
+          containerStyle={{
+            zIndex: 9999,
+            backgroundColor: "#fff",
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            overflow: "hidden"
+          }}
+          allowDragging
+          height={viewportHeight - 140}
+          backdropOpacity={0.4}
+          draggableRange={{ top: viewportHeight - 140, bottom: 0 }}
+          ref={c => (this._panel = c)}
+        >
+          {dragHandler => (
+            <View style={styles.container}>
+              <View style={styles.dragHandler} {...dragHandler}>
+                <View
+                  style={{
+                    backgroundColor: "#ccc",
+                    width: viewportWidth / 3,
+                    height: 8,
+                    borderRadius: 10
+                  }}
+                />
+              </View>
+            </View>
+          )}
+        </SlidingUpPanel>
         <StatusBar barStyle="dark-content" />
         <View style={{ flex: 1, flexDirection: "row" }}>
           <View style={styles.titleContain}>
             <Text style={styles.title}>Hi, Charlie!</Text>
             <Text style={styles.microtitle}>kuken!</Text>
           </View>
-          <Transition delay={500} shared="enter">
-            <View
-              style={{
-                flex: 1,
-                // flexDirection: "row",
-                // backgroundColor: 'blue',
-                paddingRight: 20,
-                paddingTop: 30,
-                justifyContent: "center",
-                alignItems: "flex-end"
+          {/* <Transition appear='scale' delay={500} shared="enter"> */}
+          <View
+            style={{
+              flex: 0.8,
+              marginRight: 20,
+              paddingTop: 30,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Avatar
+              rounded
+              size="medium"
+              onPress={() => this._panel.show()}
+              source={{
+                uri:
+                  "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
               }}
-            >
-              <Avatar
-                rounded
-                source={{
-                  uri:
-                    "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
-                }}
-              />
-            </View>
-          </Transition>
+            />
+          </View>
+          {/* </Transition> */}
         </View>
 
-        <View style={{ flex: 8 }} />
+        <View style={{ flex: 8 }}>
+          <View
+            style={{
+              marginTop: 20,
+              marginLeft: 20,
+              alignContent: "center",
+              justifyContent: "center"
+              // flex: 1
+            }}
+          >
+            <Text style={{ fontWeight: "700", fontSize: 30, color: "#3F4F5A" }}>
+              You're saving
+              <Text style={{ color: "#F6699A" }}> $24.89 </Text>
+            </Text>
+            <Text style={{ fontWeight: "300", fontSize: 28, color: "#3F4F5A" }}>
+              per week on average{" "}
+            </Text>
+          </View>
+          <View
+            style={{
+              marginTop: 20,
+              flexDirection: "row",
+              marginHorizontal: 15
+            }}
+          >
+            <View
+              style={{
+                alignSelf: "flex-start",
+                justifyContent: "flex-start",
+                alignContent: "flex-start",
+                left: 0
+              }}
+            >
+              <View
+                style={{
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowColor: "black",
+                  shadowOpacity: 0.3,
+                  shadowRadius: 2,
+                  elevation: 1,
+                  backgroundColor: "#0000"
+                }}
+              >
+                <ImageBackground
+                  source={require("../assets/images/bill_back.jpg")}
+                  style={[
+                    {
+                      marginHorizontal: 5
+                    },
+                    styles.card
+                  ]}
+                >
+                  <LineChart
+                    style={{
+                      height: viewportWidth / 3
+                    }}
+                    curve={shape.curveNatural}
+                    data={data.slice(3, 9)}
+                    contentInset={{ top: 20, bottom: 20 }}
+                    svg={{
+                      strokeWidth: 2,
+                      stroke: "#FFF"
+                    }}
+                  />
+                </ImageBackground>
+              </View>
+            </View>
+            <View
+              style={{
+                alignSelf: "center",
+                justifyContent: "center",
+                alignContent: "center"
+              }}
+            >
+              <View
+                style={{
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowColor: "black",
+                  shadowOpacity: 0.3,
+                  shadowRadius: 2,
+                  elevation: 1,
+                  backgroundColor: "#0000"
+                }}
+              >
+                <ImageBackground
+                  source={require("../assets/images/entertainment_back.jpg")}
+                  style={[
+                    {
+                      marginHorizontal: 9
+                    },
+                    styles.card
+                  ]}
+                >
+                  <LineChart
+                    style={{
+                      height: viewportWidth / 3
+                    }}
+                    curve={shape.curveNatural}
+                    data={data}
+                    contentInset={{ top: 20, bottom: 20 }}
+                    svg={{
+                      strokeWidth: 2,
+                      stroke: "#FFF"
+                    }}
+                  />
+                </ImageBackground>
+              </View>
+            </View>
+            <View
+              style={{
+                alignSelf: "flex-end",
+                justifyContent: "flex-end",
+                alignContent: "flex-end",
+                right: 0
+              }}
+            >
+              <View
+                style={{
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowColor: "black",
+                  shadowOpacity: 0.3,
+                  shadowRadius: 2,
+                  elevation: 1,
+                  backgroundColor: "#0000"
+                }}
+              >
+                <ImageBackground
+                  source={require("../assets/images/food_back.jpg")}
+                  style={[
+                    {
+                      marginHorizontal: 5
+                    },
+                    styles.card
+                  ]}
+                >
+                  <LineChart
+                    style={{
+                      height: viewportWidth / 3
+                    }}
+                    curve={shape.curveNatural}
+                    data={data.slice(1, 7)}
+                    contentInset={{ top: 20, bottom: 20 }}
+                    svg={{
+                      strokeWidth: 2,
+                      stroke: "#FFF"
+                    }}
+                  />
+                </ImageBackground>
+              </View>
+            </View>
+          </View>
+        </View>
       </SafeAreaView>
     );
   }
@@ -89,6 +278,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f6f5f7"
+  },
+  card: {
+    borderRadius: 12,
+    width: viewportWidth / 3.6,
+    height: viewportWidth / 3,
+    overflow: "hidden",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 1
   },
   image: {
     // resizeMode: 'cover',
@@ -106,6 +309,11 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 7
   },
+  saving: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: theme.colors.gray
+  },
   title: {
     fontSize: theme.sizes.title,
     fontWeight: "800",
@@ -121,10 +329,26 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: theme.colors.gray
   },
+
+  container: {
+    flex: 1,
+    zIndex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "flex-start"
+  },
+  dragHandler: {
+    alignSelf: "stretch",
+    height: 64,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent"
+    // alignContent: "flex-start",  justifyContent: "flex-start",alignSelf: "flex-start",
+  },
   microtitle: {
     fontSize: theme.sizes.microsub,
     fontWeight: "600",
-    color: theme.colors.warn
+    color: "#F6699A"
   },
   slider: {
     marginTop: 15,
