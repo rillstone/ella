@@ -10,7 +10,8 @@ import {
   ScrollView,
   Dimensions,
   ImageBackground,
-  Animated
+  Animated,
+  AsyncStorage
 } from "react-native";
 import * as theme from "../theme";
 import * as shape from "d3-shape";
@@ -20,6 +21,7 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Button, Input, Avatar, Card } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";
+import * as firebase from "firebase";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -36,11 +38,32 @@ class Overview extends Component {
   mounted = false;
   constructor(props) {
     super();
-
+    this.state = {
+      lastname: null
+    }
     this.props = props;
+    
   }
 
+  getUser() {
+    var user = firebase.auth().currentUser;
+    var name;
+    
+    if (user != null) {
+      name = user.displayName;
+      this.setState({
+        firstname: name.split(" ")[0],
+        lastname: name.split(" ").length >1 ? name.split(" ")[1]: null
+      })
+    }
+  }
+  signoutPress = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate("Auth");
+  };
+
   componentWillMount() {
+    this.getUser();
     this.mounted = true;
     this.startHeaderHeight = 80;
     if (Platform.OS == "android") {
@@ -48,7 +71,9 @@ class Overview extends Component {
     }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+
+  }
   _draggedValue = new Animated.Value(180);
   render() {
     const data = [50, 10, 40, 30, 20, 85, 91, 35, 53];
@@ -82,13 +107,16 @@ class Overview extends Component {
                   }}
                 />
               </View>
+              <View>
+                <Text onPress={() => {this._panel.hide(); this.signoutPress();}}>Sign Out</Text>
+              </View>
             </View>
           )}
         </SlidingUpPanel>
         <StatusBar barStyle="dark-content" />
         <View style={{ flex: 1, flexDirection: "row" }}>
           <View style={styles.titleContain}>
-            <Text style={styles.title}>Hi, Charlie!</Text>
+            <Text style={styles.title}>Hi, {this.state.firstname}</Text>
             <Text style={styles.microtitle}>kuken!</Text>
           </View>
           {/* <Transition appear='scale' delay={500} shared="enter"> */}
@@ -105,10 +133,11 @@ class Overview extends Component {
               rounded
               size="medium"
               onPress={() => this._panel.show()}
-              source={{
-                uri:
-                  "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
-              }}
+              title={this.state.lastname && this.state.firstname ? this.state.firstname[0] + this.state.lastname[0] : "XX"}
+              // source={{
+              //   uri:
+              //     "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
+              // }}
             />
           </View>
           {/* </Transition> */}
