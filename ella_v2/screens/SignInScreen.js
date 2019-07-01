@@ -7,11 +7,13 @@ import {
   TextInput,
   Platform,
   StatusBar,
+  AsyncStorage,
   Image,
   Dimensions,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 } from "react-native";
 import * as theme from "../theme";
 import * as Animatable from "react-native-animatable";
@@ -19,6 +21,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Button, Input } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";
 import PropTypes from "prop-types";
+import * as firebase from 'firebase';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -31,10 +34,22 @@ class SignInScreen extends Component {
   mounted = false;
   constructor(props) {
     super();
-
+    this.state = { 
+      email: "",
+      password: "",
+    };
     this.props = props;
   }
 
+  loginPress() {
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    .then(() => { this._signInAsync();}, (error) => { Alert.alert(error.message); });
+  }
+
+  _signInAsync = async () => {
+    await AsyncStorage.setItem('userToken', 'App');
+    this.props.navigation.navigate('App');
+  };
   componentWillMount() {
     this.mounted = true;
     this.startHeaderHeight = 80;
@@ -88,6 +103,9 @@ class SignInScreen extends Component {
                   keyboardType="email-address"
                   placeholder="username"
                   textContentType="emailAddress"
+                  onChangeText={text => {
+                    this.setState({ email: text });
+                  }}
                 />
                 <TextInput
                   style={styles.input}
@@ -95,6 +113,9 @@ class SignInScreen extends Component {
                   placeholder="password"
                   secureTextEntry
                   textContentType="password"
+                  onChangeText={text => {
+                    this.setState({ password: text });
+                  }}
                 />
               </Animatable.View>
               <Animatable.View
@@ -135,7 +156,7 @@ class SignInScreen extends Component {
                     icon={
                       <Icon name="ios-arrow-forward" size={30} color="white" />
                     }
-                    onPress={() => this.props.navigation.navigate("HomePage")}
+                    onPress={() => this.loginPress()}
                   />
                 </Transition>
               </View>

@@ -1,10 +1,12 @@
 import React from "react";
 import {
   createBottomTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  createSwitchNavigator
 } from "react-navigation";
 import Overview from "../screens/Overview";
 import CategoryView from "../screens/CategoryView";
+// import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import NewUserWelcomeScreen from "../screens/NewUserWelcomeScreen";
 import SignInScreen from "../screens/SignInScreen";
@@ -15,6 +17,44 @@ import Transactions from "../screens/Transactions";
 import TransactionsCategoryView from "../screens/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
+
+
+
+import {
+  ActivityIndicator,
+  AsyncStorage,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
+
+
+class AuthLoadingScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this._bootstrapAsync();
+  }
+
+  // Fetch the token from storage then navigate to our appropriate place
+  _bootstrapAsync = async () => {
+    const userToken = await AsyncStorage.getItem('userToken');
+
+    // This will switch to the App screen or Auth screen and this loading
+    // screen will be unmounted and thrown away.
+    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+  };
+
+  // Render any loading content that you like here
+  render() {
+    return (
+      <View>
+        <ActivityIndicator />
+        <StatusBar barStyle="default" />
+      </View>
+    );
+  }
+}
+
 
 const activeColor = "#F6699A";
 const inactiveColor = "#B2B2B2";
@@ -133,10 +173,10 @@ const TabNavigator = createBottomTabNavigator(
 const SignInStack = FluidNavigator(
   {
     // NewUser: NewUserWelcomeScreen,
-    // Welcome: WelcomeScreen,
-    // SignIn: SignInScreen,
-    // SignUp: SignUpScreen,
-    HomePage: TabNavigator
+    Welcome: WelcomeScreen,
+    SignIn: SignInScreen,
+    SignUp: SignUpScreen,
+    // HomePage: TabNavigator
   },{ navigationOptions: { gesturesEnabled: false } },
   {
     mode: "card",
@@ -144,5 +184,15 @@ const SignInStack = FluidNavigator(
   }
   
 );
+export default createSwitchNavigator(
+  {
+  AuthLoading: AuthLoadingScreen,
+  App: TabNavigator,
+  Auth: SignInStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  }
+)
 
-export default SignInStack;
+// export default SignInStack;
