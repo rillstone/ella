@@ -16,7 +16,7 @@ export default class AccountSlider extends Component {
 
   render() {
     const {
-      data: {dragHandler, firstName, lastName, email, icon, slider},
+      data: {dragHandler, firstName, lastName, email, icon},
     } = this.props;
 
     return (
@@ -74,7 +74,7 @@ export default class AccountSlider extends Component {
                     title="done"
                     type="clear"
                     onPress={() => {
-                      this.props.hideSlider();
+                      this.props.action()
                     }}
                     titleStyle={{ fontWeight: "600", fontSize: 20 }}
                     style={{ alignSelf: "center" }}
@@ -167,8 +167,8 @@ export default class AccountSlider extends Component {
               <Button
                 type="clear"
                 onPress={() => {
-                  this.props.hideSlider();
-                  this.signoutPress();
+                  this.props.action();
+                  this.props.signOut();
                 }}
                 title="Sign Out"
               />

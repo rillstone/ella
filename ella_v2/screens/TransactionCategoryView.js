@@ -262,9 +262,6 @@ const styles = StyleSheet.create({
   fill: {
     flex: 1
   },
-  content: {
-    flex: 1
-  },
   toggleFill: {
     height: 5,
     backgroundColor: "#FFF",
@@ -320,67 +317,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f6f5f7"
-  },
-  titleContain: {
-    paddingLeft: 20,
-    paddingTop: 20,
-    flex: 1
-  },
-  slideInnerContainer: {
-    width: viewportWidth,
-    height: 200,
-    // paddingHorizontal: itemHorizontalMargin,
-    paddingBottom: 18,
-    flexDirection: "row",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 1
-  },
-  image: {
-    // resizeMode: 'cover',
-    flex: 1,
-    height: undefined,
-    width: undefined,
-    // borderRadius: IS_IOS ? 12 : 0,
-    borderTopLeftRadius: 12,
-    borderBottomLeftRadius: 12
-  },
   title: {
     color: "#1E2127",
     fontSize: 24,
     fontWeight: "bold",
     letterSpacing: 0.5
   },
-  subtitle: {
-    marginTop: 2,
-    color: "#1E2127",
-    fontSize: 16,
-    fontWeight: "500"
-  },
 
-  cardContainer: {
-    backgroundColor: "grey",
-    height: 100,
-    borderRadius: 7
-  },
-  textContainer: {
-    justifyContent: "center",
-    flex: 2,
-    paddingTop: 20 - 12,
-    paddingBottom: 20,
-    paddingHorizontal: 16,
-    backgroundColor: "white"
-    // borderTopRightRadius: 12,
-    // borderBottomRightRadius: 12
-  },
   title: {
     fontSize: theme.sizes.title,
     fontWeight: "800",
@@ -393,77 +336,5 @@ const styles = StyleSheet.create({
     overflow: "hidden"
     // borderTopLeftRadius: 12,
     // borderBottomLeftRadius: 12
-  },
-  subtitle: {
-    fontSize: theme.sizes.subtitle,
-    fontWeight: "700",
-    color: theme.colors.gray
-  },
-  subtitle_two: {
-    fontSize: theme.sizes.subtitle_two,
-    fontWeight: "600",
-    color: theme.colors.gray
-  },
-  microtitle: {
-    fontSize: theme.sizes.microsub,
-    fontWeight: "600",
-    color: theme.colors.warn
-  },
-  slider: {
-    marginTop: 15,
-    overflow: "visible" // for custom animations
-  },
-  sliderContentContainer: {
-    paddingVertical: 10 // for custom animation
-  },
-  paginationContainer: {
-    paddingVertical: 8
-  },
-  paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 8
-  },
-  balanceCont2: {
-    // position: 'absolute',
-
-    // flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    top: 0,
-    left: 20,
-    right: 20,
-    bottom: 0
-    // backgroundColor: 'yellow',
-    // flex: 5
-    // height: 90,
-  },
-  balance2: {
-    // flexDirection: 'column',
-    // position: 'relative',
-    borderRadius: theme.sizes.radius,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    flexDirection: "row",
-    // bottom: 0,
-    // left: 0,
-    // top: 15,
-
-    height: 70
-    // marginBottom: 10
-  },
-  shadow: {
-    position: "absolute",
-    top: 0,
-    left: itemHorizontalMargin,
-    right: itemHorizontalMargin,
-    bottom: 18,
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: 10 },
-    shadowRadius: 10,
-    borderRadius: 12
   }
 });
