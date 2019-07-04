@@ -24,6 +24,7 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.charlierillstone.ella",
       "supportsTablet": true
     }
   }

@@ -11,7 +11,8 @@ import {
   Dimensions,
   ImageBackground,
   Animated,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from "react-native";
 import * as theme from "../theme";
 import * as shape from "d3-shape";
@@ -19,7 +20,8 @@ import { LineChart, Grid } from "react-native-svg-charts";
 import payments from "../assets/payments.json";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Button, Input, Avatar, Card } from "react-native-elements";
+import { Button, Input, Avatar, Card,Divider } from "react-native-elements";
+
 import { Transition } from "react-navigation-fluid-transitions";
 import * as firebase from "firebase";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -40,21 +42,22 @@ class Overview extends Component {
     super();
     this.state = {
       lastname: null
-    }
+    };
     this.props = props;
-    
   }
 
   getUser() {
     var user = firebase.auth().currentUser;
+    console.log(user);
     var name;
-    
+
     if (user != null) {
       name = user.displayName;
       this.setState({
         firstname: name.split(" ")[0],
-        lastname: name.split(" ").length >1 ? name.split(" ")[1]: null
-      })
+        lastname: name.split(" ").length > 1 ? name.split(" ")[1] : null,
+        email: user.email
+      });
     }
   }
   signoutPress = async () => {
@@ -71,9 +74,7 @@ class Overview extends Component {
     }
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
   _draggedValue = new Animated.Value(180);
   render() {
     const data = [50, 10, 40, 30, 20, 85, 91, 35, 53];
@@ -99,24 +100,147 @@ class Overview extends Component {
             <View style={styles.container}>
               <View style={styles.dragHandler} {...dragHandler}>
                 <View
+                  style={
+                    styles.dragHeader
+                  }
+                >
+                  <View style={{ flex: 1, alignSelf: "flex-start" }} />
+                  <View
+                    style={{
+                      flex: 2,
+                      alignSelf: "center",
+                      alignContent: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "600",
+                        fontSize: 20,
+                        color: theme.colors.gray,
+                        textAlign: "center"
+                      }}
+                    >
+                      Account
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignSelf: "center",
+                      alignContent: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Button
+                      title="done"
+                      type="clear"
+                      onPress={() => {
+                        this._panel.hide();
+                      }}
+                      titleStyle={{ fontWeight: "600", fontSize: 20 }}
+                      style={{ alignSelf: "center" }}
+                    />
+                  </View>
+                </View>
+              </View>
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: 20,
+                  marginTop: 40
+                }}
+              >
+                <View
                   style={{
-                    backgroundColor: "#ccc",
-                    width: viewportWidth / 3,
-                    height: 8,
-                    borderRadius: 10
+                    flex: 1,
+                    alignContent: "center",
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
+                >
+                  <Avatar
+                    rounded
+                    size="medium"
+                    // title={
+                    //   this.state.lastname && this.state.firstname
+                    //     ? this.state.firstname[0] + this.state.lastname[0]
+                    //     : "XX"
+                    // }
+                    source={{
+                      uri:
+                        "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
+                    }}
+                  />
+                </View>
+                <View
+                  style={{ flex: 5, flexDirection: "column", marginLeft: 10 }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: "500",
+                      color: theme.colors.gray
+                    }}
+                  >
+                    {/* {this.state.firstname + ' ' + this.state.lastname} */}
+                    Charlie Rillstone
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      color: "#5B7282"
+                    }}
+                  >
+                    {/* {this.state.email} */}
+                    charlierillstone@gmail.com
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignContent: "flex-end",
+                    justifyContent: "flex-end",
+                    alignItems: "flex-end"
+                  }}
+                >
+                  <Icon name="ios-arrow-forward" size={26} color={"#E1E1E1"} />
+                </View>
+              </TouchableOpacity>
+              <Divider style={{ height:1, width: viewportWidth-50,backgroundColor: '#F5F5F5' }} />
+              <View
+                style={{
+                  flex: 2,
+                  alignContent: "flex-end",
+                  justifyContent: "flex-end",
+                  alignItems: "flex-end"
+                }}
+              >
+                <Button
+                  type="clear"
+                  onPress={() => {
+                    this._panel.hide();
+                    this.signoutPress();
+                  }}
+                  title="Sign Out"
                 />
+                {/* <Text onPress={() => {this._panel.hide(); this.signoutPress();}}>Sign Out</Text> */}
               </View>
-              <View>
-                <Text onPress={() => {this._panel.hide(); this.signoutPress();}}>Sign Out</Text>
-              </View>
+              <View style={{ flex: 0.1 }} />
             </View>
           )}
         </SlidingUpPanel>
         <StatusBar barStyle="dark-content" />
         <View style={{ flex: 1, flexDirection: "row" }}>
           <View style={styles.titleContain}>
-            <Text style={styles.title}>Hi, {this.state.firstname}</Text>
+            <Text style={styles.title}>
+              {/* Hi, {this.state.firstname} */}
+              Hi, Charlie!
+            </Text>
             <Text style={styles.microtitle}>kuken!</Text>
           </View>
           {/* <Transition appear='scale' delay={500} shared="enter"> */}
@@ -133,11 +257,15 @@ class Overview extends Component {
               rounded
               size="medium"
               onPress={() => this._panel.show()}
-              title={this.state.lastname && this.state.firstname ? this.state.firstname[0] + this.state.lastname[0] : "XX"}
-              // source={{
-              //   uri:
-              //     "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
-              // }}
+              // title={
+              //   this.state.lastname && this.state.firstname
+              //     ? this.state.firstname[0] + this.state.lastname[0]
+              //     : "XX"
+              // }
+              source={{
+                uri:
+                  "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
+              }}
             />
           </View>
           {/* </Transition> */}
@@ -433,5 +561,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 0
+  },
+  dragHeader: {
+    backgroundColor: "#F5F5F5",
+                    width: viewportWidth,
+                    height: 64,
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "row",
+                    shadowColor: "black",
+                    shadowOffset: {
+                      width: 0,
+                      height: -1
+                    },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 2,
+                    elevation: 0
   }
+
 });

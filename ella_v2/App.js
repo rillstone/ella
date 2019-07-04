@@ -32,6 +32,7 @@ class App extends React.Component {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
+    console.log(firebase.auth().currentUser);
   }
   componentDidMount() {
     this.mounted = true;

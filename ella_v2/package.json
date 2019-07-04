@@ -28,6 +28,7 @@
     "react-native-svg-animated-linear-gradient": "^0.3.0",
     "react-native-svg-charts": "^5.2.0",
     "react-native-switch-selector": "^1.1.14",
+    "react-native-typography": "^1.4.1",
     "react-native-ui-kitten": "^4.0.3",
     "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.0",

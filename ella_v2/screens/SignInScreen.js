@@ -37,11 +37,13 @@ class SignInScreen extends Component {
     this.state = { 
       email: "",
       password: "",
+      loading: false,
     };
     this.props = props;
   }
 
   loginPress() {
+    Keyboard.dismiss();
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(() => { this._signInAsync();}, (error) => { Alert.alert(error.message); });
   }
@@ -152,11 +154,13 @@ class SignInScreen extends Component {
                   <Button
                     buttonStyle={styles.button}
                     // raised
+                    loading={this.state.loading}
+
                     titleStyle={{ fontWeight: "bold", color: "#FFF" }}
                     icon={
                       <Icon name="ios-arrow-forward" size={30} color="white" />
                     }
-                    onPress={() => this.loginPress()}
+                    onPress={() => { this.loginPress(); this.setState({loading:true}) }}
                   />
                 </Transition>
               </View>
