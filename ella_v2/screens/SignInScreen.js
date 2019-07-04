@@ -21,7 +21,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Button, Input } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";
 import PropTypes from "prop-types";
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -34,23 +34,32 @@ class SignInScreen extends Component {
   mounted = false;
   constructor(props) {
     super();
-    this.state = { 
+    this.state = {
       email: "",
       password: "",
-      loading: false,
+      loading: false
     };
     this.props = props;
   }
 
   loginPress() {
     Keyboard.dismiss();
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    .then(() => { this._signInAsync();}, (error) => { Alert.alert(error.message); });
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(
+        () => {
+          this._signInAsync();
+        },
+        error => {
+          Alert.alert(error.message);
+        }
+      );
   }
 
   _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'App');
-    this.props.navigation.navigate('App');
+    await AsyncStorage.setItem("userToken", "App");
+    this.props.navigation.navigate("App");
   };
   componentWillMount() {
     this.mounted = true;
@@ -155,12 +164,14 @@ class SignInScreen extends Component {
                     buttonStyle={styles.button}
                     // raised
                     loading={this.state.loading}
-
                     titleStyle={{ fontWeight: "bold", color: "#FFF" }}
                     icon={
                       <Icon name="ios-arrow-forward" size={30} color="white" />
                     }
-                    onPress={() => { this.loginPress(); this.setState({loading:true}) }}
+                    onPress={() => {
+                      this.loginPress();
+                      this.setState({ loading: true });
+                    }}
                   />
                 </Transition>
               </View>
@@ -174,17 +185,6 @@ class SignInScreen extends Component {
 export default SignInScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f6f5f7"
-  },
-  titleContain: {
-    paddingLeft: 20,
-    paddingTop: 20,
-    flex: 1
-  },
   new_user: {
     color: "#C9C9CE",
     fontSize: 14
@@ -234,80 +234,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     height: null,
     resizeMode: "contain"
-  },
-  title: {
-    fontSize: theme.sizes.title,
-    fontWeight: "800",
-    color: theme.colors.gray
-  },
-  subtitle: {
-    fontSize: theme.sizes.subtitle,
-    fontWeight: "700",
-    color: theme.colors.gray
-  },
-  subtitle_two: {
-    fontSize: theme.sizes.subtitle_two,
-    fontWeight: "600",
-    color: theme.colors.gray
-  },
-  microtitle: {
-    fontSize: theme.sizes.microsub,
-    fontWeight: "600",
-    color: theme.colors.warn
-  },
-  slider: {
-    marginTop: 15,
-    overflow: "visible" // for custom animations
-  },
-  sliderContentContainer: {
-    paddingVertical: 10 // for custom animation
-  },
-  paginationContainer: {
-    paddingVertical: 8
-  },
-  paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 8
-  },
-  balanceCont2: {
-    // position: 'absolute',
-
-    // flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    top: 0,
-    left: 20,
-    right: 20,
-    bottom: 0
-    // backgroundColor: 'yellow',
-    // flex: 5
-    // height: 90,
-  },
-  balance2: {
-    // flexDirection: 'column',
-    // position: 'relative',
-    borderRadius: theme.sizes.radius,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    flexDirection: "row",
-    // bottom: 0,
-    // left: 0,
-    // top: 15,
-
-    height: 70
-    // marginBottom: 10
-  },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 0
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 0
   }
 });
