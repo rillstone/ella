@@ -13,7 +13,8 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert
+  Alert,
+  TouchableOpacity
 } from "react-native";
 import * as theme from "../theme";
 import { watchPersonData } from "../redux/app-redux";
@@ -23,7 +24,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Button, Input } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";
 import PropTypes from "prop-types";
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
+
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -42,7 +44,8 @@ class SignUpScreen extends Component {
       password: "",
       passwordConfirm: "",
       firstName: "",
-      lastName: ""
+      lastName: "",
+      loading: false
     };
     this.props = props;
   }
@@ -56,26 +59,34 @@ class SignUpScreen extends Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(
-        (authData) => {
+        authData => {
           this._signInAsync();
           var user = firebase.auth().currentUser;
-          user.updateProfile({
-            displayName: this.state.firstName + ' ' + this.state.lastName
-          }).then(function() {
-            // Update successful.
-            
-          }).catch(function(error) {
-            // An error happened.
-          });
+          user
+            .updateProfile({
+              displayName: this.state.firstName + " " + this.state.lastName
+            })
+            .then(function() {
+              // Update successful.
+            })
+            .catch(function(error) {
+              // An error happened.
+            });
         },
         error => {
           Alert.alert(error.message);
         }
       );
   }
+
   _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'App');
-    this.props.navigation.navigate('App');
+    await AsyncStorage.setItem("userToken", "App");
+    this.props.navigation.navigate("App");
+  };
+  backPress = async () => {
+    console.log("pressed");
+    // await AsyncStorage.clear();
+    this.props.navigation.navigate("SignIn");
   };
   componentWillMount() {
     this.mounted = true;
@@ -89,6 +100,15 @@ class SignUpScreen extends Component {
     return (
       // <Transition shared="back">
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <TouchableOpacity onPress={() => this.backPress()} style={{ position: "absolute", zIndex: 9999, top: 60, left: 20, width: 30 }}>
+          <Icon
+            name="ios-arrow-back"
+            size={40}
+            color={"#F6699A"}
+            
+            
+          />
+        </TouchableOpacity>
         <DismissKeyboard>
           <View
             style={{
@@ -194,11 +214,12 @@ class SignUpScreen extends Component {
                 <Button
                   buttonStyle={styles.button}
                   // raised
+                  loading={this.state.loading}
                   titleStyle={{ fontWeight: "bold", color: "#FFF" }}
                   icon={
                     <Icon name="ios-arrow-forward" size={30} color="white" />
                   }
-                  onPress={() => this.signUpPress()}
+                  onPress={() => {this.signUpPress(); this.setState({loading:true})}}
                 />
               </Transition>
             </View>

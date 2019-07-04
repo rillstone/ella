@@ -143,6 +143,8 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
+  headerTitleStyle: {
+    textAlign: 'left'},
   tabBarLabel: "Settings",
   tabBarIcon: ({ focused }) => (
     <Icon

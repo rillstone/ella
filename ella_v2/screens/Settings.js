@@ -9,12 +9,32 @@ import {
   StatusBar,
   Image
 } from "react-native";
+import { ListItem } from "react-native-elements";
 import * as theme from "../theme";
 import payments from "../assets/payments.json";
 import Icon from "react-native-vector-icons/Ionicons";
 import SvgAnimatedLinearGradient from "react-native-svg-animated-linear-gradient";
 import Svg, { Circle, Rect } from "react-native-svg";
+const list = [
+  {
+    title: "Linked Accounts",
+    icon: "ios-link"
+  },
+  {
+    title: "Personal Info",
+    icon: "ios-body"
+  },
+  {
+    title: "Budget",
+    icon: "ios-pricetags"
+  },
+  {
+    title: "Authentication",
+    icon: "ios-key"
+  },
 
+
+];
 const MyLoader = () => (
   <SvgAnimatedLinearGradient height={100}>
     <Circle cx="20" cy="90" r="30" transform="rotate(-49.5, 32.5, 32.5)" />
@@ -39,7 +59,7 @@ const MyLoader = () => (
   </SvgAnimatedLinearGradient>
 );
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
-class Overview extends Component {
+class Settings extends Component {
   mounted = false;
   constructor(props) {
     super();
@@ -49,6 +69,21 @@ class Overview extends Component {
     };
     this.props = props;
   }
+  static navigationOptions = ({ navigation }) => ({
+    title: "Settings",
+
+    headerTitleStyle: {
+      fontSize: 25,
+      color: theme.colors.gray,
+      fontWeight: "700"
+    },
+    headerStyle: {
+      height: 80,
+      backgroundColor: "#F7F7F7",
+      borderBottomColor: "rgba(0, 0, 0, .3)"
+    },
+    headerTintColor: "rgba(0, 0, 0, .9)"
+  });
 
   componentWillMount() {
     this.mounted = true;
@@ -62,15 +97,26 @@ class Overview extends Component {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
         <View style={{ flex: 1.2 }}>
-          <View style={styles.titleContain}>
-            <Text style={styles.title}>Settings</Text>
+          <View>
+            {list.map((item, i) => (
+              <ListItem
+              
+                key={i}
+                title={item.title}
+                rightIcon={<Icon name={"ios-arrow-forward"} size={26} color={"#E1E1E1"} />}
+                leftIcon={ <Icon name={item.icon} size={26} color={"#E1E1E1"} />}
+              />
+            ))}
           </View>
+          {/* <View style={styles.titleContain}>
+            <Text style={styles.title}>Settings</Text>
+          </View> */}
         </View>
       </SafeAreaView>
     );
   }
 }
-export default Overview;
+export default Settings;
 
 const styles = StyleSheet.create({
   container: {

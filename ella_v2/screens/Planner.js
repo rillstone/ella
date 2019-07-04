@@ -39,7 +39,7 @@ const MyLoader = () => (
   </SvgAnimatedLinearGradient>
 );
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
-class Overview extends Component {
+class Planner extends Component {
   mounted = false;
   constructor(props) {
     super();
@@ -49,7 +49,17 @@ class Overview extends Component {
     };
     this.props = props;
   }
-
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Planner',
+    
+     headerTitleStyle : {textAlign: 'center',alignSelf:'center', fontSize: 25, color: theme.colors.gray, fontWeight: '700'},
+     headerStyle: {
+       height: 80,
+      backgroundColor: '#F7F7F7',
+      borderBottomColor: 'rgba(0, 0, 0, .3)',
+    },
+    headerTintColor: 'rgba(0, 0, 0, .9)',
+    });
   componentWillMount() {
     this.mounted = true;
     this.startHeaderHeight = 80;
@@ -62,15 +72,15 @@ class Overview extends Component {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
         <View style={{ flex: 1.2 }}>
-          <View style={styles.titleContain}>
+          {/* <View style={styles.titleContain}>
             <Text style={styles.title}>Planner</Text>
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     );
   }
 }
-export default Overview;
+export default Planner;
 
 const styles = StyleSheet.create({
   container: {
