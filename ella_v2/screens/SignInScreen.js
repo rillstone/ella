@@ -72,7 +72,7 @@ class SignInScreen extends Component {
   render() {
     return (
       <Transition shared="back">
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
           <DismissKeyboard>
             <View
               style={{

@@ -2,9 +2,11 @@ const colors = {
     black: '#000',
     white: '#FFF',
     gray: '#3F4F5A',
+    inactive: "#B2B2B2",
     caption: '#BCCCD4',
     active: '#007BFA',
     warn: '#D4455C',
+    back: "#f6f5f7"
   };
   
   const sizes = {
@@ -19,6 +21,7 @@ const colors = {
     radius: 12,
   };
   
+
   export {
     colors,
     sizes,

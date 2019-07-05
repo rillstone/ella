@@ -95,7 +95,7 @@ class Settings extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <View style={{ flex: 1.2 }}>
           <View>
             {list.map((item, i) => (

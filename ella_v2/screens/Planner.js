@@ -70,7 +70,7 @@ class Planner extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <View style={{ flex: 1.2 }}>
           {/* <View style={styles.titleContain}>
             <Text style={styles.title}>Planner</Text>

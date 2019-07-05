@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f6f5f7"
+    backgroundColor: theme.colors.back
   },
   titleContain: {
     paddingLeft: 20,

@@ -11,10 +11,10 @@ import {
 import PropTypes from "prop-types";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import * as shape from "d3-shape";
-import { LineChart, Grid } from "react-native-svg-charts";
+import Icon from "react-native-vector-icons/Ionicons";
+import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
 import * as theme from "../theme";
 import { Button, Input, Avatar, Card, Divider } from "react-native-elements";
-import Icon from "react-native-vector-icons/Ionicons";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -24,9 +24,37 @@ export default class OverviewChart extends Component {
     data: PropTypes.object.isRequired
   };
 
+  dataChange(data, title) {
+    let sum = data.reduce((previous, current) => (current += previous));
+    let avg = Math.round(sum / data.length);
+    let current = data[data.length - 1];
+
+    return (
+      <View style={styles.chartInfo}>
+        <Icon
+          name={
+            current < avg
+              ? "ios-arrow-round-down"
+              : current > avg
+              ? "ios-arrow-round-up"
+              : "ios-remove"
+          }
+          size={26}
+          color="#FFF"
+        />
+        <View>
+          <Text style={styles.chartInfoQuantity}>${Math.abs(current - avg)}</Text>
+        </View>
+        <View>
+          <Text style={styles.chartInfoTitle}>{title}</Text>
+        </View>
+      </View>
+    );
+  }
+
   render() {
     const {
-      data: { position, image, data }
+      data: { position, image, data, color, title }
     } = this.props;
 
     return (
@@ -49,17 +77,17 @@ export default class OverviewChart extends Component {
               styles.card
             ]}
           >
-            <LineChart
+            <View />
+            {this.dataChange(data, title)}
+            <AreaChart
               style={{
-                height: viewportWidth / 3
+                height: viewportWidth / 2.5 + 2
               }}
               curve={shape.curveNatural}
               data={data}
-              contentInset={{ top: 20, bottom: 20 }}
-              svg={{
-                strokeWidth: 2,
-                stroke: "#FFF"
-              }}
+              gridMax={56}
+              contentInset={{ top: 60, bottom: 20 }}
+              svg={{ fill: color }}
             />
           </ImageBackground>
         </View>
@@ -110,7 +138,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
     width: viewportWidth / 3.6,
-    height: viewportWidth / 3,
+    height: viewportWidth / 2.5,
     overflow: "hidden",
     shadowColor: "black",
     shadowOffset: {
@@ -120,5 +148,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 1
-  }
+  },
+  chartInfo: {
+    position: "absolute",
+    zIndex: 999,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    top: 8
+  },
+  chartInfoQuantity: {
+      fontSize: 25,
+      fontWeight: "700",
+      color: '#FFF',
+
+  },
+  chartInfoTitle: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: '#FFF',
+  },
+
 });
