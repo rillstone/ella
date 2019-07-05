@@ -111,7 +111,7 @@ class NewUserWelcomeScreen extends Component {
   render() {
     return (
       <Transition shared="back">
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
           <StatusBar barStyle="dark-content" />
           <Animatable.View
             animation={this.state.animationType}

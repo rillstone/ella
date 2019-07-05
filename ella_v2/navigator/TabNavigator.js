@@ -5,7 +5,7 @@ import {
   createSwitchNavigator
 } from "react-navigation";
 import Overview from "../screens/Overview";
-import CategoryView from "../screens/CategoryView";
+import GoalView from "../screens/GoalView";
 // import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import NewUserWelcomeScreen from "../screens/NewUserWelcomeScreen";
@@ -62,7 +62,7 @@ const inactiveColor = "#B2B2B2";
 const HomeStack = createStackNavigator(
   {
     Home: Overview,
-    Category: CategoryView
+    Goal: GoalView
   },
   {
     mode: "modal",
@@ -77,13 +77,17 @@ HomeStack.navigationOptions = ({ navigation }) => {
   if (routeName == "Category") {
     tabBarVisible = false;
   }
+  
 
   return {
+    headerStyle: {
+      backgroundColor: 'green',
+    },
     tabBarVisible,
-    tabBarLabel: "Home",
+    tabBarLabel: "Overview",
     tabBarIcon: ({ focused }) => (
       <Icon
-        name="ios-pulse"
+        name="ios-today"
         size={26}
         color={focused ? activeColor : inactiveColor}
       />
@@ -99,7 +103,7 @@ PlannerStack.navigationOptions = {
   tabBarLabel: "Planner",
   tabBarIcon: ({ focused }) => (
     <Icon
-      name="ios-calendar"
+      name="ios-create"
       size={26}
       color={focused ? activeColor : inactiveColor}
     />
@@ -143,8 +147,7 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  headerTitleStyle: {
-    textAlign: 'left'},
+
   tabBarLabel: "Settings",
   tabBarIcon: ({ focused }) => (
     <Icon
@@ -164,7 +167,9 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      showLabel: false,
+      // showLabel: false,
+      inactiveTintColor: inactiveColor,
+      activeTintColor: activeColor,
       style: {
 
       }

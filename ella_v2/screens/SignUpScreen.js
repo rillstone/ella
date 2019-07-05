@@ -214,7 +214,7 @@ class SignUpScreen extends Component {
                   buttonStyle={styles.button}
                   // raised
                   loading={this.state.loading}
-                  titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+                  titleStyle={{ fontWeight: "bold", color: theme.colors.back }}
                   icon={
                     <Icon name="ios-arrow-forward" size={30} color="white" />
                   }

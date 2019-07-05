@@ -46,7 +46,8 @@ export default class Transaction extends Component {
                   style={{
                     fontWeight: "700",
                     justifyContent: "center",
-                    fontSize: 18
+                    fontSize: 18,
+                    color: theme.colors.gray
                   }}
                 >
                   {name}
@@ -54,7 +55,8 @@ export default class Transaction extends Component {
                 <Text
                   h4
                   bold
-                  style={{ fontWeight: "400", justifyContent: "center" }}
+                  style={{ fontWeight: "400", justifyContent: "center",
+                  color: theme.colors.gray }}
                 >
                   {new Date(date)
                     .toLocaleDateString("en-NZ", DATE_OPTIONS)
@@ -68,7 +70,8 @@ export default class Transaction extends Component {
                     fontWeight: "600",
                     justifyContent: "center",
                     alignItems: "center",
-                    paddingRight: 5
+                    paddingRight: 5,
+                    color: theme.colors.gray
                   }}
                 >
                   {amount.toString().startsWith("-")

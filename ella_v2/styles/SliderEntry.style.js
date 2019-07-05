@@ -89,19 +89,19 @@ export default StyleSheet.create({
         backgroundColor: '#000'
     },
     title: {
-        color: '#1E2127',
         fontSize: 24,
         fontWeight: 'bold',
-        letterSpacing: 0.5
+        letterSpacing: 0.5,
+        color: theme.colors.gray
     },
     titleEven: {
         color: 'white'
     },
     subtitle: {
         marginTop: 2,
-        color: '#1E2127',
         fontSize: 16,
         fontWeight: '500',
+        color: theme.colors.gray
     },
     subtitleEven: {
         color: 'rgba(255, 255, 255, 0.7)'

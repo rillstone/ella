@@ -333,7 +333,7 @@ class Transactions extends Component {
     const axesSvg = { fontSize: 10};
     const xAxisHeight = 30
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f5f7" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <View
           style={{
             position: "absolute",
