@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 6931,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPid": 3457,
+  "expoServerNgrokUrl": "https://du-3p4.rillstone.ella-v2.exp.direct",
+  "packagerNgrokUrl": "https://packager.du-3p4.rillstone.ella-v2.exp.direct",
+  "ngrokPid": 3477,
   "webpackServerPort": null
 }
