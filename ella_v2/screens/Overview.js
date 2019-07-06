@@ -27,8 +27,9 @@ import { getInset } from 'react-native-safe-area-view';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-const HEADER_MAX_HEIGHT = 120 + getInset("top");
-const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 50+ getInset("top") : 50
+const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
+const HEADER_MAX_HEIGHT = 120 + TOP_SAFE_AREA;
+const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 50+ getInset("top") : 50 + TOP_SAFE_AREA;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class Overview extends Component {
   mounted = false;
@@ -139,7 +140,7 @@ class Overview extends Component {
               zIndex: 9998,
               right: 20,
               backgroundColor: 'transparent',
-              top: getInset('top') + 25,
+              top: TOP_SAFE_AREA + 25,
               // justifyContent: "center",
               // alignItems: "center",
               position: 'absolute'
@@ -191,7 +192,7 @@ class Overview extends Component {
           )}>
             <View
               style={{
-                marginTop: HEADER_MAX_HEIGHT - getInset('top'),
+                marginTop: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
                 marginLeft: 20,
                 alignContent: "center",
                 justifyContent: "center",
@@ -226,7 +227,7 @@ class Overview extends Component {
                   image: require("../assets/images/bill_back.jpg"),
                   data: [50, 52, 51, 51, 48, 53, 47],
                   color: "#7EF2E2",
-                  title: "Weekly Spending"
+                  title: "Week Spending"
                 }}
               />
               <OverviewChart
@@ -235,7 +236,7 @@ class Overview extends Component {
                   image: require("../assets/images/entertainment_back.jpg"),
                   data: [51, 52, 45, 51, 52, 53, 54],
                   color: "#FFB6BA",
-                  title: "Avoidable Spending"
+                  title: "Bad Spending"
                 }}
               />
               <OverviewChart
@@ -352,7 +353,7 @@ const styles = StyleSheet.create({
   },
   header: {
     position: "absolute",
-    top: getInset("top"),
+    top: TOP_SAFE_AREA,
     left: 0,
     right: 0,
     backgroundColor: "transparent",

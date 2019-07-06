@@ -3,6 +3,7 @@ const colors = {
     white: '#FFF',
     gray: '#3F4F5A',
     inactive: "#B2B2B2",
+    lightGray: "#E4E4E4",
     caption: '#BCCCD4',
     active: '#007BFA',
     warn: '#D4455C',
