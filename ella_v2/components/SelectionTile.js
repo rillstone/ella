@@ -42,40 +42,66 @@ export default class SelectionTile extends Component {
   constructor(props) {
     super();
     this.state = {
-      selected: false
+      selected: false,
+      value: null
     };
     this.props = props;
-
   }
-  static propTypes = {
-    data: PropTypes.object.isRequired
-  };
+  // static propTypes = {
+  // data: PropTypes.object.isRequired
+  // };
 
   tilePress(index) {
     this.props.tilePressed(index);
   }
   render() {
-    const {
-      data: { name, icon, color, index, selected, width }
-    } = this.props;
+    const { options } = this.props;
+    const { value } = this.state;
+    // const
+    // const {
+    //   data: { name, icon, color, index, selected, width }
+    // } = this.props;
 
     return (
-      <TouchableOpacity style={[styles.card, {width: viewportWidth/width} ,selected? {backgroundColor:color} : {backgroundColor: theme.colors.lightGray} ]} onPress={() => this.tilePress(index)} >
-        <View style={styles.icon}>
-          <Icon
-            name={icon}
-            color={"#FFF"}
-            size={30}
-          />
-        </View>
-        <View style={styles.goalText}>
-          <Text
-            style={styles.goalTitle}
-          >
-            {name}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <View
+        style={{
+          flexDirection: "row",
+          // justifyContent: "space-between",
+          marginHorizontal: 10,
+          left: 0,
+          alignContent: "center",
+          alignItems: "center",
+          alignSelf: "center",
+          flexWrap: options.length > 4 ? "wrap" : "nowrap"
+        }}
+      >
+        {options.map(item => {
+          return (
+            <TouchableOpacity
+              key={item.key}
+              style={[
+                styles.card,
+                {
+                  width: viewportWidth / item.width,
+                  backgroundColor: theme.colors.lightGray
+                },
+                value === item.key && { backgroundColor: item.color }
+              ]}
+              onPress={() => {
+                this.setState({ value: item.key });
+                this.props.callBack(item.key);
+              }}
+            >
+              <View style={styles.icon}>
+                <Icon name={item.icon} color={"#FFF"} size={30} />
+              </View>
+              <View style={styles.goalText}>
+                <Text style={styles.goalTitle}>{item.key}</Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     );
   }
 }
@@ -96,18 +122,19 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 12,
-    alignSelf: "center",
-    alignItems:'center',
-    justifyContent: "center",
-    alignContent: "center",
-    
-    height:viewportWidth/5,
-
+    // alignSelf: "center",
+    // alignItems:'center',
     // justifyContent: "center",
     // alignContent: "center",
-    marginVertical: 5,
 
-    flexDirection: 'column',
+    height: viewportWidth / 5,
+
+    // justifyContent: "center",
+
+    // alignContent: "center",
+    marginVertical: 5,
+    marginHorizontal: 5,
+    flexDirection: "column",
     overflow: "hidden",
     shadowColor: "black",
     shadowOffset: {
@@ -119,35 +146,37 @@ const styles = StyleSheet.create({
 
     elevation: 1
   },
-  icon:{
-      flex:3,
+  icon: {
+    flex: 3,
     alignSelf: "center",
     justifyContent: "center",
     alignContent: "center",
-    alignItems: 'center',
-    top:10,
+    alignItems: "center",
+    top: 10
     // left: 10,
   },
-  iconArrow:{
-      flex: 1,
+  iconArrow: {
+    flex: 1,
     alignSelf: "center",
     justifyContent: "center",
-    alignContent: "center",
+    alignContent: "center"
   },
-  goalText:{
-    padding: 15, alignItems: "flex-end", borderRadius: 5,
+  goalText: {
+    padding: 15,
+    alignItems: "center",
+    borderRadius: 5,
     flex: 1
   },
-  goalTitle:{
+  goalTitle: {
     backgroundColor: "transparent",
     fontSize: 12,
     fontWeight: "700",
     color: "#fff"
   },
-  goalSubtitle:{
+  goalSubtitle: {
     backgroundColor: "transparent",
     fontSize: 15,
     fontWeight: "500",
     color: "#fff"
-  },
+  }
 });
