@@ -12,37 +12,27 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  Animated,
-  Picker,
-  ActionSheetIOS
+  Animated
 } from "react-native";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
 import TransitionView from "../components/TransitionView";
-import { LineChart, Grid } from "react-native-svg-charts";
-import { Input, ButtonGroup, Button, Slider } from "react-native-elements";
 import * as theme from "../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import SelectionTile from "../components/SelectionTile";
+import GoalSlider from "../components/GoalSlider";
 import { getInset } from "react-native-safe-area-view";
+import * as goalTypes from "../components/GoalTypes";
+import * as categoryTypes from "../components/CategoryTypes";
+import * as periodTypes from "../components/PeriodTypes";
+import { Button } from "react-native-elements";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 const IS_IOS = Platform.OS === "ios";
-function wp(percentage) {
-  const value = (percentage * viewportWidth) / 100;
-  return Math.round(value);
-}
-
-const slideHeight = viewportHeight * 0.15;
-const slideWidth = wp(85);
-const itemHorizontalMargin = wp(2);
 const HEADER_MAX_HEIGHT = 150;
 const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
-export const sliderWidth = viewportWidth;
-export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 class GoalView extends Component {
   mounted = false;
   constructor(props) {
@@ -50,27 +40,13 @@ class GoalView extends Component {
     this.state = {
       scrollY: new Animated.Value(0),
       scrollOp: 1,
-      period: "month",
-      selectedType: [false, false, false, false],
-      selectedCat: [false, false, false, false],
-      selectedHabit: [false, false],
-
-      types: ["Spending", "Saving", "Habit", "Category"],
       selected: "",
-      value: 0
+      selectedCat: "",
+      value: 0,
+      selectedPeriod: "",
+      title: ""
     };
     this.props = props;
-
-    tiles = [
-      this.state.spending,
-      this.state.saving,
-      this.state.habits,
-      this.state.category
-    ];
-  }
-  periodOnPress(event, buttonId) {
-    console.log(this.state.period);
-    this.setState({ period: buttonId });
   }
 
   _renderScrollViewContent() {
@@ -95,32 +71,27 @@ class GoalView extends Component {
     }
   }
 
-  // updateIndex(selectedIndex) {
-  //   this.setState({ selectedIndex });
-  // }
-
   goalTypePress = dataFromTile => {
-    list = [false, false, false, false];
-    list[dataFromTile] = true;
     this.setState({
-      selectedType: list,
-      selected: this.state.types[dataFromTile]
+      selected: dataFromTile,
+      selectedCat: "",
+      value:0,
+      selectedPeriod: ""
     });
   };
   categoryPress = dataFromTile => {
-    list = [false, false, false, false];
-    list[dataFromTile] = true;
     this.setState({
-      selectedCat: list,
-
+      selectedCat: dataFromTile
     });
   };
-  habitPress = dataFromTile => {
-    list = [false, false];
-    list[dataFromTile] = true;
+  periodPress = dataFromTile => {
     this.setState({
-      selectedHabit: list,
-
+      selectedPeriod: dataFromTile
+    });
+  };
+  sliderValue = dataFromSlider => {
+    this.setState({
+      value: dataFromSlider
     });
   };
   render() {
@@ -166,23 +137,14 @@ class GoalView extends Component {
             color={theme.colors.inactive}
           />
         </TouchableOpacity>
-        {/* <Button
-          onPress={() => {
-            this.setState({ scrollOp: 0 });
-            this.props.navigation.navigate("Home");
-          }}
-          title={'save'}
-          containerStyle={{
-            position: "absolute",
-            left: 25,
-            top: 25,
-            zIndex: 999,
-            height: 20,
-            width: 30,
-          }}
-        /> */}
+
         <Animated.ScrollView
           style={styles.fill}
+          ref={ref => (this.scrollView = ref)}
+          // ref="scrollView"
+          onContentSizeChange={(width, height) =>
+            this.scrollView.getNode().scrollTo({ y: height })
+          }
           scrollEventThrottle={1}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
@@ -203,201 +165,184 @@ class GoalView extends Component {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  alignContent: "center",
+                  alignItems: "center",
+                  // justifyContent: "center",
+                  alignSelf: "center",
                   marginHorizontal: 10
                 }}
               >
                 <SelectionTile
-                  data={{
-                    name: "spending",
-                    icon: "ios-card",
-                    color: "#538EFB",
-                    index: 0,
-                    width:5,
-                    selected: this.state.selectedType[0]
-                  }}
-                  tilePressed={this.goalTypePress}
-                />
-                <SelectionTile
-                  data={{
-                    name: "saving",
-                    icon: "ios-wallet",
-                    color: "#FF7F99",
-                    index: 1,
-                    width:5,
-                    selected: this.state.selectedType[1]
-                  }}
-                  tilePressed={this.goalTypePress}
-                />
-                <SelectionTile
-                  data={{
-                    name: "habits",
-                    icon: "ios-pricetags",
-                    color: "#42E695",
-                    index: 2,
-                    width:5,
-                    selected: this.state.selectedType[2]
-                  }}
-                  tilePressed={this.goalTypePress}
-                />
-                <SelectionTile
-                  data={{
-                    name: "category",
-                    icon: "ios-apps",
-                    color: "#E6AA42",
-                    index: 3,
-                    width:5,
-                    selected: this.state.selectedType[3]
-                  }}
-                  tilePressed={this.goalTypePress}
+                  options={goalTypes.goalInfo}
+                  callBack={this.goalTypePress}
                 />
               </View>
             </View>
-            {this.state.selected === "Spending" || this.state.selected === "Saving" ? 
-            <View
-              style={{
-                marginVertical: 10,
-                marginHorizontal: 20,
-                marginTop: 20
-              }}
-            >
-              <Text style={styles.inputTitle}>
-                {this.state.selected} amount
-              </Text>
+            {this.state.selected === "general" ? (
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginHorizontal: 10,
-                  marginVertical: 20
+                  marginVertical: 10,
+                  marginHorizontal: 20,
+                  marginTop: 20
                 }}
               >
-                <Text pointerEvents={'none'} style={{position: 'absolute',left: 0, right:0,textAlign:'center',alignSelf:'center',fontWeight: '700', fontSize: 20, color:'#FFF', zIndex: 999}}>${this.state.value}</Text>
-                <Slider
-                  value={this.state.value}
-                  maximumValue={1000}
-                  minimumValue={0}
-                  step={1}
-                  onValueChange={value => this.setState({ value })}
-                  style={{width: viewportWidth-60}}
-                  trackStyle={{backgroundColor: theme.colors.lightGray, height: 70, borderRadius: 10}}
-                  minimumTrackTintColor={theme.colors.gray}
-                  thumbTintColor={theme.colors.gray}
-                  animationType={'spring'}
-                  thumbStyle={{height: 70, width: 30,borderRadius: 10}}
-                />
+                <Text style={styles.inputTitle}>
+                  {this.state.selected} amount
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                    marginVertical: 20
+                  }}
+                >
+                  <GoalSlider
+                    onSlide={this.sliderValue}
+                    color={goalTypes.goalColors[this.state.selected]}
+                  />
+                </View>
               </View>
-            </View>
-            :
-            this.state.selected === 'Category' ? 
-            <View
-              style={{
-                marginVertical: 10,
-                marginHorizontal: 20,
-                marginTop: 20
-              }}
-            >
-              <Text style={styles.inputTitle}>
-                Spending Category
-              </Text>
-<View
+            ) : this.state.selected === "category" ? (
+              <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginHorizontal: 10
+                  marginVertical: 10,
+                  marginHorizontal: 20,
+                  marginTop: 20
                 }}
               >
-                <SelectionTile
-                  data={{
-                    name: "Food",
-                    icon: "ios-restaurant",
-                    color: "#538EFB",
-                    index: 0,
-                    width:5,
-                    selected: this.state.selectedCat[0]
+                <Text style={styles.inputTitle}>Spending Category</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "center",
+                    alignItems: "center",
+                    width: viewportWidth - 20,
+                    // justifyContent: "center",
+                    alignSelf: "center",
+                    marginHorizontal: 10
                   }}
-                  tilePressed={this.categoryPress}
-                />
-                <SelectionTile
-                  data={{
-                    name: "Leisure",
-                    icon: "logo-game-controller-a",
-                    color: "#FF7F99",
-                    index: 1,
-                    width:5,
-                    selected: this.state.selectedCat[1]
-                  }}
-                  tilePressed={this.categoryPress}
-                />
-                <SelectionTile
-                  data={{
-                    name: "Transport",
-                    icon: "ios-bus",
-                    color: "#42E695",
-                    index: 2,
-                    width:5,
-                    selected: this.state.selectedCat[2]
-                  }}
-                  tilePressed={this.categoryPress}
-                />
-                <SelectionTile
-                  data={{
-                    name: "Bills",
-                    icon: "ios-paper",
-                    color: "#E6AA42",
-                    index: 3,
-                    width:5,
-                    selected: this.state.selectedCat[3]
-                  }}
-                  tilePressed={this.categoryPress}
-                />
+                >
+                  <SelectionTile
+                    options={categoryTypes.categoryInfo}
+                    callBack={this.categoryPress}
+                  />
+                </View>
               </View>
+            ) : (
+              <View />
+            )}
+            {this.state.selectedCat != "" &&
+            this.state.selected != "general" ? (
+              <View
+                style={{
+                  marginVertical: 10,
+                  marginHorizontal: 20,
+                  marginTop: 20
+                }}
+              >
+                <Text style={styles.inputTitle}>
+                  Spend ${this.state.value} max on {this.state.selectedCat}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                    // justifyContent: "space-between",
+                    marginHorizontal: 10,
+                    marginVertical: 20
+                  }}
+                >
+                  <GoalSlider
+                    onSlide={this.sliderValue}
+                    color={categoryTypes.categoryColors[this.state.selectedCat]}
+                  />
+                </View>
               </View>
-            :
-            this.state.selected === 'Habit' ? 
-            <View
-              style={{
-                marginVertical: 10,
-                marginHorizontal: 20,
-                marginTop: 20
-              }}
-            >
-              <Text style={styles.inputTitle}>
-                What do you want to work on?
-              </Text>
-            <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 10
-            }}
-          >
-            <SelectionTile
-              data={{
-                name: "Avoidable Spending",
-                icon: "ios-pricetags",
-                color: "#538EFB",
-                index: 0,
-                width:2.5,
-                selected: this.state.selectedHabit[0]
-              }}
-              tilePressed={this.habitPress}
-            />
-            <SelectionTile
-              data={{
-                name: "Spending Habits",
-                icon: "ios-card",
-                color: "#FF7F99",
-                index: 1,
-                width:2.5,
-                selected: this.state.selectedHabit[1]
-              }}
-              tilePressed={this.habitPress}
-            />
-          </View>    
-          </View>
-:
-<View/>
-            }
+            ) : (
+              <View />
+            )}
+            {this.state.value > 0 ? (
+              <View
+                style={{
+                  marginVertical: 10,
+                  marginHorizontal: 20,
+                  marginTop: 20
+                }}
+              >
+                <Text style={styles.inputTitle}>Within</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "center",
+                    alignItems: "center",
+                    width: viewportWidth - 20,
+                    // justifyContent: "center",
+                    alignSelf: "center",
+                    marginHorizontal: 10
+                  }}
+                >
+                  <SelectionTile
+                    options={periodTypes.period}
+                    callBack={this.periodPress}
+                  />
+                </View>
+              </View>
+            ) : (
+              <View />
+            )}
+            {this.state.selectedPeriod != "" ? (
+              <View
+                style={{
+                  marginVertical: 10,
+                  marginHorizontal: 20,
+                  marginTop: 20
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    // justifyContent: "space-between",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                    width: viewportWidth - 30,
+                    // justifyContent: "center",
+                    alignSelf: "center",
+                    marginHorizontal: 10
+                  }}
+                >
+                  <Button
+                    title={"Save"}
+                    disabled={this.state.title === ""}
+                    containerStyle={{}}
+                    buttonStyle={[
+                      styles.saveButton,
+                      {
+                        backgroundColor:
+                          categoryTypes.categoryColors[this.state.selectedCat]
+                      }
+                    ]}
+                  />
+                  <Text
+                    style={[
+                      styles.warnText,
+                      { display: this.state.title != "" ? "none" : "flex" }
+                    ]}
+                  >
+                    enter goal title
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <View />
+            )}
           </View>
         </Animated.ScrollView>
         <Animated.View
@@ -418,6 +363,9 @@ class GoalView extends Component {
               placeholderTextColor={theme.colors.inactive}
               keyboardType="default"
               placeholder="Goal title"
+              onChangeText={text => {
+                this.setState({ title: text });
+              }}
             />
           </Animated.View>
         </Animated.View>
@@ -447,6 +395,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     margin: 4,
     borderColor: "#FFF"
+  },
+  warnText: {
+    color: theme.colors.warn,
+    fontSize: 12,
+    fontWeight: "600"
+  },
+  saveButton: {
+    width: viewportWidth - 55,
+    borderRadius: 10
   },
   toggleEmpty: {
     height: 5,
