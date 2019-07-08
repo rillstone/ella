@@ -15,6 +15,7 @@ import ApiKeys from "./constants/ApiKeys";
 import * as firebase from "firebase";
 import { Provider } from "react-redux";
 import { store } from "./redux/app-redux";
+import { MenuProvider } from 'react-native-popup-menu';
 
 // firebase.initializeApp(ApiKeys.FirebaseConfig);
 
@@ -25,14 +26,15 @@ class App extends React.Component {
     this.state = {
       isLoadingComplete: false,
       isAuthenticationReady: false,
-      isAuthenticated: false
+      isAuthenticated: false,
+      user: null
     };
     firebase.initializeApp(ApiKeys.FirebaseConfig);
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
-    console.log(firebase.auth().currentUser);
+    
   }
   componentDidMount() {
     this.mounted = true;
@@ -49,19 +51,27 @@ class App extends React.Component {
   // }
   onAuthStateChanged = (user) => {
     // if (this.mounted) {
-      this.setState({ isAuthenticationReady: true });
-      this.setState({ isAuthenticated: !!user });
+      this.setState({
+        isAuthenticationReady: true,
+        isAuthenticated: !!user,
+        isLoadingComplete: true,
+        user: firebase.auth().currentUser
+      })
     // }
   };
 
   render() {
-
+    if (this.state.isLoadingComplete) {
     return (
+      <MenuProvider>
+
       <ApplicationProvider mapping={mapping} theme={lightTheme}>
 
         <AppNavigator /> 
       </ApplicationProvider>
+      </MenuProvider>
     );
+    } else return null;
 
 }
 _loadResourcesAsync = async () => {

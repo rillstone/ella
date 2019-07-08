@@ -10,7 +10,8 @@ import {
   ScrollView,
   AsyncStorage,
   TouchableOpacity,
-  Animated
+  Animated,
+  RefreshControl
 } from "react-native";
 import * as theme from "../theme";
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -21,33 +22,72 @@ import OverviewChart from "../components/OverviewChart";
 import Goal from "../components/Goal";
 import { Transition } from "react-navigation-fluid-transitions";
 import * as firebase from "firebase";
-import { getInset } from 'react-native-safe-area-view';
-
+import "firebase/firestore";
+import { getInset } from "react-native-safe-area-view";
+import { Paragraph } from "rn-placeholder";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
 const HEADER_MAX_HEIGHT = 120 + TOP_SAFE_AREA;
-const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 50+ getInset("top") : 50 + TOP_SAFE_AREA;
+const HEADER_MIN_HEIGHT =
+  Platform.OS === "ios" ? 50 + getInset("top") : 50 + TOP_SAFE_AREA;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class Overview extends Component {
   mounted = false;
+  db = firebase.firestore();
   constructor(props) {
     super();
     this.state = {
       lastname: null,
       child: "hide",
       scrollY: new Animated.Value(0),
+      uid: null,
+      items: [],
+      refreshing: false
     };
     this.props = props;
     this.childHandler = this.childHandler.bind(this);
     this.signoutPress = this.signoutPress.bind(this);
+    var items = [];
+  }
+
+  componentDidMount() {
+    this.getGoals();
+    this._componentFocused();
+
+    this._sub = this.props.navigation.addListener(
+      "didFocus",
+      this._componentFocused
+    );
+  }
+  componentWillUnmount() {
+    this._sub.remove();
+  }
+
+  _componentFocused = () => {
+    this.getGoals();
+  };
+  getGoals() {
+    this.db
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("goals")
+      .get()
+      .then(querySnapshot => {
+        const items = [];
+        querySnapshot.forEach(function(doc) {
+          items.push(doc.data());
+        });
+        this.setState({ items, refreshing: false });
+      });
   }
 
   getUser() {
     var user = firebase.auth().currentUser;
-    console.log(user);
+    console.log(user.uid);
+    // this.db.collection("users").doc(user.uid).set({name: user.displayName})
     var name;
 
     if (user != null) {
@@ -55,7 +95,8 @@ class Overview extends Component {
       this.setState({
         firstname: name.split(" ")[0],
         lastname: name.split(" ").length > 1 ? name.split(" ")[1] : null,
-        email: user.email
+        email: user.email,
+        uid: user.uid
       });
     }
   }
@@ -76,8 +117,11 @@ class Overview extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
   }
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getGoals();
+  };
 
-  componentDidMount() {}
   _draggedValue = new Animated.Value(180);
   render() {
     const data = [50, 10, 40, 30, 20, 85, 91, 35, 53];
@@ -87,13 +131,13 @@ class Overview extends Component {
       extrapolate: "clamp"
     });
     const titleOpacity = this.state.scrollY.interpolate({
-      inputRange: [0, HEADER_SCROLL_DISTANCE/2 , HEADER_SCROLL_DISTANCE],
-      outputRange: [1, 1,0],
+      inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+      outputRange: [1, 1, 0],
       extrapolate: "clamp"
     });
     const smallTitleOpacity = this.state.scrollY.interpolate({
-      inputRange: [0, HEADER_SCROLL_DISTANCE/2 , HEADER_SCROLL_DISTANCE],
-      outputRange: [0, 0,1],
+      inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+      outputRange: [0, 0, 1],
       extrapolate: "clamp"
     });
     return (
@@ -118,60 +162,65 @@ class Overview extends Component {
             <AccountSlider
               data={{
                 dragHandler: dragHandler,
-                firstName: "charlie",
-                lastName: "Rillstone",
-                email: "charlierillstone@gmail.com",
+                firstName: this.state.firstname,
+                lastName: this.state.lastname,
+                email: this.state.email,
                 icon:
-                  "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
+                  this.state.lastname && this.state.firstname
+                    ? this.state.firstname[0] + this.state.lastname[0]
+                    : "XX"
               }}
               action={this.childHandler}
               signOut={this.signoutPress}
             />
           )}
         </SlidingUpPanel>
-                  <View
-            style={[
-              styles.avatar,
-              {
+        <View
+          style={[
+            styles.avatar,
+            {
               // flex: 0.8,
               // marginRight: 20,
               // paddingTop: 30,
-              borderRadius:36,
+              borderRadius: 36,
               zIndex: 9998,
               right: 20,
-              backgroundColor: 'transparent',
+              backgroundColor: "transparent",
               top: TOP_SAFE_AREA + 25,
               // justifyContent: "center",
               // alignItems: "center",
-              position: 'absolute'
-              }
-            ]}
-          >
-            <Avatar
-              rounded
-              size="medium"
-              onPress={() => this._panel.show()}
-              
-              // title={
-              //   this.state.lastname && this.state.firstname
-              //     ? this.state.firstname[0] + this.state.lastname[0]
-              //     : "XX"
-              // }
-              source={{
-                uri:
-                  "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
-              }}
-            />
-          </View>
+              position: "absolute"
+            }
+          ]}
+        >
+          <Avatar
+            rounded
+            size="medium"
+            onPress={() => this._panel.show()}
+            title={
+              this.state.lastname && this.state.firstname
+                ? this.state.firstname[0] + this.state.lastname[0]
+                : "XX"
+            }
+            // source={{
+            //   uri:
+            //     "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
+            // }}
+          />
+        </View>
         <StatusBar barStyle="dark-content" />
-        <Animated.View style={[
+        <Animated.View
+          style={[
             styles.header,
             { transform: [{ translateY: headerTranslate }] }
-          ]}>
-          <Animated.View style={[styles.titleContain, { opacity: titleOpacity}]}>
+          ]}
+        >
+          <Animated.View
+            style={[styles.titleContain, { opacity: titleOpacity }]}
+          >
             <Text style={styles.title}>
-              {/* Hi, {this.state.firstname} */}
-              Hi, Charlie!
+              Hi, {this.state.firstname}
+              {/* Hi, Charlie! */}
             </Text>
             <Text style={styles.microtitle}>kuken!</Text>
           </Animated.View>
@@ -183,20 +232,28 @@ class Overview extends Component {
           {/* </Transition> */}
         </Animated.View>
 
-        <View style={{ flex: 1}}>
-          <Animated.ScrollView style={{backgroundColor:'transparent', }}
-          scrollEventThrottle={1}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
-            { useNativeDriver: true }
-          )}>
+        <View style={{ flex: 1 }}>
+          <Animated.ScrollView
+            style={{ backgroundColor: "transparent" }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+            scrollEventThrottle={1}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
+              { useNativeDriver: true }
+            )}
+          >
             <View
               style={{
                 marginTop: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
                 marginLeft: 20,
                 alignContent: "center",
-                justifyContent: "center",
-                
+                justifyContent: "center"
+
                 // flex: 1
               }}
             >
@@ -217,8 +274,7 @@ class Overview extends Component {
               style={{
                 marginTop: 20,
                 flexDirection: "row",
-                marginHorizontal: 15,
-                
+                marginHorizontal: 15
               }}
             >
               <OverviewChart
@@ -266,7 +322,13 @@ class Overview extends Component {
                     right: 10
                   }}
                 >
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('Goal',{navigation: this.props.navigation})}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate("Goal", {
+                        navigation: this.props.navigation
+                      })
+                    }
+                  >
                     <Icon
                       name={"ios-add"}
                       color={theme.colors.gray}
@@ -275,42 +337,23 @@ class Overview extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Goal
-                data={{
-                  title: "Reduce weekly spending",
-                  subtitle: "1 week ago"
-                }}
-              />
-              <Goal
-                data={{ title: "0 avoidable purchases", subtitle: "yesterday" }}
-              />
-              <Goal
-                data={{
-                  title: "Get food spending down",
-                  subtitle: "3 hours ago"
-                }}
-              />
-              <Goal
-                data={{
-                  title: "Use public transport more",
-                  subtitle: "1 hour ago"
-                }}
-              />
-                            <Goal
-                data={{
-                  title: "Use public transport more",
-                  subtitle: "1 hour ago"
-                }}
-              />
-                            <Goal
-                data={{
-                  title: "Use public transport more",
-                  subtitle: "1 hour ago"
-                }}
-              />
-              <Goal
-                data={{ title: "Limit 1 leisure p/w", subtitle: "right now" }}
-              />
+              <View>
+                {this.state.items.map(doc => {
+                  return (
+                    <Goal
+                      key={doc.name}
+                      navigation={this.props.navigation}
+                      data={{
+                        title: doc.name,
+                        date: doc.date,
+                        category: doc.category,
+                        value: doc.value,
+                        period: doc.period
+                      }}
+                    />
+                  );
+                })}
+              </View>
             </View>
           </Animated.ScrollView>
         </View>
@@ -330,7 +373,7 @@ const styles = StyleSheet.create({
   titleContain: {
     paddingLeft: 20,
     backgroundColor: "transparent",
-    paddingTop: 30,
+    paddingTop: 30
     // flex: 6
   },
   title: {
@@ -360,7 +403,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     height: HEADER_MAX_HEIGHT
   },
-  avatar:{
+  avatar: {
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -369,6 +412,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 1,
     elevation: 1
-  
-  },
+  }
 });
