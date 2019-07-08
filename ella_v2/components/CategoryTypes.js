@@ -45,5 +45,13 @@ const categoryColors = {
   wellbeing: "#288f74",
   personal: "#00726a"
 };
+const categoryIcons = {
+  food: "ios-restaurant",
+  leisure: "logo-game-controller-a",
+  transport: "ios-bus",
+  bills: "ios-paper",
+  wellbeing: "ios-heart",
+  personal: "ios-body"
+};
 
-export { categoryInfo, categoryColors };
+export { categoryInfo, categoryColors,categoryIcons };

@@ -5,6 +5,7 @@ import {
   createSwitchNavigator
 } from "react-navigation";
 import Overview from "../screens/Overview";
+import NewGoal from "../screens/NewGoal";
 import GoalView from "../screens/GoalView";
 // import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
@@ -62,7 +63,8 @@ const inactiveColor = "#B2B2B2";
 const HomeStack = createStackNavigator(
   {
     Home: Overview,
-    Goal: GoalView
+    Goal: NewGoal,
+    ViewGoal: GoalView
   },
   {
     mode: "modal",
@@ -74,7 +76,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
-  if (routeName == "Category") {
+  if (routeName == "ViewGoal") {
     tabBarVisible = false;
   }
   

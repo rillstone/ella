@@ -103,15 +103,13 @@ export default class AccountSlider extends Component {
                 <Avatar
                   rounded
                   size="medium"
-                  // title={
-                  //   this.state.lastname && this.state.firstname
-                  //     ? this.state.firstname[0] + this.state.lastname[0]
-                  //     : "XX"
-                  // }
-                  source={{
+                  title={
+                    icon
+                  }
+                //   source={{
                     
-                      uri: icon
-                }}
+                //       uri: icon
+                // }}
                 />
               </View>
               <View

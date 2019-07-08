@@ -306,7 +306,7 @@ class Transactions extends Component {
 
   componentDidMount() {
     this.transactionState("Leisure");
-    setTimeout(() => this.setState({ loading: true }), 2000);
+    setTimeout(() => this.setState({ loading: true }), 1000);
   }
 
   transactionState(transaction_cat) {

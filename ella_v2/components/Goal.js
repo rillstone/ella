@@ -14,6 +14,9 @@ import * as shape from "d3-shape";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
 import * as theme from "../theme";
+import * as goalTypes from "../components/GoalTypes";
+import * as categoryTypes from "../components/CategoryTypes";
+import TimeAgo from "react-native-timeago";
 import {
   Button,
   Input,
@@ -23,6 +26,7 @@ import {
   ListItem
 } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
+
 const icons = [
   "ios-tennisball",
   "ios-stopwatch",
@@ -45,35 +49,48 @@ export default class Goal extends Component {
 
   render() {
     const {
-      data: { title, subtitle }
+      data: { title, date, type, category, value, period }
     } = this.props;
-
     return (
-        <TouchableOpacity style={styles.card} >
-      <LinearGradient style={styles.card} colors={["#F6699A", "#FF7DAA"]} start={[0.3,0]} end={[0.8,0]} >
-        <View style={styles.icon}>
-          <Icon
-            name={icons[Math.floor(Math.random() * icons.length)]}
-            color={"#FFF"}
-            size={40}
-          />
-        </View>
-        <View style={styles.goalText}>
-          <Text
-            style={styles.goalTitle}
-          >
-            {title}
-          </Text>
-          <Text
-            style={styles.goalSubtitle}
-          >
-            {subtitle}
-          </Text>
-        </View>
-        <View style={styles.iconArrow}>
-          <Icon name="ios-arrow-forward" color={"#FFF"} size={26} />
-        </View>
-      </LinearGradient>
+      <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate("ViewGoal", {
+            navigation: this.props.navigation, title: title,
+              date: date,
+              category: category,
+              value: value,
+              period: period
+          })
+        }
+        style={styles.card}
+      >
+        <LinearGradient
+          style={styles.card}
+          colors={["#F6699A", "#FF7DAA"]}
+          start={[0.3, 0]}
+          end={[0.8, 0]}
+        >
+          <View style={styles.icon}>
+            <Icon
+              name={
+                category != null
+                  ? categoryTypes.categoryIcons[category]
+                  : "ios-rocket"
+              }
+              color={"#FFF"}
+              size={40}
+            />
+          </View>
+          <View style={styles.goalText}>
+            <Text style={styles.goalTitle}>{title}</Text>
+            <Text style={styles.goalSubtitle}>
+              <TimeAgo time={date} />
+            </Text>
+          </View>
+          <View style={styles.iconArrow}>
+            <Icon name="ios-arrow-forward" color={"#FFF"} size={26} />
+          </View>
+        </LinearGradient>
       </TouchableOpacity>
     );
   }
@@ -99,7 +116,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // alignContent: "center",
     marginVertical: 5,
-    width: viewportWidth-40,
+    width: viewportWidth - 40,
     height: 70,
     overflow: "hidden",
     shadowColor: "black",
@@ -109,36 +126,38 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    flexDirection: 'row',
+    flexDirection: "row",
     elevation: 1
   },
-  icon:{
-      flex:1.5,
+  icon: {
+    flex: 1.5,
     alignSelf: "center",
     justifyContent: "center",
     alignContent: "center",
-    left: 10,
+    left: 10
   },
-  iconArrow:{
-      flex: 1,
+  iconArrow: {
+    flex: 1,
     alignSelf: "center",
     justifyContent: "center",
-    alignContent: "center",
+    alignContent: "center"
   },
-  goalText:{
-    padding: 15, alignItems: "flex-start", borderRadius: 5,
+  goalText: {
+    padding: 15,
+    alignItems: "flex-start",
+    borderRadius: 5,
     flex: 8
   },
-  goalTitle:{
+  goalTitle: {
     backgroundColor: "transparent",
     fontSize: 18,
     fontWeight: "700",
     color: "#fff"
   },
-  goalSubtitle:{
+  goalSubtitle: {
     backgroundColor: "transparent",
     fontSize: 15,
     fontWeight: "500",
     color: "#fff"
-  },
+  }
 });
