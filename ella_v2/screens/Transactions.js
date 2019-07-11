@@ -99,7 +99,7 @@ class Transactions extends Component {
               average: 680
             }
           ],
-          colors: ["#E79C7B80", "#EFB49980"],
+          colors: [theme.scheme.crusta+'90',theme.scheme.sunshade+'90'],
           keys: ["current", "average"],
           lineData: [38, 20, 16, 10, 6, 15, 33, 10, 1, 10, 15, 23]
         },
@@ -144,7 +144,7 @@ class Transactions extends Component {
               average: 100
             }
           ],
-          colors: ["#E0529980", "#E074AA80"],
+          colors: [theme.scheme.cerise+'90', theme.scheme.carnation+'90'],
           keys: ["current", "average"],
           lineData: [5, 5, 6, 8, 10, 13, 15, 18, 20, 10, 8, 7]
         },
@@ -189,7 +189,7 @@ class Transactions extends Component {
               average: 680
             }
           ],
-          colors: ["#4379D180", "#6394E580"],
+          colors: [theme.scheme.royal_blue+'90', theme.scheme.royal_blue2+'90' ],
           keys: ["current", "average"],
           lineData: [6, 7, 8, 7, 6, 8, 9, 5, 1, 2, 2, 3]
         },
@@ -234,7 +234,7 @@ class Transactions extends Component {
               average: 100
             }
           ],
-          colors: ["#42E69580","#39C68080"],
+          colors: [theme.scheme.green+'90', theme.scheme.ufo_green+'90'],
           keys: ["current", "average"],
           lineData: [5, 6, 7, 8, 9, 10, 14, 15, 17, 20, 10, 8]
         },
@@ -279,7 +279,7 @@ class Transactions extends Component {
               average: 680
             }
           ],
-          colors: ["#4284D280", "#7EAADF80"],
+          colors: [theme.scheme.fuchsia_blue+'90', theme.scheme.lavender_indigo+'90'],
           keys: ["current", "average"],
           lineData: [1, 4, 6, 6, 5, 3, 4, 6, 10, 5, 3, 2]
         }
@@ -287,7 +287,7 @@ class Transactions extends Component {
       transactions: [],
       spendings: 0,
       data: [],
-      colors: ["#E0529980", "#E074AA80"],
+      colors: [theme.scheme.cerise+'90', theme.scheme.carnation+'90'],
       keys: ["current", "average"]
     };
   }

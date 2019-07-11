@@ -21,6 +21,8 @@ import { getInset } from "react-native-safe-area-view";
 import { NavigationActions } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import * as goalTypes from "../components/GoalTypes";
+import * as shape from "d3-shape";
+import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
 import {
   Menu,
   MenuOptions,
@@ -50,7 +52,7 @@ const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 const DATE_OPTIONS = { weekday: "long", month: "long", day: "numeric" };
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
-class GoalView extends Component {
+class OverviewChartView extends Component {
   mounted = false;
   constructor(props) {
     super();
@@ -64,6 +66,36 @@ class GoalView extends Component {
   periodOnPress(event, buttonId) {
     console.log(this.state.period);
     this.setState({ period: buttonId });
+  }
+
+  dataChange(data, title) {
+    let sum = data.reduce((previous, current) => (current += previous));
+    let avg = Math.round(sum / data.length);
+    let current = data[data.length - 1];
+
+    return (
+      <View style={styles.chartInfo}>
+        <Icon
+          name={
+            current < avg
+              ? "ios-arrow-round-down"
+              : current > avg
+              ? "ios-arrow-round-up"
+              : "ios-remove"
+          }
+          size={26}
+          color="#FFF"
+        />
+        <View>
+          <Text style={styles.chartInfoQuantity}>
+            ${Math.abs(current - avg)}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.chartInfoTitle}>{title}</Text>
+        </View>
+      </View>
+    );
   }
 
   _renderScrollViewContent() {
@@ -91,14 +123,10 @@ class GoalView extends Component {
   render() {
     const { navigation } = this.props;
     // const { navigation } = this.props;
-    const back = backdrop[Math.floor(Math.random()*backdrop.length)]
-    const title = navigation.getParam("title", "Goal");
-    const date = navigation.getParam("date", "");
-    const type = navigation.getParam("type", "");
-    const category = navigation.getParam("category", "Goal");
-    const value = navigation.getParam("value", "0");
-    const period = navigation.getParam("period", "");
-    const day = new Date(date);
+    const data = navigation.getParam("data", []);
+    const colors = navigation.getParam("colors", [theme.scheme.wedgewood, theme.scheme.bermuda_gray]);
+    const title = navigation.getParam("title", "Spending");
+
     console.log(this.props.title);
     return (
       <View style={styles.fill}>
@@ -145,16 +173,32 @@ class GoalView extends Component {
 
         {/* <Text style={styles.title}>{title}</Text> */}
         {/* </LinearGradient> */}
-        <ImageBackground
-          source={back}
+        <View
+          // source={back}
           style={{
             flex: 1,
             alignItems: "center",
             alignContent: "center",
+            backgroundColor: colors[0],
             flexDirection: "column"
           }}
-          imageStyle={{ resizeMode: "repeat" }}
-        />
+          // imageStyle={{ resizeMode: "repeat" }}
+        >
+          {this.dataChange(data, title)}
+          <AreaChart
+              style={{
+                // height: viewportWidth / 2.5 + 2
+
+                width: viewportWidth,
+                height: viewportHeight/4
+              }}
+              curve={shape.curveNatural}
+              data={data}
+              gridMax={56}
+              contentInset={{ top: TOP_SAFE_AREA, bottom: 40 }}
+              svg={{ fill: colors[1] }}
+            />
+        </View>
         <View style={styles.scrollOver}>
           <ScrollView
             borderRadius={10}
@@ -175,23 +219,10 @@ class GoalView extends Component {
                 alignItems: "center"
               }}
             >
-              <Icon
-                name={"ios-square"}
-                size={30}
-                color={
-                  category != null
-                    ? categoryTypes.categoryColors[category]
-                    : "#FAA3c6"
-                }
-              />
+             
               <View style={{ flexDirection: "column", left: 15 }}>
                 <Text style={styles.title}>{title}</Text>
-                <Text style={styles.date}>
-                  {" "}
-                  {new Date(date)
-                    .toLocaleDateString("en-NZ", DATE_OPTIONS)
-                    .toString()}
-                </Text>
+              
               </View>
             </View>
             <View
@@ -202,22 +233,8 @@ class GoalView extends Component {
                 alignItems: "center"
               }}
             >
-              <Icon
-                name={
-                  category != null
-                    ? categoryTypes.categoryIcons[category]
-                    : "ios-rocket"
-                }
-                size={30}
-                color={theme.colors.inactive}
-              />
-              <Text style={[styles.date, { left: 15, top: 5 }]}>
-                {category != null
-                  ? category.charAt(0).toUpperCase() +
-                    category.slice(1) +
-                    " goal"
-                  : "General goal"}
-              </Text>
+              
+
             </View>
           </ScrollView>
         </View>
@@ -225,7 +242,7 @@ class GoalView extends Component {
     );
   }
 }
-export default GoalView;
+export default OverviewChartView;
 
 const styles = StyleSheet.create({
   fill: {
@@ -347,5 +364,24 @@ const styles = StyleSheet.create({
     overflow: "hidden"
     // borderTopLeftRadius: 12,
     // borderBottomLeftRadius: 12
+  },
+  chartInfo: {
+    position: "absolute",
+    zIndex: 999,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    top: TOP_SAFE_AREA
+  },
+  chartInfoQuantity: {
+    fontSize: 25,
+    fontWeight: "700",
+    color: "#FFF"
+  },
+  chartInfoTitle: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#FFF"
   }
 });

@@ -7,6 +7,7 @@ import {
 import Overview from "../screens/Overview";
 import NewGoal from "../screens/NewGoal";
 import GoalView from "../screens/GoalView";
+import OverviewChartView from "../screens/OverviewChartView";
 // import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import NewUserWelcomeScreen from "../screens/NewUserWelcomeScreen";
@@ -18,7 +19,7 @@ import Transactions from "../screens/Transactions";
 import TransactionsCategoryView from "../screens/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
-
+import * as theme from '../theme';
 
 
 import {
@@ -57,14 +58,15 @@ class AuthLoadingScreen extends React.Component {
 }
 
 
-const activeColor = "#F6699A";
+const activeColor = theme.scheme.crusta;
 const inactiveColor = "#B2B2B2";
 
 const HomeStack = createStackNavigator(
   {
     Home: Overview,
     Goal: NewGoal,
-    ViewGoal: GoalView
+    ViewGoal: GoalView,
+    OverviewChart: OverviewChartView
   },
   {
     mode: "modal",
@@ -76,7 +78,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
-  if (routeName == "ViewGoal") {
+  if (routeName === "ViewGoal" || routeName === "OverviewChart" ) {
     tabBarVisible = false;
   }
   

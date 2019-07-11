@@ -1,20 +1,21 @@
+import * as theme from '../theme';
 const goalInfo = [
   {
     key: "general",
     icon: "ios-rocket",
-    color: "#FAA3c6",
+    color: theme.scheme.crusta,
     width: 2.4
   },
   {
     key: "category",
     icon: "ios-apps",
-    color: "#7e92de",
+    color: theme.scheme.cerise,
     width: 2.4
   }
 ];
 
 const goalColors = {
-  general: "#FAA3c6",
-  category: "#7e92de"
+  general: theme.scheme.crusta,
+  category: theme.scheme.cerise
 };
 export { goalInfo, goalColors };
