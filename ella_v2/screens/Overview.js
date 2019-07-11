@@ -25,7 +25,8 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
 import { Paragraph } from "rn-placeholder";
-
+import { LinearGradient } from "expo-linear-gradient";
+import AccountEdit from "../components/AccountEdit";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -45,11 +46,15 @@ class Overview extends Component {
       scrollY: new Animated.Value(0),
       uid: null,
       items: [],
-      refreshing: false
+      refreshing: false,
+      edit:false,
+      photoURL: ''
     };
     this.props = props;
     this.childHandler = this.childHandler.bind(this);
     this.signoutPress = this.signoutPress.bind(this);
+    this.editProfile = this.editProfile.bind(this);
+    this.goBack = this.goBack.bind(this);
     var items = [];
   }
 
@@ -87,6 +92,7 @@ class Overview extends Component {
   getUser() {
     var user = firebase.auth().currentUser;
     console.log(user.uid);
+    console.log(user.photoURL);
     // this.db.collection("users").doc(user.uid).set({name: user.displayName})
     var name;
 
@@ -96,7 +102,8 @@ class Overview extends Component {
         firstname: name.split(" ")[0],
         lastname: name.split(" ").length > 1 ? name.split(" ")[1] : null,
         email: user.email,
-        uid: user.uid
+        uid: user.uid,
+        photoURL: user.photoURL? user.photoURL : ''
       });
     }
   }
@@ -106,7 +113,15 @@ class Overview extends Component {
   };
 
   childHandler() {
+    this.setState({edit: false})
     this._panel.hide();
+  }
+  goBack() {
+    this.setState({edit: false})
+  }
+
+  editProfile() {
+this.setState({edit: true})
   }
 
   componentWillMount() {
@@ -159,6 +174,7 @@ class Overview extends Component {
           ref={c => (this._panel = c)}
         >
           {dragHandler => (
+            !this.state.edit ? 
             <AccountSlider
               data={{
                 dragHandler: dragHandler,
@@ -168,10 +184,28 @@ class Overview extends Component {
                 icon:
                   this.state.lastname && this.state.firstname
                     ? this.state.firstname[0] + this.state.lastname[0]
-                    : "XX"
+                    : "XX",
+                    image: this.props.photoURL
               }}
               action={this.childHandler}
               signOut={this.signoutPress}
+              editProfile={this.editProfile}
+            /> : 
+            <AccountEdit
+              data={{
+                dragHandler: dragHandler,
+                firstName: this.state.firstname,
+                lastName: this.state.lastname,
+                email: this.state.email,
+                icon:
+                  this.state.lastname && this.state.firstname
+                    ? this.state.firstname[0] + this.state.lastname[0]
+                    : "XX",
+                    image: this.props.photoURL
+              }}
+              action={this.childHandler}
+              goBack={this.goBack}
+              editProfile={this.editProfile}
             />
           )}
         </SlidingUpPanel>
@@ -196,16 +230,20 @@ class Overview extends Component {
           <Avatar
             rounded
             size="medium"
+            avatarStyle={{backgroundColor: theme.scheme.cadet_blue}}
             onPress={() => this._panel.show()}
+
             title={
               this.state.lastname && this.state.firstname
                 ? this.state.firstname[0] + this.state.lastname[0]
                 : "XX"
             }
-            // source={{
-            //   uri:
-            //     "https://scontent-lga3-1.cdninstagram.com/vp/ea10be885edfb1082ea3bd63427d465a/5D8F8A2A/t51.2885-19/s150x150/46948414_777229735969818_2250279970788081664_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&se=8"
-            // }}
+
+            source={{
+              uri:
+                this.state.photoURL
+            }}
+
           />
         </View>
         <StatusBar barStyle="dark-content" />
@@ -261,7 +299,7 @@ class Overview extends Component {
                 style={{ fontWeight: "700", fontSize: 30, color: "#3F4F5A" }}
               >
                 You're saving
-                <Text style={{ color: "#F6699A" }}> $24.89 </Text>
+                <Text style={{ color: theme.scheme.crusta }}> $24.89 </Text>
               </Text>
               <Text
                 style={{ fontWeight: "300", fontSize: 28, color: "#3F4F5A" }}
@@ -279,30 +317,36 @@ class Overview extends Component {
             >
               <OverviewChart
                 data={{
-                  position: "left",
-                  image: require("../assets/images/bill_back.jpg"),
-                  data: [50, 52, 51, 51, 48, 53, 47],
-                  color: "#7EF2E2",
-                  title: "Week Spending"
-                }}
-              />
-              <OverviewChart
-                data={{
                   position: "center",
-                  image: require("../assets/images/entertainment_back.jpg"),
+                  // image: require("../assets/images/entertainment_back.jpg"),
+                  image: ["#388acf", theme.scheme.crusta],
                   data: [51, 52, 45, 51, 52, 53, 54],
-                  color: "#FFB6BA",
+                  color: theme.scheme.sunshade,
                   title: "Bad Spending"
                 }}
-              />
+                navigation={this.props.navigation}
+              /> 
+                <OverviewChart
+                  data={{
+                    position: "left",
+                    // image: require("../assets/images/bill_back.jpg"),
+                    image: [theme.scheme.crusta, theme.scheme.supernova],
+                    data: [50, 52, 51, 51, 48, 53, 47],
+                    color: theme.scheme.sunglow,
+                    title: "Week Spending"
+                  }}
+                  navigation={this.props.navigation}
+                />
               <OverviewChart
                 data={{
                   position: "right",
-                  image: require("../assets/images/food_back.jpg"),
+                  // image: require("../assets/images/food_back.jpg"),
+                  image: ["#e790a6", theme.scheme.green],
                   data: [51, 48, 49, 50, 51, 53, 50, 53],
-                  color: "#A8E8FF",
+                  color: theme.scheme.ufo_green,
                   title: "Avg Saving"
                 }}
+                navigation={this.props.navigation}
               />
             </View>
             <View style={styles.goals}>
@@ -387,7 +431,7 @@ const styles = StyleSheet.create({
     fontSize: theme.sizes.microsub,
     fontWeight: "600",
     backgroundColor: "transparent",
-    color: "#F6699A"
+    color: theme.scheme.crusta,
   },
   goals: {
     marginTop: 20,

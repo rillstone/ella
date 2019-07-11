@@ -15,7 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
 import * as theme from "../theme";
 import { Button, Input, Avatar, Card, Divider } from "react-native-elements";
-
+import { LinearGradient } from "expo-linear-gradient";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -43,7 +43,9 @@ export default class OverviewChart extends Component {
           color="#FFF"
         />
         <View>
-          <Text style={styles.chartInfoQuantity}>${Math.abs(current - avg)}</Text>
+          <Text style={styles.chartInfoQuantity}>
+            ${Math.abs(current - avg)}
+          </Text>
         </View>
         <View>
           <Text style={styles.chartInfoTitle}>{title}</Text>
@@ -58,7 +60,15 @@ export default class OverviewChart extends Component {
     } = this.props;
 
     return (
-      <View
+      <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate("OverviewChart", {
+            navigation: this.props.navigation,
+            title: title,
+            data: data,
+            colors: [image[1], color]
+          })
+        }
         style={
           position === "left"
             ? styles.container_left
@@ -68,11 +78,31 @@ export default class OverviewChart extends Component {
         }
       >
         <View style={styles.tile}>
-          <ImageBackground
+          {/* <ImageBackground
             source={image}
             style={[
               {
                 marginHorizontal: position === "center" ? 9 : 5
+              },
+              styles.card
+            ]}
+          > */}
+          {/* <LinearGradient
+          style={[
+            {
+              marginHorizontal: position === "center" ? 9 : 5
+            },
+            styles.card
+          ]}
+          colors={image}
+          start={[0.2, 0.2]}
+          end={[0.6, 0.6]}
+        > */}
+          <View
+            style={[
+              {
+                marginHorizontal: position === "center" ? 9 : 5,
+                backgroundColor: image[1]
               },
               styles.card
             ]}
@@ -89,9 +119,11 @@ export default class OverviewChart extends Component {
               contentInset={{ top: 60, bottom: 20 }}
               svg={{ fill: color }}
             />
-          </ImageBackground>
+          </View>
+          {/* </LinearGradient> */}
+          {/* </ImageBackground> */}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -159,15 +191,13 @@ const styles = StyleSheet.create({
     top: 8
   },
   chartInfoQuantity: {
-      fontSize: 25,
-      fontWeight: "700",
-      color: '#FFF',
-
+    fontSize: 25,
+    fontWeight: "700",
+    color: "#FFF"
   },
   chartInfoTitle: {
     fontSize: 12,
     fontWeight: "600",
-    color: '#FFF',
-  },
-
+    color: "#FFF"
+  }
 });

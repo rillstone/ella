@@ -66,7 +66,7 @@ export default class Goal extends Component {
       >
         <LinearGradient
           style={styles.card}
-          colors={["#F6699A", "#FF7DAA"]}
+          colors={[theme.scheme.sunshade, theme.scheme.sunshade]}
           start={[0.3, 0]}
           end={[0.8, 0]}
         >
@@ -118,16 +118,13 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     width: viewportWidth - 40,
     height: 70,
-    overflow: "hidden",
+    // overflow: "hidden",
+    shadowOffset: { width: 0, height: 0 },
     shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 0
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 1,
     flexDirection: "row",
-    elevation: 1
   },
   icon: {
     flex: 1.5,
