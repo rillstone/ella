@@ -260,7 +260,6 @@ this.setState({edit: true})
               Hi, {this.state.firstname}
               {/* Hi, Charlie! */}
             </Text>
-            <Text style={styles.microtitle}>kuken!</Text>
           </Animated.View>
           {/* <Animated.View style={{opacity:smallTitleOpacity, alignItems: 'center', marginTop: 0 }}>
           <Text style={styles.microtitle}>Overview</Text>

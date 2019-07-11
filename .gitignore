@@ -2,6 +2,11 @@
 # Created by https://www.gitignore.io/api/node,reactnative
 # Edit at https://www.gitignore.io/?templates=node,reactnative
 
+# package stuff
+ella_v2/package-lock.json
+ella_v2/.expo/packager-info.json
+ella_v2/.expo/settings.json
+
 ### Node ###
 # Logs
 logs
