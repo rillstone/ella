@@ -178,6 +178,7 @@ class Overview extends Component {
           onDragEnd={() => console.log("end")}
           containerStyle={{
             zIndex: 9999,
+            elevation: 2,
             backgroundColor: "#fff",
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,

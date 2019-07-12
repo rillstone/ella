@@ -1,6 +1,6 @@
 import React from "react";
 import { AppLoading } from 'expo';
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, YellowBox } from "react-native";
 import { mapping, light as lightTheme } from "@eva-design/eva";
 import { ApplicationProvider, Layout } from "react-native-ui-kitten";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
@@ -16,10 +16,20 @@ import * as firebase from "firebase";
 import { Provider } from "react-redux";
 import { store } from "./redux/app-redux";
 import { MenuProvider } from 'react-native-popup-menu';
+import _ from 'lodash';
 
 // firebase.initializeApp(ApiKeys.FirebaseConfig);
 
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
+
 class App extends React.Component {
+
   mounted = false;
   constructor() {
     super();
@@ -34,7 +44,7 @@ class App extends React.Component {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
-    
+
   }
   componentDidMount() {
     this.mounted = true;
@@ -51,44 +61,44 @@ class App extends React.Component {
   // }
   onAuthStateChanged = (user) => {
     // if (this.mounted) {
-      this.setState({
-        isAuthenticationReady: true,
-        isAuthenticated: !!user,
-        isLoadingComplete: true,
-        user: firebase.auth().currentUser
-      })
+    this.setState({
+      isAuthenticationReady: true,
+      isAuthenticated: !!user,
+      isLoadingComplete: true,
+      user: firebase.auth().currentUser
+    })
     // }
   };
 
   render() {
     if (this.state.isLoadingComplete) {
-    return (
-      <MenuProvider>
+      return (
+        <MenuProvider>
 
-      <ApplicationProvider mapping={mapping} theme={lightTheme}>
+          <ApplicationProvider mapping={mapping} theme={lightTheme}>
 
-        <AppNavigator /> 
-      </ApplicationProvider>
-      </MenuProvider>
-    );
+            <AppNavigator />
+          </ApplicationProvider>
+        </MenuProvider>
+      );
     } else return null;
 
-}
-_loadResourcesAsync = async () => {
-  return Promise.all([
+  }
+  _loadResourcesAsync = async () => {
+    return Promise.all([
 
-  ]);
-};
+    ]);
+  };
 
-_handleLoadingError = error => {
-  // In this case, you might want to report the error to your error
-  // reporting service, for example Sentry
-  console.warn(error);
-};
+  _handleLoadingError = error => {
+    // In this case, you might want to report the error to your error
+    // reporting service, for example Sentry
+    console.warn(error);
+  };
 
-_handleFinishLoading = () => {
-  this.setState({ isLoadingComplete: true });
-};
+  _handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  };
 }
 // const App = () => (
 // );
