@@ -17,13 +17,14 @@ import * as theme from "../theme";
 import { Button, Input, Avatar, Card, Divider } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 // import { ImagePicker, Permissions, Constants } from "expo";
-import Constants from 'expo-constants'
-import * as ImagePicker from 'expo-image-picker'
-import * as Permissions from 'expo-permissions'
+import Constants from "expo-constants";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 import * as firebase from "firebase";
 
 import "firebase/storage";
 import "firebase/firestore";
+
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -48,14 +49,51 @@ export default class AccountEdit extends Component {
       loading: false,
       uploading: false,
       imageName: "",
-      photoURL: "",
+      photoURL: ""
     };
     this.props = props;
-   
+    this.saveProfile = this.saveProfile.bind(this);
   }
   componentDidMount() {
     this.getPermissionAsync();
     this.getUser();
+  }
+
+  saveProfile(firstName, lastName, email, func) {
+    var user = firebase.auth().currentUser;
+    return new Promise((resolve, reject) => {
+      this.db
+        .collection("users")
+        .doc(user.uid)
+        .set({
+          name: this.state.firstName
+            ? this.state.firstName +
+              " " +
+              (this.state.lastName ? this.state.lastName : lastName)
+            : firstName +
+              " " +
+              (this.state.lastName ? this.state.lastName : lastName)
+        }).catch(error => {
+          reject();
+        })
+        .then(() => {
+          user.updateProfile({
+            displayName: this.state.firstName
+              ? this.state.firstName +
+                " " +
+                (this.state.lastName ? this.state.lastName : lastName)
+              : firstName +
+                " " +
+                (this.state.lastName ? this.state.lastName : lastName),
+            email: this.state.email ? this.state.email : email
+          });
+        }).catch(error => {
+          reject();
+        })
+        .then(() => {
+          resolve();
+        });
+    });
   }
 
   getUser() {
@@ -66,7 +104,7 @@ export default class AccountEdit extends Component {
 
     if (user != null) {
       this.setState({
-        photoURL: user.photoURL? user.photoURL : ''
+        photoURL: user.photoURL ? user.photoURL : ""
       });
     }
   }
@@ -84,40 +122,51 @@ export default class AccountEdit extends Component {
     const blob = await response.blob();
     var user = firebase.auth().currentUser;
     this.setState({ uploading: true });
-    var ref = firebase.storage().ref().child("images/" + imageName);
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("images/" + imageName);
     // this.db.collection("users").doc(user.uid).set({image: ref.child('images/imageName')})
 
     return ref.put(blob);
   };
-componentDidUpdate(prevProps, prevState) {
-  if (prevState.uploading != this.state.uploading && this.state.uploading == false) {
-    var user = firebase.auth().currentUser;
-    firebase.storage().ref().child("images/" + this.state.imageName).getDownloadURL().then((url) => {
-      user.updateProfile({
-        photoURL: url
-      });
-      this.setState({photoURL: url});
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.uploading != this.state.uploading &&
+      this.state.uploading == false
+    ) {
+      var user = firebase.auth().currentUser;
+      firebase
+        .storage()
+        .ref()
+        .child("images/" + this.state.imageName)
+        .getDownloadURL()
+        .then(url => {
+          user.updateProfile({
+            photoURL: url
+          });
+          this.setState({ photoURL: url });
+        });
     }
-    )
   }
-}
   onChooseImagePress = async () => {
     let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.5
     });
 
-    
     if (!image.cancelled) {
       var date = new Date();
       var user = firebase.auth().currentUser;
-      var imageName = Date.parse(date)+user.displayName
-      this.setState({imageName: imageName})
+      var imageName = Date.parse(date) + user.displayName;
+      this.setState({ imageName: imageName });
       this.uploadImage(image.uri, imageName)
-        .then((done) => {return this.setState({ uploading: false })})
+        .then(done => {
+          return this.setState({ uploading: false });
+        })
         // .then(
         //   // firebase.storage().ref().child("images/" + imageName).getDownloadURL().then(onResolve, onReject)
-          
+
         //     .then(function() {
         //       // Update successful.
 
@@ -134,35 +183,14 @@ componentDidUpdate(prevProps, prevState) {
 
   render() {
     const {
-      data: { dragHandler, firstName, lastName, email, icon, image}
+      data: { dragHandler, firstName, lastName, email, icon, image }
     } = this.props;
 
-console.log
     return (
       <DismissKeyboard>
         <View style={styles.container}>
-          
           <View style={styles.dragHandler} {...dragHandler}>
-            <View
-              style={{
-                backgroundColor: "#F5F5F5",
-                width: viewportWidth,
-                height: 64,
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "row",
-                shadowColor: "black",
-                shadowOffset: {
-                  width: 0,
-                  height: -1
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 2,
-                elevation: 0
-              }}
-            >
+            <View style={styles.slideContainer}>
               <View
                 style={{
                   flex: 1,
@@ -229,33 +257,28 @@ console.log
           <TouchableOpacity
             style={{
               flex: 0.5,
-              marginVertical: 10,
+              marginVertical: 15,
               alignContent: "center",
               justifyContent: "center",
               alignItems: "center"
             }}
             onPress={this.onChooseImagePress}
           >
-        <Avatar
+            <Avatar
               rounded
               avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
               size="large"
               title={icon}
               showEditButton
-              source={{uri: this.state.photoURL!==""? this.state.photoURL : image===""? null: image}}
+              source={{
+                uri:
+                  this.state.photoURL !== ""
+                    ? this.state.photoURL
+                    : image === ""
+                    ? null
+                    : image
+              }}
             />
-            {/* <Avatar
-              rounded
-              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-              size="large"
-              title={icon}
-              showEditButton
-              
-              //   source={{
-
-              //       uri: icon
-              // }}
-            /> */}
           </TouchableOpacity>
 
           <View style={styles.nameHeader}>
@@ -321,7 +344,11 @@ console.log
           >
             <Button
               onPress={() => {
-                this.props.action();
+                this.saveProfile(firstName, lastName, email).then(() => {
+                  this.props.saved();
+                }
+                );
+                // this.props.saved();
               }}
               title="save"
             />
@@ -348,6 +375,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "transparent"
     // alignContent: "flex-start",  justifyContent: "flex-start",alignSelf: "flex-start",
+  },
+  slideContainer: {
+    backgroundColor: "#F5F5F5",
+    width: viewportWidth,
+    height: 64,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: -1
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 0
   },
   nameHeader: {
     flexDirection: "column",
@@ -385,7 +430,7 @@ const styles = StyleSheet.create({
   activityIndicator: {
     position: "absolute",
     // justifyContent: "center",
-    top: viewportHeight/2.5,
+    top: viewportHeight / 2.5,
     // alignItems: "center",
     // alignContent: "center",
     alignSelf: "center",
