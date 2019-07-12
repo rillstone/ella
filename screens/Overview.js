@@ -41,19 +41,19 @@ class Overview extends Component {
   constructor(props) {
     super();
     this.state = {
-      lastname: null,
       child: "hide",
       scrollY: new Animated.Value(0),
       uid: null,
       items: [],
       refreshing: false,
-      edit:false,
-      photoURL: ''
+      edit: false,
+      photoURL: ""
     };
     this.props = props;
     this.childHandler = this.childHandler.bind(this);
     this.signoutPress = this.signoutPress.bind(this);
     this.editProfile = this.editProfile.bind(this);
+    this.updateUser = this.updateUser.bind(this);
     this.goBack = this.goBack.bind(this);
     var items = [];
   }
@@ -92,20 +92,34 @@ class Overview extends Component {
   getUser() {
     var user = firebase.auth().currentUser;
     console.log(user.uid);
-    console.log(user.photoURL);
+    console.log(user.displayName);
+
     // this.db.collection("users").doc(user.uid).set({name: user.displayName})
     var name;
 
-    if (user != null) {
+    if (user) {
       name = user.displayName;
       this.setState({
         firstname: name.split(" ")[0],
         lastname: name.split(" ").length > 1 ? name.split(" ")[1] : null,
         email: user.email,
         uid: user.uid,
-        photoURL: user.photoURL? user.photoURL : ''
+        photoURL: user.photoURL ? user.photoURL : ""
       });
     }
+  }
+  updateUser() {
+
+    var user = firebase.auth().currentUser;
+    var name = user.displayName;
+    this.setState({
+      firstname: name.split(" ")[0],
+      lastname: name.split(" ").length > 1 ? name.split(" ")[1] : null,
+      email: user.email,
+      uid: user.uid,
+      photoURL: user.photoURL ? user.photoURL : ""
+    });
+    
   }
   signoutPress = async () => {
     await AsyncStorage.clear();
@@ -113,15 +127,17 @@ class Overview extends Component {
   };
 
   childHandler() {
-    this.setState({edit: false})
+    this.updateUser();
+    this.setState({ edit: false });
     this._panel.hide();
   }
   goBack() {
-    this.setState({edit: false})
+    this.updateUser();
+    this.setState({ edit: false });
   }
 
   editProfile() {
-this.setState({edit: true})
+    this.setState({ edit: true });
   }
 
   componentWillMount() {
@@ -174,41 +190,44 @@ this.setState({edit: true})
           draggableRange={{ top: viewportHeight - 140, bottom: 0 }}
           ref={c => (this._panel = c)}
         >
-          {dragHandler => (
-            !this.state.edit ? 
-            <AccountSlider
-              data={{
-                dragHandler: dragHandler,
-                firstName: this.state.firstname,
-                lastName: this.state.lastname,
-                email: this.state.email,
-                icon:
-                  this.state.lastname && this.state.firstname
-                    ? this.state.firstname[0] + this.state.lastname[0]
-                    : "XX",
-                    image: this.props.photoURL
-              }}
-              action={this.childHandler}
-              signOut={this.signoutPress}
-              editProfile={this.editProfile}
-            /> : 
-            <AccountEdit
-              data={{
-                dragHandler: dragHandler,
-                firstName: this.state.firstname,
-                lastName: this.state.lastname,
-                email: this.state.email,
-                icon:
-                  this.state.lastname && this.state.firstname
-                    ? this.state.firstname[0] + this.state.lastname[0]
-                    : "XX",
-                    image: this.props.photoURL
-              }}
-              action={this.childHandler}
-              goBack={this.goBack}
-              editProfile={this.editProfile}
-            />
-          )}
+          {dragHandler =>
+            !this.state.edit ? (
+              <AccountSlider
+                data={{
+                  dragHandler: dragHandler,
+                  firstName: this.state.firstname,
+                  lastName: this.state.lastname,
+                  email: this.state.email,
+                  icon:
+                    this.state.lastname && this.state.firstname
+                      ? this.state.firstname[0] + this.state.lastname[0]
+                      : "XX",
+                  image: this.state.photoURL
+                }}
+                action={this.childHandler}
+                signOut={this.signoutPress}
+                editProfile={this.editProfile}
+              />
+            ) : (
+              <AccountEdit
+                data={{
+                  dragHandler: dragHandler,
+                  firstName: this.state.firstname,
+                  lastName: this.state.lastname,
+                  email: this.state.email,
+                  icon:
+                    this.state.lastname && this.state.firstname
+                      ? this.state.firstname[0] + this.state.lastname[0]
+                      : "XX",
+                  image: this.state.photoURL
+                }}
+                action={this.childHandler}
+                goBack={this.goBack}
+                editProfile={this.editProfile}
+                saved={this.updateUser}
+              />
+            )
+          }
         </SlidingUpPanel>
         <View
           style={[
@@ -231,20 +250,16 @@ this.setState({edit: true})
           <Avatar
             rounded
             size="medium"
-            avatarStyle={{backgroundColor: theme.scheme.cadet_blue}}
+            avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
             onPress={() => this._panel.show()}
-
             title={
               this.state.lastname && this.state.firstname
                 ? this.state.firstname[0] + this.state.lastname[0]
                 : "XX"
             }
-
             source={{
-              uri:
-                this.state.photoURL
+              uri: this.state.photoURL === "" ? null : this.state.photoURL
             }}
-
           />
         </View>
         <StatusBar barStyle="dark-content" />
@@ -325,18 +340,18 @@ this.setState({edit: true})
                   title: "Bad Spending"
                 }}
                 navigation={this.props.navigation}
-              /> 
-                <OverviewChart
-                  data={{
-                    position: "left",
-                    // image: require("../assets/images/bill_back.jpg"),
-                    image: [theme.scheme.crusta, theme.scheme.supernova],
-                    data: [50, 52, 51, 51, 48, 53, 47],
-                    color: theme.scheme.sunglow,
-                    title: "Week Spending"
-                  }}
-                  navigation={this.props.navigation}
-                />
+              />
+              <OverviewChart
+                data={{
+                  position: "left",
+                  // image: require("../assets/images/bill_back.jpg"),
+                  image: [theme.scheme.crusta, theme.scheme.supernova],
+                  data: [50, 52, 51, 51, 48, 53, 47],
+                  color: theme.scheme.sunglow,
+                  title: "Week Spending"
+                }}
+                navigation={this.props.navigation}
+              />
               <OverviewChart
                 data={{
                   position: "right",
@@ -431,7 +446,7 @@ const styles = StyleSheet.create({
     fontSize: theme.sizes.microsub,
     fontWeight: "600",
     backgroundColor: "transparent",
-    color: theme.scheme.crusta,
+    color: theme.scheme.crusta
   },
   goals: {
     marginTop: 20,
