@@ -53,6 +53,7 @@ class Overview extends Component {
     this.childHandler = this.childHandler.bind(this);
     this.signoutPress = this.signoutPress.bind(this);
     this.editProfile = this.editProfile.bind(this);
+    this.updateUser = this.updateUser.bind(this);
     this.goBack = this.goBack.bind(this);
     var items = [];
   }
@@ -91,11 +92,12 @@ class Overview extends Component {
   getUser() {
     var user = firebase.auth().currentUser;
     console.log(user.uid);
-    console.log(user.photoURL);
+    console.log(user.displayName);
+
     // this.db.collection("users").doc(user.uid).set({name: user.displayName})
     var name;
 
-    if (user != null) {
+    if (user) {
       name = user.displayName;
       this.setState({
         firstname: name.split(" ")[0],
@@ -106,16 +108,31 @@ class Overview extends Component {
       });
     }
   }
+  updateUser() {
+
+    var user = firebase.auth().currentUser;
+    var name = user.displayName;
+    this.setState({
+      firstname: name.split(" ")[0],
+      lastname: name.split(" ").length > 1 ? name.split(" ")[1] : null,
+      email: user.email,
+      uid: user.uid,
+      photoURL: user.photoURL ? user.photoURL : ""
+    });
+    
+  }
   signoutPress = async () => {
     await AsyncStorage.clear();
     this.props.navigation.navigate("Auth");
   };
 
   childHandler() {
+    this.updateUser();
     this.setState({ edit: false });
     this._panel.hide();
   }
   goBack() {
+    this.updateUser();
     this.setState({ edit: false });
   }
 
@@ -206,6 +223,7 @@ class Overview extends Component {
                 action={this.childHandler}
                 goBack={this.goBack}
                 editProfile={this.editProfile}
+                saved={this.updateUser}
               />
             )
           }
