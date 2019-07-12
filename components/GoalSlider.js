@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import * as theme from "../theme";
 import {
-    Slider
+  Slider
 } from "react-native-elements";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -29,18 +29,20 @@ export default class GoalSlider extends Component {
     const { color } = this.props;
     return (
       <View>
-        <Text
-          pointerEvents={"none"}
-          style={styles.amountStyle}
-        >
-          ${this.state.value}
-        </Text>
+        <View pointerEvents={"none"}
+          style={{zIndex:999}}>
+          <Text
+            style={styles.amountStyle}
+          >
+            ${this.state.value}
+          </Text>
+        </View>
         <Slider
           value={this.state.value}
           maximumValue={1000}
           minimumValue={0}
           step={1}
-          onValueChange={value => {this.setState({ value }); this.props.onSlide(value);}}
+          onValueChange={value => { this.setState({ value }); this.props.onSlide(value); }}
           style={styles.sliderStyle}
           trackStyle={styles.trackStyle}
           minimumTrackTintColor={color}
