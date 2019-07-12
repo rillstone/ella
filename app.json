@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Ella Version 2",
-    "slug": "ella_v2",
+    "name": "Ella",
+    "slug": "ella",
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
