@@ -51,7 +51,6 @@ export default class AccountEdit extends Component {
       photoURL: "",
     };
     this.props = props;
-    this.avatarRender = this.avatarRender.bind(this)
    
   }
   componentDidMount() {
@@ -70,32 +69,6 @@ export default class AccountEdit extends Component {
         photoURL: user.photoURL? user.photoURL : ''
       });
     }
-  }
-  avatarRender(){
-    if (this.state.photoURL){
-      if (this.state.photoURL === '') {
-      return (
-        <Avatar
-              rounded
-              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-              size="large"
-              title={this.props.icon}
-              showEditButton
-            />
-      )
-    } else {
-      return (
-        <Avatar
-              rounded
-              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-              size="large"
-              title={this.props.icon}
-              showEditButton
-              source={{uri: this.state.photoURL}}
-            />
-      )
-    }
-  }
   }
 
   getPermissionAsync = async () => {
@@ -161,10 +134,10 @@ componentDidUpdate(prevProps, prevState) {
 
   render() {
     const {
-      data: { dragHandler, firstName, lastName, email, icon }
+      data: { dragHandler, firstName, lastName, email, icon, image}
     } = this.props;
-    var av = this.avatarRender();
 
+console.log
     return (
       <DismissKeyboard>
         <View style={styles.container}>
@@ -263,10 +236,14 @@ componentDidUpdate(prevProps, prevState) {
             }}
             onPress={this.onChooseImagePress}
           >
-            <View>
-
-            {av}
-            </View>
+        <Avatar
+              rounded
+              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
+              size="large"
+              title={icon}
+              showEditButton
+              source={{uri: this.state.photoURL!==""? this.state.photoURL : image===""? null: image}}
+            />
             {/* <Avatar
               rounded
               avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
