@@ -18,39 +18,15 @@ export default class AccountSlider extends Component {
     super();
 
     this.props = props;
-    this.avatarRender = this.avatarRender.bind(this)
+
    
   }
-  avatarRender(){
-
-      if (this.props.image === '') {
-      return (
-        <Avatar
-              rounded
-              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-              size="medium"
-              title={this.props.icon}
-
-            />
-      )
-    } else {
-      return (
-        <Avatar
-              rounded
-              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-              size="medium"
-              title={this.props.icon}
-              source={{uri: this.props.image}}
-            />
-      )
-    }
-  }
+  
   
   render() {
     const {
       data: {dragHandler, firstName, lastName, email, icon,image},
     } = this.props;
-    var av = this.avatarRender();
     return (
           <View style={styles.container}>
             <View style={styles.dragHandler} {...dragHandler}>
@@ -133,9 +109,13 @@ export default class AccountSlider extends Component {
                   alignItems: "center"
                 }}
               >
-                <View>
-                {av}
-                </View>
+                       <Avatar
+              rounded
+              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
+              size="medium"
+              title={icon}
+              source={{uri: image===""? null : image}}
+            />
                 {/* <Avatar
                   rounded
                   avatarStyle={{backgroundColor: theme.scheme.cadet_blue}}
