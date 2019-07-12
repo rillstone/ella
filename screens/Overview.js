@@ -162,6 +162,7 @@ this.setState({edit: true})
           onDragEnd={() => console.log("end")}
           containerStyle={{
             zIndex: 9999,
+            elevation: 2,
             backgroundColor: "#fff",
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
@@ -454,6 +455,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.4,
     shadowRadius: 1,
-    elevation: 1
+    elevation: 1,
   }
 });
