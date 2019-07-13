@@ -7,14 +7,12 @@ import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import Icon from "react-native-vector-icons/Ionicons";
 import Overview from "./screens/Overview";
 import AppNavigator from "./navigator/AppNavigator";
-import { createStore } from "redux";
 import Planner from "./screens/Planner";
 import Transactions from "./screens/Transactions";
 import Settings from "./screens/Settings";
 import ApiKeys from "./constants/ApiKeys";
 import * as firebase from "firebase";
 import { dispatch, connect, Provider } from "./store";
-import { store } from "./redux/app-redux";
 import { MenuProvider } from 'react-native-popup-menu';
 import _ from 'lodash';
 
