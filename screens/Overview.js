@@ -7,7 +7,6 @@ import {
   Platform,
   StatusBar,
   Dimensions,
-  ScrollView,
   AsyncStorage,
   TouchableOpacity,
   Animated,
@@ -20,12 +19,9 @@ import { Avatar } from "react-native-elements";
 import AccountSlider from "../components/AccountSlider";
 import OverviewChart from "../components/OverviewChart";
 import Goal from "../components/Goal";
-import { Transition } from "react-navigation-fluid-transitions";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
-import { Paragraph } from "rn-placeholder";
-import { LinearGradient } from "expo-linear-gradient";
 import AccountEdit from "../components/AccountEdit";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"

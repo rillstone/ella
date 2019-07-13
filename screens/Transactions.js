@@ -6,13 +6,10 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  Image,
   Dimensions
 } from "react-native";
 import * as theme from "../theme";
-import moment from 'moment'
 import payments from "../assets/payments.json";
-import Icon from "react-native-vector-icons/Ionicons";
 import Carousel from "react-native-snap-carousel";
 import SliderEntry from "../components/SliderEntry";
 import Transaction from "../components/Transaction";
@@ -20,8 +17,7 @@ import { sliderWidth, itemWidth } from "../styles/SliderEntry.style";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { Paragraph } from "rn-placeholder";
-import * as Animatable from 'react-native-animatable';
-import { StackedAreaChart, XAxis, Grid } from "react-native-svg-charts";
+import { StackedAreaChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -99,7 +95,7 @@ class Transactions extends Component {
               average: 680
             }
           ],
-          colors: [theme.scheme.crusta+'90',theme.scheme.sunshade+'90'],
+          colors: [theme.scheme.crusta + '90', theme.scheme.sunshade + '90'],
           keys: ["current", "average"],
           lineData: [38, 20, 16, 10, 6, 15, 33, 10, 1, 10, 15, 23]
         },
@@ -144,7 +140,7 @@ class Transactions extends Component {
               average: 100
             }
           ],
-          colors: [theme.scheme.cerise+'90', theme.scheme.carnation+'90'],
+          colors: [theme.scheme.cerise + '90', theme.scheme.carnation + '90'],
           keys: ["current", "average"],
           lineData: [5, 5, 6, 8, 10, 13, 15, 18, 20, 10, 8, 7]
         },
@@ -189,7 +185,7 @@ class Transactions extends Component {
               average: 680
             }
           ],
-          colors: [theme.scheme.royal_blue+'90', theme.scheme.royal_blue2+'90' ],
+          colors: [theme.scheme.royal_blue + '90', theme.scheme.royal_blue2 + '90'],
           keys: ["current", "average"],
           lineData: [6, 7, 8, 7, 6, 8, 9, 5, 1, 2, 2, 3]
         },
@@ -234,7 +230,7 @@ class Transactions extends Component {
               average: 100
             }
           ],
-          colors: [theme.scheme.green+'90', theme.scheme.ufo_green+'90'],
+          colors: [theme.scheme.green + '90', theme.scheme.ufo_green + '90'],
           keys: ["current", "average"],
           lineData: [5, 6, 7, 8, 9, 10, 14, 15, 17, 20, 10, 8]
         },
@@ -279,7 +275,7 @@ class Transactions extends Component {
               average: 680
             }
           ],
-          colors: [theme.scheme.fuchsia_blue+'90', theme.scheme.lavender_indigo+'90'],
+          colors: [theme.scheme.fuchsia_blue + '90', theme.scheme.lavender_indigo + '90'],
           keys: ["current", "average"],
           lineData: [1, 4, 6, 6, 5, 3, 4, 6, 10, 5, 3, 2]
         }
@@ -287,7 +283,7 @@ class Transactions extends Component {
       transactions: [],
       spendings: 0,
       data: [],
-      colors: [theme.scheme.cerise+'90', theme.scheme.carnation+'90'],
+      colors: [theme.scheme.cerise + '90', theme.scheme.carnation + '90'],
       keys: ["current", "average"]
     };
   }
@@ -320,7 +316,7 @@ class Transactions extends Component {
 
   transactionData(transaction_cat) {
     return payments[transaction_cat].map(
-      (tr,i) => (
+      (tr, i) => (
         (this.sum += tr.amount),
         (
           <Transaction data={tr} key={tr._id} index={i}></Transaction>
@@ -330,20 +326,20 @@ class Transactions extends Component {
   }
 
   render() {
-    const axesSvg = { fontSize: 10};
+    const axesSvg = { fontSize: 10 };
     const xAxisHeight = 30
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <View
           style={{
             position: "absolute",
-            height: viewportHeight/3,
+            height: viewportHeight / 3,
             top: 20,
             width: sliderWidth
           }}
         >
           <StackedAreaChart
-            style={{ flex: 1, width: viewportWidth}}
+            style={{ flex: 1, width: viewportWidth }}
             contentInset={{ top: 25, bottom: 30 }}
             data={this.state.data}
             numberOfTicks={12}
@@ -355,7 +351,7 @@ class Transactions extends Component {
           >
             <Gradient />
           </StackedAreaChart>
-          
+
           {/* <Image source={ this.state.graph} style={styles.image} /> */}
         </View>
         <View style={{ flex: 1.3 }}>
@@ -371,7 +367,7 @@ class Transactions extends Component {
             <Text style={styles.microtitle}> - $12.94 today</Text>
           </View>
         </View>
-        <View style={{ flex: 1.3}}>
+        <View style={{ flex: 1.3 }}>
           <Carousel
             ref={c => {
               this._carousel = c;
