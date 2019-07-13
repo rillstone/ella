@@ -10,8 +10,6 @@ import {
   Image
 } from "react-native";
 import * as theme from "../theme";
-import payments from "../assets/payments.json";
-import Icon from "react-native-vector-icons/Ionicons";
 import SvgAnimatedLinearGradient from "react-native-svg-animated-linear-gradient";
 import Svg, { Circle, Rect } from "react-native-svg";
 
