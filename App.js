@@ -13,12 +13,19 @@ import Transactions from "./screens/Transactions";
 import Settings from "./screens/Settings";
 import ApiKeys from "./constants/ApiKeys";
 import * as firebase from "firebase";
-import { Provider } from "react-redux";
+import { dispatch, connect, Provider } from "./store";
 import { store } from "./redux/app-redux";
 import { MenuProvider } from 'react-native-popup-menu';
 import _ from 'lodash';
 
 // firebase.initializeApp(ApiKeys.FirebaseConfig);
+
+const mapStateToProps = state => ({
+  user: state.user,
+  // put the stuff here you want to access from global store
+  // then instead of calling it from this.state.user call it from this.props.user
+
+});
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
@@ -49,35 +56,23 @@ class App extends React.Component {
   componentDidMount() {
     this.mounted = true;
   }
-  // componentWillUnmount() {
-  //   this.mounted = false;
-  //   this.firebaseListener && this.firebaseListener();
-  //   this.authListener = undefined;
-  // }
-
-  // authListener() {
-  //   this.firebaseListener = 
-  //   // this.firebaseListener();
-  // }
   onAuthStateChanged = (user) => {
-    // if (this.mounted) {
     this.setState({
       isAuthenticationReady: true,
       isAuthenticated: !!user,
       isLoadingComplete: true,
       user: firebase.auth().currentUser
     })
-    // }
   };
 
   render() {
     if (this.state.isLoadingComplete) {
       return (
         <MenuProvider>
-
           <ApplicationProvider mapping={mapping} theme={lightTheme}>
-
-            <AppNavigator />
+            <Provider>
+              <AppNavigator />
+            </Provider>
           </ApplicationProvider>
         </MenuProvider>
       );
@@ -100,72 +95,4 @@ class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
-// const App = () => (
-// );
-
-export default App;
-
-// const navigation = createBottomTabNavigator({
-//   Overview: {
-//     screen: Overview,
-//     navigationOptions: {
-//       tabBarLabel: 'Overview',
-//       tabBarIcon: ({ tintColor }) => (
-//         <Icon name="ios-pulse" color={tintColor} size={24} />
-//       )
-//     }
-//   },
-//   Planner: {
-//     screen: Planner,
-//     navigationOptions: {
-//       tabBarLabel: 'Planner',
-//       tabBarIcon: ({ tintColor }) => (
-//         <Icon name="ios-calendar" color={tintColor} size={24} />
-//       )
-//     }
-//   },
-//   Transactions: {
-//     screen: Transactions,
-//     navigationOptions: {
-//       tabBarLabel: 'Transactions',
-//       tabBarIcon: ({ tintColor }) => (
-//         <Icon name="ios-card" color={tintColor} size={24} />
-//       )
-//     }
-//   },
-//   Settings: {
-//     screen: Settings,
-//     navigationOptions: {
-//       tabBarLabel: 'Settings',
-//       tabBarIcon: ({ tintColor }) => (
-//         <Icon name="ios-settings" color={tintColor} size={24} />
-//       )
-//     }
-//   },
-// }, {
-//     tabBarOptions: {
-//       activeTintColor: '#FF2D55',
-//       inactiveTintColor: '#B2B2B2',
-//       showLabel: false,
-//       style: {
-//         backgroundColor: '#f6f5f7',
-//         borderTopWidth: 0,
-//         shadowOffset: { width: 0, height: 3 },
-//         shadowColor: 'black',
-//         shadowOpacity: 0.4,
-//         elevation: 5,
-//       }
-//     }
-//   })
-
-// const App = createAppContainer(navigation);
-// export default App;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+export default connect(mapStateToProps)(App);
