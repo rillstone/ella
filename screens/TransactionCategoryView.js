@@ -3,15 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
-  TextInput,
   Platform,
   StatusBar,
-  Image,
   Dimensions,
-  ImageBackground,
   TouchableOpacity,
-  ScrollView,
   Animated
 } from "react-native";
 import { Button, ButtonProps } from "react-native-ui-kitten";

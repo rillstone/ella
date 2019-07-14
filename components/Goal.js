@@ -2,29 +2,15 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
-  ImageBackground
+  Dimensions
 } from "react-native";
 import PropTypes from "prop-types";
-import SlidingUpPanel from "rn-sliding-up-panel";
-import * as shape from "d3-shape";
 import Icon from "react-native-vector-icons/Ionicons";
-import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
 import * as theme from "../theme";
-import * as goalTypes from "../components/GoalTypes";
 import * as categoryTypes from "../components/CategoryTypes";
 import TimeAgo from "react-native-timeago";
-import {
-  Button,
-  Input,
-  Avatar,
-  Card,
-  Divider,
-  ListItem
-} from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 
 const icons = [
