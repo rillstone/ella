@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import PropTypes from "prop-types";
-import SlidingUpPanel from "rn-sliding-up-panel";
 import * as theme from "../theme";
-import { Button, Input, Avatar, Card, Divider } from "react-native-elements";
+import { Button, Avatar, Divider } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
