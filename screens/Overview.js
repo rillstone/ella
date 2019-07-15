@@ -18,6 +18,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Avatar } from "react-native-elements";
 import AccountSlider from "../components/AccountSlider";
 import OverviewChart from "../components/OverviewChart";
+import OverviewTransactionView from "../components/OverviewTransactionView";
 import Goal from "../components/Goal";
 import * as firebase from "firebase";
 import "firebase/firestore";
@@ -111,7 +112,6 @@ class Overview extends Component {
     }
   }
   updateUser() {
-
     var user = this.props.user;
     var name = user.displayName;
     this.setState({
@@ -364,6 +364,36 @@ class Overview extends Component {
                 }}
               >
                 <View style={{}}>
+                  <Text style={styles.title}>Transactions</Text>
+                </View>
+                <View
+                  style={{
+                    alignSelf: "center",
+                    right: 10
+                  }}
+                />
+              </View>
+              <OverviewTransactionView
+                data={{
+                  position: "center",
+                  // image: require("../assets/images/entertainment_back.jpg"),
+                  image: ["#388acf", theme.scheme.crusta],
+                  data: [51, 52, 45, 51, 52, 53, 54],
+                  color: theme.scheme.sunshade,
+                  title: "Bad Spending"
+                }}
+                navigation={this.props.navigation}
+              />
+            </View>
+            <View style={styles.goals}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginBottom: 10
+                }}
+              >
+                <View style={{}}>
                   <Text style={styles.title}>Goals</Text>
                 </View>
                 <View
@@ -427,7 +457,7 @@ const styles = StyleSheet.create({
     // flex: 6
   },
   title: {
-    fontSize: theme.sizes.title,
+    fontSize: 28,
     backgroundColor: "transparent",
     fontWeight: "800",
     color: theme.colors.gray
