@@ -53,7 +53,7 @@ class App extends React.Component {
       user: firebase.auth().currentUser
     });
     // sent to the global store here
-    dispatch("SET_USER", { user: { x: "dummy user to prove" } });
+    dispatch("SET_USER", { user: firebase.auth().currentUser });
   };
 
   render() {

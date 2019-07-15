@@ -79,7 +79,7 @@ class Overview extends Component {
   getGoals() {
     this.db
       .collection("users")
-      .doc(firebase.auth().currentUser.uid)
+      .doc(this.props.user.uid)
       .collection("goals")
       .get()
       .then(querySnapshot => {
@@ -92,7 +92,7 @@ class Overview extends Component {
   }
 
   getUser() {
-    var user = firebase.auth().currentUser;
+    var user = this.props.user;
     console.log(user.uid);
     console.log(user.displayName);
 
@@ -112,7 +112,7 @@ class Overview extends Component {
   }
   updateUser() {
 
-    var user = firebase.auth().currentUser;
+    var user = this.props.user;
     var name = user.displayName;
     this.setState({
       firstname: name.split(" ")[0],
@@ -236,16 +236,11 @@ class Overview extends Component {
           style={[
             styles.avatar,
             {
-              // flex: 0.8,
-              // marginRight: 20,
-              // paddingTop: 30,
               borderRadius: 36,
               zIndex: 9998,
               right: 20,
               backgroundColor: "transparent",
               top: TOP_SAFE_AREA + 25,
-              // justifyContent: "center",
-              // alignItems: "center",
               position: "absolute"
             }
           ]}
@@ -277,15 +272,8 @@ class Overview extends Component {
           >
             <Text style={styles.title}>
               Hi, {this.state.firstname}
-              {/* Hi, Charlie! */}
             </Text>
           </Animated.View>
-          {/* <Animated.View style={{opacity:smallTitleOpacity, alignItems: 'center', marginTop: 0 }}>
-          <Text style={styles.microtitle}>Overview</Text>
-          </Animated.View> */}
-          {/* <Transition appear='scale' delay={500} shared="enter"> */}
-
-          {/* </Transition> */}
         </Animated.View>
 
         <View style={{ flex: 1 }}>
