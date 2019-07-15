@@ -4,7 +4,7 @@
 
 ### **Testing:**
 
-Add steps below so that the reviewer can manually tests your changes.
+Add anything in particular to look out for
 
 **Steps for manual testing:**
 
