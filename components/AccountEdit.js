@@ -21,10 +21,14 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import * as firebase from "firebase";
+import { dispatch, connect } from '../store';
 
 import "firebase/storage";
 import "firebase/firestore";
 
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -34,7 +38,7 @@ const DismissKeyboard = ({ children }) => (
     {children}
   </TouchableWithoutFeedback>
 );
-export default class AccountEdit extends Component {
+class AccountEdit extends Component {
   db = firebase.firestore();
   storage = firebase.storage();
   static propTypes = {
@@ -60,7 +64,7 @@ export default class AccountEdit extends Component {
   }
 
   saveProfile(firstName, lastName, email, func) {
-    var user = firebase.auth().currentUser;
+    var user = this.props.user;
     return new Promise((resolve, reject) => {
       this.db
         .collection("users")
@@ -97,7 +101,7 @@ export default class AccountEdit extends Component {
   }
 
   getUser() {
-    var user = firebase.auth().currentUser;
+    var user = this.props.user;
     console.log(user.uid);
     console.log(user.photoURL);
     // this.db.collection("users").doc(user.uid).set({name: user.displayName})
@@ -120,7 +124,7 @@ export default class AccountEdit extends Component {
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    var user = firebase.auth().currentUser;
+    var user = this.props.user;
     this.setState({ uploading: true });
     var ref = firebase
       .storage()
@@ -135,7 +139,7 @@ export default class AccountEdit extends Component {
       prevState.uploading != this.state.uploading &&
       this.state.uploading == false
     ) {
-      var user = firebase.auth().currentUser;
+      var user = this.props.user;
       firebase
         .storage()
         .ref()
@@ -157,7 +161,7 @@ export default class AccountEdit extends Component {
 
     if (!image.cancelled) {
       var date = new Date();
-      var user = firebase.auth().currentUser;
+      var user = this.props.user;
       var imageName = Date.parse(date) + user.displayName;
       this.setState({ imageName: imageName });
       this.uploadImage(image.uri, imageName)
@@ -361,6 +365,8 @@ export default class AccountEdit extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(AccountEdit);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
