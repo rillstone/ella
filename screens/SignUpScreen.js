@@ -17,7 +17,6 @@ import {
   TouchableOpacity
 } from "react-native";
 import * as theme from "../theme";
-import * as Animatable from "react-native-animatable";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Button, Input } from "react-native-elements";
 import { Transition } from "react-navigation-fluid-transitions";

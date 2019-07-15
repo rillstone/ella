@@ -3,16 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   Platform,
   StatusBar,
-  Image,
   Dimensions,
-  ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
-  ScrollView,
   Animated
 } from "react-native";
 import TransitionView from "../components/TransitionView";

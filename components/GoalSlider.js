@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Image,
-  TouchableOpacity,
   StyleSheet,
-  Dimensions,
-  ImageBackground
+  Dimensions
 } from "react-native";
 import * as theme from "../theme";
 import {
