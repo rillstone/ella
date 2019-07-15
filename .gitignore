@@ -3,7 +3,6 @@
 # Edit at https://www.gitignore.io/?templates=node,reactnative
 
 # package stuff
-package-lock.json
 .expo
 
 ### Node ###
