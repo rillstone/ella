@@ -16,6 +16,7 @@ import SignUpScreen from "../screens/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import Planner from "../screens/Planner";
 import Transactions from "../screens/Transactions";
+import TransactionsScreen from "../screens/TransactionsScreen";
 import TransactionsCategoryView from "../screens/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
@@ -116,7 +117,7 @@ PlannerStack.navigationOptions = {
 
 const TransactionsStack = createStackNavigator(
   {
-    TransactionsScreen: Transactions,
+    TransactionsScreen: TransactionsScreen,
     TransactionCategory: TransactionsCategoryView
   },
   {
