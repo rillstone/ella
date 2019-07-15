@@ -23,6 +23,12 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
 import AccountEdit from "../components/AccountEdit";
+import { dispatch, connect } from '../store';
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -78,7 +84,7 @@ class Overview extends Component {
       .get()
       .then(querySnapshot => {
         const items = [];
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
           items.push(doc.data());
         });
         this.setState({ items, refreshing: false });
@@ -115,7 +121,7 @@ class Overview extends Component {
       uid: user.uid,
       photoURL: user.photoURL ? user.photoURL : ""
     });
-    
+
   }
   signoutPress = async () => {
     await AsyncStorage.clear();
@@ -138,6 +144,7 @@ class Overview extends Component {
 
   componentWillMount() {
     this.getUser();
+    console.log(this.props.user);
     this.mounted = true;
     this.startHeaderHeight = 80;
     if (Platform.OS == "android") {
@@ -205,24 +212,24 @@ class Overview extends Component {
                 editProfile={this.editProfile}
               />
             ) : (
-              <AccountEdit
-                data={{
-                  dragHandler: dragHandler,
-                  firstName: this.state.firstname,
-                  lastName: this.state.lastname,
-                  email: this.state.email,
-                  icon:
-                    this.state.lastname && this.state.firstname
-                      ? this.state.firstname[0] + this.state.lastname[0]
-                      : "XX",
-                  image: this.state.photoURL
-                }}
-                action={this.childHandler}
-                goBack={this.goBack}
-                editProfile={this.editProfile}
-                saved={this.updateUser}
-              />
-            )
+                <AccountEdit
+                  data={{
+                    dragHandler: dragHandler,
+                    firstName: this.state.firstname,
+                    lastName: this.state.lastname,
+                    email: this.state.email,
+                    icon:
+                      this.state.lastname && this.state.firstname
+                        ? this.state.firstname[0] + this.state.lastname[0]
+                        : "XX",
+                    image: this.state.photoURL
+                  }}
+                  action={this.childHandler}
+                  goBack={this.goBack}
+                  editProfile={this.editProfile}
+                  saved={this.updateUser}
+                />
+              )
           }
         </SlidingUpPanel>
         <View
@@ -416,7 +423,7 @@ class Overview extends Component {
     );
   }
 }
-export default Overview;
+export default connect(mapStateToProps)(Overview);
 
 const styles = StyleSheet.create({
   container: {
