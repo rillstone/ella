@@ -4,6 +4,8 @@ import {
   createStackNavigator,
   createSwitchNavigator
 } from "react-navigation";
+
+import TransactionScreen from "../screens/TransactionScreen";
 import Overview from "../screens/Overview";
 import NewGoal from "../screens/NewGoal";
 import GoalView from "../screens/GoalView";
@@ -66,7 +68,8 @@ const HomeStack = createStackNavigator(
     Home: Overview,
     Goal: NewGoal,
     ViewGoal: GoalView,
-    OverviewChart: OverviewChartView
+    OverviewChart: OverviewChartView,
+    TransactionView: TransactionScreen,
   },
   {
     mode: "modal",
