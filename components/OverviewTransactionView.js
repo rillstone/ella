@@ -59,7 +59,12 @@ export default class OverviewTransactionView extends Component {
       .map(
         (tr, i) => (
           (this.sum += tr.amount),
-          <OverviewTransaction data={tr} key={tr._id} index={i} />
+          <OverviewTransaction
+            navigation={this.props.navigation}
+            data={tr}
+            key={tr._id}
+            index={i}
+          />
         )
       );
   }
