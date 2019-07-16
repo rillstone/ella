@@ -81,10 +81,14 @@ HomeStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
-  if (routeName === "ViewGoal" || routeName === "OverviewChart" ) {
+  if (
+    routeName === "ViewGoal" ||
+    routeName === "OverviewChart" ||
+    routeName === "TransactionView"
+  ) {
     tabBarVisible = false;
   }
-  
+
 
   return {
     headerStyle: {
@@ -191,18 +195,18 @@ const SignInStack = FluidNavigator(
     SignIn: SignInScreen,
     SignUp: SignUpScreen,
     // HomePage: TabNavigator
-  },{ navigationOptions: { gesturesEnabled: false } },
+  }, { navigationOptions: { gesturesEnabled: false } },
   {
     mode: "card",
     headerMode: "none"
   }
-  
+
 );
 export default createSwitchNavigator(
   {
-  AuthLoading: AuthLoadingScreen,
-  App: TabNavigator,
-  Auth: SignInStack,
+    AuthLoading: AuthLoadingScreen,
+    App: TabNavigator,
+    Auth: SignInStack,
   },
   {
     initialRouteName: 'AuthLoading',
