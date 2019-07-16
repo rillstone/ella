@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  ImageBackground,
   Platform,
   StatusBar,
   Dimensions,
@@ -22,11 +23,13 @@ import * as shape from "d3-shape";
 import * as Animatable from "react-native-animatable";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
-
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-
+const IS_IOS = Platform.OS === "ios";
+const HEADER_MAX_HEIGHT = 150;
+const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
+const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class TransactionsScreen extends Component {
   mounted = false;
   constructor(props) {
@@ -37,6 +40,7 @@ class TransactionsScreen extends Component {
       loading: false,
       data: [],
       scroll: false,
+      scrollY: new Animated.Value(0)
     };
     this.props = props;
     this.onScrollTop = this.onScrollTop.bind(this);
@@ -52,15 +56,15 @@ class TransactionsScreen extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
   }
- onScrollTop = ({layoutMeasurement, contentOffset, contentSize}) => {
-    console.log(contentOffset.y)
-    console.log(viewportHeight - 150)
+  onScrollTop = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    console.log(contentOffset.y);
+    console.log(viewportHeight - 150);
 
-    if(contentOffset.y == 103) {
-        console.log('top')
-        this.setState({
-            scroll:true
-        })
+    if (contentOffset.y == 103) {
+      console.log("top");
+      this.setState({
+        scroll: true
+      });
     }
   };
   componentDidMount() {
@@ -86,72 +90,80 @@ class TransactionsScreen extends Component {
   }
 
   render() {
-    const axesSvg = { fontSize: 10 };
-    const xAxisHeight = 30;
+    const headerTranslate = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE * 5],
+      outputRange: [0, -HEADER_SCROLL_DISTANCE * 2],
+      extrapolate: "clamp"
+    });
+    const inputTranslate = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE],
+      outputRange: [0, HEADER_SCROLL_DISTANCE - 20],
+      extrapolate: "clamp"
+    });
+
+    const titleScale = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+      outputRange: [1, 1, 0.8],
+      extrapolate: "clamp"
+    });
+    const titleTranslate = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+      outputRange: [0, 0, -8],
+      extrapolate: "clamp"
+    });
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: theme.scheme.crusta }}>
-        {/* <View
-          style={{
-            // position: "absolute",
-            flex:1,
-            height: viewportHeight / 3,
-            backgroundColor:'blue',
-            top: 20,
-            width: sliderWidth
-          }}
-        >
-    
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+        <StatusBar barStyle="light-content" />
 
-          <Image source={ this.state.graph} style={styles.image} />
-        </View> */}
-        <View
-          style={{
-            flex: 1.3,
-            height: viewportHeight / 4,
-            backgroundColor: theme.scheme.crusta,
-            position: "absolute"
-          }}
+        <ImageBackground
+          imageStyle={{ resizeMode: "stretch" }}
+          source={require("../assets/images/tran_screen_back.png")}
+          style={[styles.header]}
         >
-          <View style={styles.titleContain}>
-            <Text style={styles.subtitle}>Total spendings</Text>
-            <AnimateNumber
-              style={styles.title}
-              value={397.4}
-              formatter={val => {
-                return "$" + val.toFixed(2);
-              }}
-            />
-            <Text style={styles.microtitle}> - $12.94 today</Text>
-          </View>
-        </View>
-
-        <View style={{ flex: 4 }}>
-          <Animated.ScrollView
-            style={{ flex:1 }}
-              bounces={false}
-              onScroll={({nativeEvent}) => {
-               this.onScrollTop(nativeEvent)
-              }}
-              scrollEventThrottle={400}
+          <Animated.View
+            style={{
+              transform: [{ translateY: inputTranslate }]
+            }}
           >
-            <Animatable.View
-              animation={"fadeInUpBig"}
-              duration={700}
-              delay={1000}
-              useNativeDriver
+            {/* <View style={styles.titleContain}>
+              <Text style={styles.subtitle}>Total spendings</Text>
+              <AnimateNumber
+                style={styles.title}
+                value={397.4}
+                formatter={val => {
+                  return "$" + val.toFixed(2);
+                }}
+              />
+              <Text style={styles.microtitle}> - $12.94 today</Text>
+            </View> */}
+          </Animated.View>
+        </ImageBackground>
+        <View style={{ flex: 0.2 }} />
+        <Animated.ScrollView
+          style={[styles.fill]}
+          scrollEventThrottle={1}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
+            { useNativeDriver: true }
+          )}
+        >
+          {/* {this._renderScrollViewContent()} */}
+          <View
+            style={{
+              borderTopLeftRadius: 12,
+              backgroundColor: theme.colors.back,
+              borderTopRightRadius: 12,
+              overflow: "hidden",
+              marginTop: HEADER_SCROLL_DISTANCE * 5
+            }}
+          >
+            <View
               style={{
-                marginTop: viewportHeight / 4,
-                height: viewportHeight - 150,
-                backgroundColor: theme.colors.back,
-                borderTopRightRadius: 17,
-                borderTopLeftRadius: 17
+                marginVertical: 10,
+                marginHorizontal: 20,
+                marginTop: 20
               }}
             >
-                <Animated.ScrollView
-            style={{ flex: 1 }}
-            scrollEnabled={this.state.scroll}
-
-          >
               <Paragraph
                 style={{ left: 20, top: 20 }}
                 animation="fade"
@@ -163,6 +175,26 @@ class TransactionsScreen extends Component {
                 firstLineWidth="50%"
                 isReady={this.state.loading}
               >
+                <View
+                  style={{
+                    marginHorizontal:20,
+                    marginVertical: 20,
+                    height: viewportWidth/1.5,
+                    borderRadius: 12,
+                    width: viewportWidth - 40,
+                    alignSelf:"center",
+                    backgroundColor: theme.colors.back,
+                    shadowColor: "black",
+                    shadowOffset: {
+                      width: 0,
+                      height: -1
+                    },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 4,
+                    elevation: 1
+                  }}
+                />
+                <Text style={{fontSize: theme.sizes.subtitle, color: theme.colors.gray, fontWeight: '800'}}>Today</Text>
                 {this.state.transactions}
               </Paragraph>
               <Paragraph
@@ -191,10 +223,9 @@ class TransactionsScreen extends Component {
               >
                 {null}
               </Paragraph>
-            </Animated.ScrollView>
-            </Animatable.View>
-          </Animated.ScrollView>
-        </View>
+            </View>
+          </View>
+        </Animated.ScrollView>
       </SafeAreaView>
     );
   }
@@ -208,6 +239,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#f6f5f7"
   },
+  fill: {
+    flex: 1,
+    // top:0,
+    // top: HEADER_SCROLL_DISTANCE * 5,
+    bottom: 0,
+    backgroundColor: "transparent",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: "hidden",
+    height: viewportHeight
+    // marginTop: HEADER_MAX_HEIGHT
+  },
+  margin: {
+    flex: 0.3,
+    backgroundColor: "blue"
+    // marginTop: HEADER_MAX_HEIGHT
+  },
+  bar: {
+    backgroundColor: "transparent",
+    marginTop: Platform.OS === "ios" ? 40 : 38,
+    height: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0
+  },
   image: {
     // resizeMode: 'cover',
     flex: 1,
@@ -215,9 +274,9 @@ const styles = StyleSheet.create({
     width: undefined
   },
   titleContain: {
-    paddingLeft: 20,
-    paddingTop: 30,
-    flex: 1
+    alignContent: "center",
+    alignSelf: "center",
+    top: 20
   },
   cardContainer: {
     backgroundColor: "grey",
@@ -247,6 +306,19 @@ const styles = StyleSheet.create({
   slider: {
     marginTop: 15,
     overflow: "visible" // for custom animations
+  },
+  header: {
+    position: "absolute",
+    // flex:0.5,
+    // alignSelf: 'center',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "transparent",
+    overflow: "visible",
+    height: viewportHeight / 3
+    // borderBottomWidth: 0.5,
+    // borderColor: "#00000020"
   },
   sliderContentContainer: {
     paddingVertical: 10 // for custom animation
