@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
     Text,
+    Image,
     StatusBar,
     StyleSheet,
     Dimensions,
@@ -12,6 +13,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
 import * as theme from "../theme";
 
+const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric", year: "short" };
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
     "window"
 );
@@ -22,7 +24,6 @@ const mapStateToProps = state => ({
 class TransactionScreen extends Component {
     render() {
         const { transaction, navigation } = this.props;
-        console.log(transaction);
         return (
             <View style={styles.container}>
                 <StatusBar hidden={true} />
@@ -43,11 +44,21 @@ class TransactionScreen extends Component {
                 <View
                     style={styles.receipt}
                 >
-                    <Text>{transaction.name}</Text>
-                    <Text>${transaction.amount}</Text>
-                    <Text>{transaction.type}</Text>
-                    <Text>{transaction.amount}</Text>
-                    <Text>{transaction.amount}</Text>
+                    <Image
+                        style={{
+                            width: 150,
+                            height: 150,
+                            borderRadius: 25,
+                        }}
+                        source={{ uri: transaction.logo }}
+                    />
+                    <Text style={styles.text}>{transaction.name}</Text>
+                    <Text style={styles.text}>${transaction.amount}</Text>
+                    <Text style={styles.text}>{transaction.type}</Text>
+                    <Text style={styles.text}>
+                        {new Date(transaction.date)
+                            .toLocaleDateString("en-NZ", DATE_OPTIONS)}
+                    </Text>
                 </View>
             </View>
         )
@@ -64,7 +75,7 @@ const styles = StyleSheet.create({
     },
     receipt: {
         // flex: 1,
-        justifyContent: "center",
+        justifyContent: "space-around",
         alignItems: "center",
         width: viewportWidth * 0.8,
         height: viewportHeight * 0.8,
@@ -72,5 +83,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 1,
         borderColor: "#000",
+    },
+    text:{
+        fontSize: 18,
     }
 });
