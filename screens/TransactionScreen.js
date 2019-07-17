@@ -22,6 +22,7 @@ const mapStateToProps = state => ({
 class TransactionScreen extends Component {
     render() {
         const { transaction, navigation } = this.props;
+        console.log(transaction);
         return (
             <View style={styles.container}>
                 <StatusBar hidden={true} />
@@ -42,6 +43,10 @@ class TransactionScreen extends Component {
                 <View
                     style={styles.receipt}
                 >
+                    <Text>{transaction.name}</Text>
+                    <Text>${transaction.amount}</Text>
+                    <Text>{transaction.type}</Text>
+                    <Text>{transaction.amount}</Text>
                     <Text>{transaction.amount}</Text>
                 </View>
             </View>
@@ -53,7 +58,6 @@ export default connect(mapStateToProps)(TransactionScreen)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: "center",
         backgroundColor: theme.colors.lightGray,
@@ -67,6 +71,6 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.white,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "#33b5e5",
+        borderColor: "#000",
     }
 });
