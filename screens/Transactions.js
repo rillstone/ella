@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import * as theme from "../theme";
 import payments from "../assets/payments.json";
@@ -14,12 +14,13 @@ import Carousel from "react-native-snap-carousel";
 import SliderEntry from "../components/SliderEntry";
 import Transaction from "../components/Transaction";
 import { sliderWidth, itemWidth } from "../styles/SliderEntry.style";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { Paragraph } from "rn-placeholder";
 import { StackedAreaChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
+import { dispatch } from "../store";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -319,7 +320,14 @@ class Transactions extends Component {
       (tr, i) => (
         (this.sum += tr.amount),
         (
-          <Transaction data={tr} key={tr._id} index={i}></Transaction>
+          <TouchableOpacity
+            key={i}
+            onPress={() => {
+              this.props.navigation.navigate("TransactionView")
+              dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr })
+            }}>
+            <Transaction data={tr} key={tr._id} index={i}></Transaction>
+          </TouchableOpacity>
         )
       )
     );

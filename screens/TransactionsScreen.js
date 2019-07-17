@@ -8,7 +8,8 @@ import {
   Platform,
   StatusBar,
   Dimensions,
-  Animated
+  Animated,
+  TouchableOpacity,
 } from "react-native";
 import * as theme from "../theme";
 import payments from "../assets/payments.json";
@@ -22,6 +23,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
 import { Paragraph } from "rn-placeholder";
+import {dispatch} from "../store";
 
 import * as Animatable from "react-native-animatable";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
@@ -121,13 +123,27 @@ class TransactionsScreen extends Component {
                 .toString()}
               {/* <TimeAgo time={tr.date} /> */}
             </Text>
-            <Transaction data={tr} key={tr._id} index={i} />
+            <TouchableOpacity
+              key={i}
+              onPress={() => {
+                this.props.navigation.navigate("TransactionView")
+                dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr })
+              }}>
+              <Transaction data={tr} key={tr._id} index={i} />
+            </TouchableOpacity>
           </View>
         ) : (
-          <View key={tr._id}>
-            <Transaction data={tr} key={tr._id} index={i} />
-          </View>
-        );
+            <View key={tr._id}>
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  this.props.navigation.navigate("TransactionView")
+                  dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr })
+                }}>
+                <Transaction data={tr} key={tr._id} index={i} />
+              </TouchableOpacity>
+            </View>
+          );
       currentDate = tr.date;
       return x;
     });

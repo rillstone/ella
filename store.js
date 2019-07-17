@@ -6,6 +6,7 @@ const initialState = {
     user: {},
     transactions: [],
     goals: [],
+    activeTransaction: {},
 };
 
 // create app actions
@@ -21,6 +22,9 @@ const actionsCreators = {
     }),
     setUser: (state, {user}) => ({
         user: user
+    }),
+    setActiveTransaction: (state, {transaction}) => ({
+        activeTransaction: transaction
     }),
 };
 
