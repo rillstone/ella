@@ -10,6 +10,7 @@ import {
 import * as theme from "../theme";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
+import { dispatch } from "../store";
 const colors = [
   theme.scheme.crusta,
   theme.scheme.royal_blue2,
@@ -35,14 +36,11 @@ export default class OverviewTransaction extends Component {
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity
-          // onPress={() =>
-          //   this.props.navigation.navigate("OverviewChart", {
-          //     navigation: this.props.navigation,
-          //     title: title,
-          //     data: data,
-          //     colors: [image[1], color]
-          //   })
-          // }
+          onPress={() => {
+            this.props.navigation.navigate("TransactionView")
+            dispatch("SET_ACTIVE_TRANSACTION", { transaction: this.props.data})
+          }
+          }
           style={styles.transactionContainer}
         >
           <View style={styles.iconContainer}>
@@ -50,7 +48,7 @@ export default class OverviewTransaction extends Component {
           </View>
 
           <View style={[styles.categoryTag, { backgroundColor: background }]} />
-          <View style={{flex:1, top: 35/1.5, alignSelf: 'center'}}>
+          <View style={{ flex: 1, top: 35 / 1.5, alignSelf: 'center' }}>
             <Text
               style={{
                 fontWeight: "700",
