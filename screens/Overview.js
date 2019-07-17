@@ -144,7 +144,6 @@ class Overview extends Component {
 
   componentWillMount() {
     this.getUser();
-    console.log(this.props.user);
     this.mounted = true;
     this.startHeaderHeight = 80;
     if (Platform.OS == "android") {
