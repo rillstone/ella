@@ -15,9 +15,9 @@ import payments from "../assets/payments.json";
 import Icon from "react-native-vector-icons/Ionicons";
 import Transaction from "../components/Transaction";
 import TransactionCategorySelect from "../components/TransactionCategorySelect";
-import { sliderWidth, itemWidth } from "../styles/SliderEntry.style"
-import { LineChart } from 'react-native-svg-charts'
-import * as shape from 'd3-shape';
+import { sliderWidth, itemWidth } from "../styles/SliderEntry.style";
+import { LineChart } from "react-native-svg-charts";
+import * as shape from "d3-shape";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
@@ -56,7 +56,7 @@ class TransactionsScreen extends Component {
     this.onScrollTop = this.onScrollTop.bind(this);
 
     this.sum = 0;
-    this.transactionList =[];
+    this.transactionList = [];
     this.transactionState("Leisure");
   }
 
@@ -136,12 +136,12 @@ class TransactionsScreen extends Component {
   render() {
     const headerTranslate = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE * 2],
-      outputRange: [0, -(HEADER_SCROLL_DISTANCE*3)],
+      outputRange: [0, -(HEADER_SCROLL_DISTANCE * 3)],
       extrapolate: "clamp"
     });
     const inputTranslate = this.state.scrollY.interpolate({
-      inputRange: [0, HEADER_SCROLL_DISTANCE*3],
-      outputRange: [0, -(HEADER_SCROLL_DISTANCE*4 + 5)],
+      inputRange: [0, HEADER_SCROLL_DISTANCE * 5],
+      outputRange: [0, -(HEADER_SCROLL_DISTANCE * 6 + 5)],
       extrapolate: "clamp"
     });
 
@@ -150,9 +150,9 @@ class TransactionsScreen extends Component {
       outputRange: [1, 1, 0],
       extrapolate: "clamp"
     });
-    const titleTranslate = this.state.scrollY.interpolate({
-      inputRange: [0, HEADER_SCROLL_DISTANCE / 3, HEADER_SCROLL_DISTANCE],
-      outputRange: [0, 0, -8],
+    const scale = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+      outputRange: [1, 1, 0],
       extrapolate: "clamp"
     });
     return (
@@ -198,88 +198,134 @@ class TransactionsScreen extends Component {
         </Animated.ScrollView>
         <ImageBackground
           imageStyle={{ resizeMode: "stretch" }}
-          source={require("../assets/images/tran_screen_back.png")}
+          source={require("../assets/images/tran_screen_back_small.png")}
           style={[styles.header]}
         >
           <Animated.View
-            style={{ flex:1,
-              transform: [{ translateY: inputTranslate }]
-            }}
+            style={{ flex: 1, transform: [{ translateY: inputTranslate }] }}
           >
-            <View style={{ flex:1}}>
-            <Animated.View style={[styles.titleContain ,{opacity: opacity}]}>
-              <AnimateNumber
-                style={styles.title}
-                value={this.sum}
-                formatter={val => {
-                  return "$" + val.toFixed(2);
-                }}
-              />
-              <Text style={styles.subtitle}>Total spendings</Text>
-            </Animated.View>
-            <View style={styles.inOut}>
-              <View style={styles.inOutColumn}>
-                <Text style={styles.inOutHeader}>INCOME</Text>
-                <View style={styles.inOutRow}>
-                  <Icon
-                    name={"md-arrow-dropup-circle"}
-                    color={theme.scheme.green}
-                    size={18}
-                  />
-                  <Text
-                    style={[styles.inOutSum, { color: theme.scheme.green }]}
-                  >
-                    $350.64
-                  </Text>
+            <View style={{ flex: 1 }}>
+              <Animated.View
+                style={[styles.titleContain, { opacity: opacity }]}
+              >
+                <AnimateNumber
+                  style={styles.title}
+                  value={this.sum}
+                  formatter={val => {
+                    return "$" + val.toFixed(2);
+                  }}
+                />
+                <Text style={styles.subtitle}>Total spendings</Text>
+              </Animated.View>
+              <View style={styles.inOut}>
+                <View style={styles.inOutColumn}>
+                  <View style={styles.inOutRow}>
+                    <Icon
+                      name={"md-arrow-dropup-circle"}
+                      color={theme.scheme.green}
+                      size={14}
+                    />
+                    <Text
+                      style={[styles.inOutSum, { color: theme.scheme.green }]}
+                    >
+                      $350.64
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.inOutColumn}>
+                  <View style={styles.inOutRow}>
+                    <Icon
+                      name={"md-arrow-dropdown-circle"}
+                      color={theme.scheme.cerise}
+                      size={14}
+                    />
+                    <Text
+                      style={[styles.inOutSum, { color: theme.scheme.cerise }]}
+                    >
+                      $350.64
+                    </Text>
+                  </View>
                 </View>
               </View>
-              <View style={styles.inOutColumn}>
-                <Text style={styles.inOutHeader}>OUTCOME</Text>
-                <View style={styles.inOutRow}>
-                  <Icon
-                    name={"md-arrow-dropdown-circle"}
-                    color={theme.scheme.cerise}
-                    size={18}
-                  />
-                  <Text
-                    style={[styles.inOutSum, { color: theme.scheme.cerise }]}
-                  >
-                    $350.64
-                  </Text>
-                </View>
-              </View>
-            </View>
             </View>
           </Animated.View>
         </ImageBackground>
-        <View style={{ flex: 0.2 }} />
+
         <Animated.ScrollView
           style={[styles.fill]}
+          stickyHeaderIndices={[1]}
+          showsVerticalScrollIndicator={false}
           scrollEventThrottle={1}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
             { useNativeDriver: true }
           )}
         >
-          {/* {this._renderScrollViewContent()} */}
+          <View style={{ paddingTop: TOP_SAFE_AREA }} />
           <View
             style={{
               borderTopLeftRadius: 12,
               backgroundColor: theme.colors.back,
               borderTopRightRadius: 12,
-              overflow: "hidden",
+              overflow: "visible",
               marginTop: HEADER_SCROLL_DISTANCE * 5
             }}
+          >
+            <Paragraph
+              style={{ left: 40, top: 20 }}
+              animation="fade"
+              lineNumber={3}
+              textSize={16}
+              color="#DAD7D7"
+              width="80%"
+              lastLineWidth="70%"
+              firstLineWidth="50%"
+              isReady={this.state.loading}
+            >
+              <View
+                style={{
+                  marginHorizontal: 20,
+                  marginTop: 20,
+                  height: viewportWidth / 3,
+                  borderRadius: 12,
+                  width: viewportWidth - 40,
+                  alignSelf: "center",
+                  backgroundColor: theme.scheme.crusta,
+                  shadowColor: theme.scheme.crusta,
+                  shadowOffset: {
+                    width: 0,
+                    height: 0
+                  },
+                  shadowOpacity: 0.7,
+                  shadowRadius: 4,
+                  elevation: 1
+                }}
+              >
+                <LineChart
+                  style={{ height: viewportWidth / 3.6 }}
+                  data={this.transactionList}
+                  curve={shape.curveNatural}
+                  animate
+                  contentInset={{ top: 20, bottom: 20 }}
+                  svg={{
+                    strokeWidth: 2,
+                    stroke: "white"
+                  }}
+                />
+              </View>
+            </Paragraph>
+          </View>
+          <View
+            style={{ width: viewportWidth, backgroundColor: theme.colors.back }}
           >
             <View
               style={{
                 marginVertical: 10,
-                marginHorizontal: 20,
-                marginTop: 20
+                marginHorizontal: 20
               }}
             >
               <Paragraph
-                style={{ left: 20, top: 20 }}
+                style={{ left: 20, top: 0, marginTop: 20 }}
                 animation="fade"
                 lineNumber={3}
                 textSize={16}
@@ -289,39 +335,6 @@ class TransactionsScreen extends Component {
                 firstLineWidth="50%"
                 isReady={this.state.loading}
               >
-                <View
-                  style={{
-                    marginHorizontal: 20,
-                    marginVertical: 20,
-                    height: viewportWidth / 1.5,
-                    borderRadius: 12,
-                    width: viewportWidth - 40,
-                    alignSelf: "center",
-                    backgroundColor: theme.scheme.crusta,
-                    shadowColor: theme.scheme.crusta,
-                    shadowOffset: {
-                      width: 0,
-                      height: -1
-                    },
-                    shadowOpacity: 0.4,
-                    shadowRadius: 4,
-                    elevation: 1
-                  }}
-                >
-                  <LineChart
-                style={ { height: 200 } }
-                data={ this.transactionList }
-                curve={ shape.curveNatural }
-                animate
-                contentInset={ { top: 20, bottom: 20 } }
-                svg={{
-                    strokeWidth: 2,
-                    stroke: 'white',
-                }}
-            >
-            </LineChart>
-                </View>
-
                 {this.state.transactions}
               </Paragraph>
               <Paragraph
@@ -366,23 +379,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#f6f5f7"
   },
-  category: {
-    color: "white",
-    marginHorizontal: 5
-  },
-  categorySelected: {
-    color: theme.scheme.crusta,
-    marginHorizontal: 5,
-    backgroundColor: "white"
-  },
-  categorySelectedContainer: {
-    backgroundColor: "white",
-    borderRadius: 12
-  },
+
   fill: {
     flex: 1,
     // top:0,
-    // top: HEADER_SCROLL_DISTANCE * 5,
     bottom: 0,
     backgroundColor: "transparent",
     borderTopLeftRadius: 12,
@@ -391,28 +391,7 @@ const styles = StyleSheet.create({
     height: viewportHeight
     // marginTop: HEADER_MAX_HEIGHT
   },
-  margin: {
-    flex: 0.3,
-    backgroundColor: "blue"
-    // marginTop: HEADER_MAX_HEIGHT
-  },
-  bar: {
-    backgroundColor: "transparent",
-    marginTop: Platform.OS === "ios" ? 40 : 38,
-    height: 32,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0
-  },
-  image: {
-    // resizeMode: 'cover',
-    flex: 1,
-    height: undefined,
-    width: undefined
-  },
+
   titleContain: {
     alignContent: "center",
     alignSelf: "center",
@@ -428,28 +407,24 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    // top: TOP_SAFE_AREA + 80,
+    top: 5,
     backgroundColor: "white",
     borderRadius: 10,
     opacity: 0.8,
-    flex: 0.5,
-    marginBottom: TOP_SAFE_AREA,
+    flex: 0.4,
+    marginBottom: TOP_SAFE_AREA
   },
   inOutColumn: {
     flexDirection: "column",
     marginHorizontal: 10,
     alignItems: "center",
     height: undefined,
-    padding: 8
+    padding: 4
   },
-  inOutHeader: { fontSize: 18, fontWeight: "700", color: theme.colors.gray },
-  inOutSum: { fontSize: 18, fontWeight: "700" },
+  inOutHeader: { fontSize: 14, fontWeight: "700", color: theme.colors.gray },
+  inOutSum: { fontSize: 14, fontWeight: "700" },
   inOutRow: { flexDirection: "row", alignItems: "center" },
-  cardContainer: {
-    backgroundColor: "grey",
-    height: 100,
-    borderRadius: 7
-  },
+
   title: {
     fontSize: theme.sizes.title,
     fontWeight: "800",
@@ -461,20 +436,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     opacity: 0.7
   },
-  subtitle_two: {
-    fontSize: theme.sizes.subtitle_two,
-    fontWeight: "600",
-    color: theme.colors.gray
-  },
-  microtitle: {
-    fontSize: theme.sizes.microsub,
-    fontWeight: "600",
-    color: theme.scheme.sunglow
-  },
-  slider: {
-    marginTop: 15,
-    overflow: "visible" // for custom animations
-  },
   header: {
     position: "absolute",
     // flex:0.5,
@@ -484,59 +445,8 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "transparent",
     overflow: "visible",
-    height: viewportHeight / 3
+    height: viewportHeight / 4
     // borderBottomWidth: 0.5,
     // borderColor: "#00000020"
-  },
-  sliderContentContainer: {
-    paddingVertical: 10 // for custom animation
-  },
-  paginationContainer: {
-    paddingVertical: 8
-  },
-  paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 8
-  },
-  balanceCont2: {
-    // position: 'absolute',
-
-    // flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    top: 0,
-    left: 20,
-    right: 20,
-    bottom: 0
-    // backgroundColor: 'yellow',
-    // flex: 5
-    // height: 90,
-  },
-  balance2: {
-    // flexDirection: 'column',
-    // position: 'relative',
-    borderRadius: theme.sizes.radius,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    flexDirection: "row",
-    // bottom: 0,
-    // left: 0,
-    // top: 15,
-
-    height: 70
-    // marginBottom: 10
-  },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 0
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 0
   }
 });
