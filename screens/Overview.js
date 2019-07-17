@@ -94,8 +94,8 @@ class Overview extends Component {
 
   getUser() {
     var user = this.props.user;
-    console.log(user.uid);
-    console.log(user.displayName);
+    // console.log(user.uid);
+    // console.log(user.displayName);
 
     // this.db.collection("users").doc(user.uid).set({name: user.displayName})
     var name;
@@ -144,7 +144,7 @@ class Overview extends Component {
 
   componentWillMount() {
     this.getUser();
-    console.log(this.props.user);
+    // console.log(this.props.user);
     this.mounted = true;
     this.startHeaderHeight = 80;
     if (Platform.OS == "android") {
@@ -176,9 +176,10 @@ class Overview extends Component {
     });
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+        <StatusBar barStyle="dark-content" translucent/>
         <SlidingUpPanel
-          onDragStart={() => console.log("start")}
-          onDragEnd={() => console.log("end")}
+          // onDragStart={() => console.log("start")}
+          // onDragEnd={() => console.log("end")}
           containerStyle={{
             zIndex: 9999,
             elevation: 2,
@@ -364,7 +365,7 @@ class Overview extends Component {
                 }}
               >
                 <View style={{}}>
-                  <Text style={styles.title}>Transactions</Text>
+                  <Text style={styles.title2}>Transactions</Text>
                 </View>
                 <View
                   style={{
@@ -394,7 +395,7 @@ class Overview extends Component {
                 }}
               >
                 <View style={{}}>
-                  <Text style={styles.title}>Goals</Text>
+                  <Text style={styles.title2}>Goals</Text>
                 </View>
                 <View
                   style={{
@@ -457,7 +458,13 @@ const styles = StyleSheet.create({
     // flex: 6
   },
   title: {
-    fontSize: 28,
+    fontSize: theme.sizes.title,
+    backgroundColor: "transparent",
+    fontWeight: "800",
+    color: theme.colors.gray
+  },
+  title2: {
+    fontSize: 20,
     backgroundColor: "transparent",
     fontWeight: "800",
     color: theme.colors.gray
