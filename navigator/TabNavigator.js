@@ -74,20 +74,25 @@ const HomeStack = createStackNavigator(
   },
   {
     mode: "modal",
-    headerMode: "none"
+    headerMode: "none",
+    transparentCard: true,
   }
 );
-
+HomeStack.TranitionConfig
 HomeStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
   if (
     routeName === "ViewGoal" ||
-    routeName === "OverviewChart" ||
-    routeName === "TransactionView"
+    routeName === "OverviewChart" 
   ) {
     tabBarVisible = false;
+  }
+
+  if (routeName === "TransactionView") {
+    
+
   }
 
 
@@ -125,11 +130,13 @@ PlannerStack.navigationOptions = {
 const TransactionsStack = createStackNavigator(
   {
     TransactionsScreen: TransactionsScreen,
-    TransactionCategory: TransactionsCategoryView
+    TransactionCategory: TransactionsCategoryView,
+    TransactionView2: TransactionScreen,
   },
   {
     mode: "modal",
-    headerMode: "none"
+    headerMode: "none",
+    transparentCard: true,
   }
 );
 
