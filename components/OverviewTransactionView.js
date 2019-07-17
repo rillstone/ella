@@ -51,7 +51,7 @@ export default class OverviewTransactionView extends Component {
 
   transactionData(transaction_cat) {
     let sortedTransactions = payments[transaction_cat].sort(
-      (a, b) => new Date(...a.date) - new Date(...b.date)
+      (a, b) => new Date(b.date) - new Date(a.date)
     );
     var size = sortedTransactions.length > 10 ? 10 : sortedTransactions.length;
     return sortedTransactions
