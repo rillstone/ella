@@ -7,35 +7,16 @@ import {
   TextInput,
   Platform,
   StatusBar,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 import * as theme from "../theme";
 import SvgAnimatedLinearGradient from "react-native-svg-animated-linear-gradient";
 import Svg, { Circle, Rect } from "react-native-svg";
-
-const MyLoader = () => (
-  <SvgAnimatedLinearGradient height={100}>
-    <Circle cx="20" cy="90" r="30" transform="rotate(-49.5, 32.5, 32.5)" />
-    <Rect
-      x="70"
-      y="67"
-      rx="0"
-      ry="0"
-      width="197"
-      height="19"
-      transform="rotate(-49.5, 32.5, 32.5)"
-    />
-    <Rect
-      x="70"
-      y="99"
-      rx="0"
-      ry="0"
-      width="134"
-      height="17"
-      transform="rotate(-49.5, 32.5, 32.5)"
-    />
-  </SvgAnimatedLinearGradient>
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  "window"
 );
+
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 class Planner extends Component {
   mounted = false;
@@ -47,17 +28,6 @@ class Planner extends Component {
     };
     this.props = props;
   }
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Planner',
-    
-     headerTitleStyle : {textAlign: 'center',alignSelf:'center', fontSize: 25, color: theme.colors.gray, fontWeight: '700'},
-     headerStyle: {
-       height: 80,
-      backgroundColor: '#F7F7F7',
-      borderBottomColor: 'rgba(0, 0, 0, .3)',
-    },
-    headerTintColor: 'rgba(0, 0, 0, .9)',
-    });
   componentWillMount() {
     this.mounted = true;
     this.startHeaderHeight = 80;
@@ -69,10 +39,35 @@ class Planner extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
-        <View style={{ flex: 1.2 }}>
-          {/* <View style={styles.titleContain}>
-            <Text style={styles.title}>Planner</Text>
-          </View> */}
+        <View style={styles.container}>
+          <Text style={styles.title}>Tonight's meal:</Text>
+          <View style={styles.mainCard}>
+            <Image
+              style={{
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                width: viewportWidth * 0.9,
+                height: 200,
+              }}
+              source={require("../assets/images/mfb/1.jpg")}
+              resizeMode="cover"
+            />
+            <Text style={styles.caption}>Burmese Chicken Curry with Brown Rice</Text>
+          </View>
+          <Text style={styles.title}>Upcoming meals:</Text>
+          <View style={styles.subCard}>
+            <Image
+              style={{
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                width: viewportWidth * 0.9,
+                height: 130,
+              }}
+              source={require("../assets/images/mfb/2.jpg")}
+              resizeMode="cover"
+            />
+            <Text style={styles.caption}>Lamb and Pumpkin Pie with Cheesy Topping</Text>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -84,8 +79,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f6f5f7"
+    justifyContent: "space-around",
+    backgroundColor: theme.colors.back,
   },
   titleContain: {
     paddingLeft: 20,
@@ -98,8 +93,26 @@ const styles = StyleSheet.create({
     borderRadius: 7
   },
   title: {
-    fontSize: theme.sizes.title,
+    fontSize: 30,
     fontWeight: "800",
     color: theme.colors.gray
+  },
+  mainCard: {
+    width: viewportWidth * 0.9,
+    height: viewportHeight * 0.3,
+    marginTop: 20,
+    borderRadius: 10,
+    backgroundColor: theme.colors.lightGray,
+  },
+  subCard: {
+    width: viewportWidth * 0.9,
+    height: viewportHeight * 0.15,
+    marginTop: 20,
+    borderRadius: 10,
+    backgroundColor: theme.colors.lightGray,
+  },
+  caption: {
+    fontSize: theme.sizes.subtitle_two,
+    paddingLeft: 20,
   }
 });

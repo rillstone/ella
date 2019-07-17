@@ -107,19 +107,27 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const PlannerStack = createStackNavigator({
-  PlannerScreen: Planner
-});
+const PlannerStack = createStackNavigator(
+  {
+    PlannerScreen: Planner
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
+  }
+);
 
-PlannerStack.navigationOptions = {
-  tabBarLabel: "Planner",
-  tabBarIcon: ({ focused }) => (
-    <Icon
-      name="ios-create"
-      size={26}
-      color={focused ? activeColor : inactiveColor}
-    />
-  )
+PlannerStack.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarLabel: "Planner",
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="ios-create"
+        size={26}
+        color={focused ? activeColor : inactiveColor}
+      />
+    )
+  }
 };
 
 const TransactionsStack = createStackNavigator(
