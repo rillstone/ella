@@ -5,21 +5,21 @@ import {
   createSwitchNavigator
 } from "react-navigation";
 
-import TransactionScreen from "../screens/TransactionScreen";
-import Overview from "../screens/Overview";
-import NewGoal from "../screens/NewGoal";
-import GoalView from "../screens/GoalView";
-import OverviewChartView from "../screens/OverviewChartView";
+import TransactionScreen from "../screens/transactions/TransactionScreen";
+import Overview from "../screens/overview/Overview";
+import NewGoal from "../screens/goals/NewGoal";
+import GoalView from "../screens/goals/GoalView";
+import OverviewChartView from "../screens/overview/OverviewChartView";
 // import AuthLoadingScreen from "../screens/AuthLoadingScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
-import NewUserWelcomeScreen from "../screens/NewUserWelcomeScreen";
-import SignInScreen from "../screens/SignInScreen";
-import SignUpScreen from "../screens/SignUpScreen";
+import WelcomeScreen from "../screens/intro/WelcomeScreen";
+import NewUserWelcomeScreen from "../screens/intro/NewUserWelcomeScreen";
+import SignInScreen from "../screens/intro/SignInScreen";
+import SignUpScreen from "../screens/intro/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import Planner from "../screens/Planner";
-import Transactions from "../screens/Transactions";
-import TransactionsScreen from "../screens/TransactionsScreen";
-import TransactionsCategoryView from "../screens/TransactionCategoryView";
+import Transactions from "../screens/transactions/Transactions";
+import TransactionsScreen from "../screens/transactions/TransactionsScreen";
+import TransactionsCategoryView from "../screens/transactions/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 import * as theme from '../theme';

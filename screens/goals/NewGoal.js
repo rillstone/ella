@@ -11,15 +11,15 @@ import {
   ActivityIndicator,
   Animated
 } from "react-native";
-import TransitionView from "../components/TransitionView";
-import * as theme from "../theme";
+import TransitionView from "../../components/TransitionView";
+import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
-import SelectionTile from "../components/SelectionTile";
-import GoalSlider from "../components/GoalSlider";
+import SelectionTile from "../../components/goals/SelectionTile";
+import GoalSlider from "../../components/goals/GoalSlider";
 import { getInset } from "react-native-safe-area-view";
-import * as goalTypes from "../components/GoalTypes";
-import * as categoryTypes from "../components/CategoryTypes";
-import * as periodTypes from "../components/PeriodTypes";
+import * as goalTypes from "../../components/goals/GoalTypes";
+import * as categoryTypes from "../../components/goals/CategoryTypes";
+import * as periodTypes from "../../components/goals/PeriodTypes";
 import { Button } from "react-native-elements";
 
 import { NavigationActions } from 'react-navigation'
@@ -47,7 +47,7 @@ class NewGoal extends Component {
       value: 0,
       selectedPeriod: "",
       title: "",
-      saving: false
+      saving: false,
     };
     this.props = props;
   }

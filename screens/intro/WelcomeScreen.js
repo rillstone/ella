@@ -10,7 +10,7 @@ import {
   Image,
   Dimensions
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Transition } from "react-navigation-fluid-transitions";
 import * as Animatable from "react-native-animatable";
@@ -56,7 +56,7 @@ class WelcomeScreen extends Component {
             <Transition shared="logo">
               <Image
                 style={[styles.backgroundImage]}
-                source={require("../assets/images/ella_logo_text_pink.png")}
+                source={require("../../assets/images/ella_logo_text_pink.png")}
               />
             </Transition>
           </Animatable.View>
