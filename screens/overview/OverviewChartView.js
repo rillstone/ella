@@ -14,13 +14,13 @@ import {
   ScrollView,
   Animated
 } from "react-native";
-import TransitionView from "../components/TransitionView";
-import * as theme from "../theme";
+import TransitionView from "../../components/TransitionView";
+import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getInset } from "react-native-safe-area-view";
 import { NavigationActions } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
-import * as goalTypes from "../components/GoalTypes";
+import * as goalTypes from "../../components/goals/GoalTypes";
 import * as shape from "d3-shape";
 import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
 import {
@@ -31,7 +31,7 @@ import {
   renderers
 } from 'react-native-popup-menu';
 
-import * as categoryTypes from "../components/CategoryTypes";
+import * as categoryTypes from "../../components/goals/CategoryTypes";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -40,7 +40,7 @@ function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
   return Math.round(value);
 }
-const backdrop = [require("../assets/images/general_back.png"), require("../assets/images/leisure_back.png"),require("../assets/images/personal_back.png"),require("../assets/images/save_back.png"),require("../assets/images/wellbeing_back.png"), require("../assets/images/goal_back.png")];
+const backdrop = [require("../../assets/images/general_back.png"), require("../../assets/images/leisure_back.png"),require("../../assets/images/personal_back.png"),require("../../assets/images/save_back.png"),require("../../assets/images/wellbeing_back.png"), require("../../assets/images/goal_back.png")];
 const slideHeight = viewportHeight * 0.15;
 const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
 const BOTTOM_SAFE_AREA = Platform.OS === "ios" ? getInset("bottom") : 40;

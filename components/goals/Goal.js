@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
-import * as theme from "../theme";
-import * as categoryTypes from "../components/CategoryTypes";
+import * as theme from "../../theme";
+import * as categoryTypes from "./CategoryTypes";
 import TimeAgo from "react-native-timeago";
 import { LinearGradient } from "expo-linear-gradient";
 

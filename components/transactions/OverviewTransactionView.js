@@ -9,12 +9,12 @@ import {
   ImageBackground
 } from "react-native";
 import PropTypes from "prop-types";
-import payments from "../assets/payments.json";
+import payments from "../../assets/payments.json";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import * as shape from "d3-shape";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LineChart, Grid, AreaChart } from "react-native-svg-charts";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import { Button, Input, Avatar, Card, Divider } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import { ScrollView } from "react-native-gesture-handler";

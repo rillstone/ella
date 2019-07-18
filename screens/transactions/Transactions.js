@@ -8,19 +8,19 @@ import {
   StatusBar,
   Dimensions,
 } from "react-native";
-import * as theme from "../theme";
-import payments from "../assets/payments.json";
+import * as theme from "../../theme";
+import payments from "../../assets/payments.json";
 import Carousel from "react-native-snap-carousel";
-import SliderEntry from "../components/SliderEntry";
-import Transaction from "../components/Transaction";
-import { sliderWidth, itemWidth } from "../styles/SliderEntry.style";
+import SliderEntry from "../../components/transactions/SliderEntry";
+import Transaction from "../../components/transactions/Transaction";
+import { sliderWidth, itemWidth } from "../../styles/SliderEntry.style";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { Paragraph } from "rn-placeholder";
 import { StackedAreaChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-import { dispatch } from "../store";
+import { dispatch } from "../../store";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -59,9 +59,9 @@ class Transactions extends Component {
           id: "WpIAc9by5iU",
           title: "Transport",
           subtitle: "~$25.99 per month",
-          image: require("../assets/images/transport_icon.jpg"),
-          graph: require("../assets/images/graph6.png"),
-          back: require("../assets/images/transport_back.jpg"),
+          image: require("../../assets/images/transport_icon.jpg"),
+          graph: require("../../assets/images/graph6.png"),
+          back: require("../../assets/images/transport_back.jpg"),
           color: "#F64ea2",
           textColor: "#F38181",
           data: [
@@ -104,9 +104,9 @@ class Transactions extends Component {
           id: "sNPnbI1arSE",
           title: "Leisure",
           subtitle: "~$32.49 per month",
-          image: require("../assets/images/game_icon.jpg"),
-          graph: require("../assets/images/graph5.png"),
-          back: require("../assets/images/entertainment_back.jpg"),
+          image: require("../../assets/images/game_icon.jpg"),
+          graph: require("../../assets/images/graph5.png"),
+          back: require("../../assets/images/entertainment_back.jpg"),
           color: "#FCE38A",
           textColor: "#FF7676",
           data: [
@@ -149,9 +149,9 @@ class Transactions extends Component {
           id: "VOgFZfRVaww",
           title: "Food",
           subtitle: "~$10.39 per month",
-          image: require("../assets/images/food_icon.jpg"),
-          graph: require("../assets/images/graph4.png"),
-          back: require("../assets/images/food_back.jpg"),
+          image: require("../../assets/images/food_icon.jpg"),
+          graph: require("../../assets/images/graph4.png"),
+          back: require("../../assets/images/food_back.jpg"),
           color: "#A8F7FF",
           textColor: "#6078ea",
           data: [
@@ -194,9 +194,9 @@ class Transactions extends Component {
           id: "VOgXXfRVaww",
           title: "Bills",
           subtitle: "~$100.39 per month",
-          image: require("../assets/images/bill_icon.jpg"),
-          graph: require("../assets/images/graph6.png"),
-          back: require("../assets/images/bill_back.jpg"),
+          image: require("../../assets/images/bill_icon.jpg"),
+          graph: require("../../assets/images/graph6.png"),
+          back: require("../../assets/images/bill_back.jpg"),
           color: "#184e68",
           textColor: "#3bb2b8",
           data: [
@@ -239,9 +239,9 @@ class Transactions extends Component {
           id: "VOgYYfRVaww",
           title: "Clothing",
           subtitle: "~$25.39 per month",
-          image: require("../assets/images/clothes_icon.jpg"),
-          graph: require("../assets/images/graph4.png"),
-          back: require("../assets/images/clothes_back.jpg"),
+          image: require("../../assets/images/clothes_icon.jpg"),
+          graph: require("../../assets/images/graph4.png"),
+          back: require("../../assets/images/clothes_back.jpg"),
           color: "#17ead9",
           textColor: "#6094ea",
           data: [
