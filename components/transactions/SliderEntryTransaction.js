@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import styles from '../styles/SliderEntry.style';
+import styles from '../../styles/SliderEntryTransaction.style';
 const image = <View style={{backgroundColor: 'lime'}}></View>
-export default class SliderEntry extends Component {
+export default class SliderEntryTransaction extends Component {
 
     static propTypes = {
         data: PropTypes.object.isRequired,
@@ -15,7 +15,7 @@ export default class SliderEntry extends Component {
         
         const uppercaseTitle = <Text
         style={[styles.title]}
-        numberOfLines={2}
+        numberOfLines={1}
       >
           { title }
       </Text>;
@@ -33,11 +33,11 @@ export default class SliderEntry extends Component {
                 </View>
                 <View style={[styles.textContainer]}>
                     { uppercaseTitle }
-                    <Text
+                    {/* <Text
                       style={[styles.subtitle]}
                       numberOfLines={2}>
                         { subtitle }
-                    </Text>
+                    </Text> */}
                 </View>
             </TouchableOpacity>
         );

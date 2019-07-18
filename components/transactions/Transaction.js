@@ -5,9 +5,9 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import PropTypes from 'prop-types';
-import TransitionView from './TransitionView';
+import TransitionView from '../TransitionView';
 
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 export default class Transaction extends Component {

@@ -1,4 +1,4 @@
-import * as theme from "../theme";
+import * as theme from "../../theme";
 const period = [
     {
         key: "one week",

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import PropTypes from "prop-types";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import { Button, Avatar, Divider } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 
