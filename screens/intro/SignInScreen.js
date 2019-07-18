@@ -15,7 +15,7 @@ import {
   Keyboard,
   Alert
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import * as Animatable from "react-native-animatable";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Button, Input } from "react-native-elements";
@@ -85,7 +85,7 @@ class SignInScreen extends Component {
               <Transition shared="logo">
                 <Image
                   style={[styles.backgroundImage]}
-                  source={require("../assets/images/ella_logo_text_pink.png")}
+                  source={require("../../assets/images/ella_logo_text_pink.png")}
                 />
               </Transition>
             </View>

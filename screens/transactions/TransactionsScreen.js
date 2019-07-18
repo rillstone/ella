@@ -11,19 +11,19 @@ import {
   Animated,
   TouchableOpacity
 } from "react-native";
-import * as theme from "../theme";
-import payments from "../assets/payments.json";
+import * as theme from "../../theme";
+import payments from "../../assets/payments.json";
 import Icon from "react-native-vector-icons/Ionicons";
-import Transaction from "../components/Transaction";
-import TransactionCategorySelect from "../components/TransactionCategorySelect";
-import { sliderWidth, itemWidth } from "../styles/SliderEntry.style";
+import Transaction from "../../components/transactions/Transaction";
+import TransactionCategorySelect from "../../components/transactions/TransactionCategorySelect";
+import { sliderWidth, itemWidth } from "../../styles/SliderEntry.style";
 import { LineChart } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
 import { Paragraph } from "rn-placeholder";
-import { dispatch } from "../store";
+import { dispatch } from "../../store";
 
 import * as Animatable from "react-native-animatable";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
@@ -214,7 +214,7 @@ class TransactionsScreen extends Component {
         </Animated.ScrollView>
         <ImageBackground
           imageStyle={{ resizeMode: "stretch" }}
-          source={require("../assets/images/tran_screen_back_small.png")}
+          source={require("../../assets/images/tran_screen_back_small.png")}
           style={[styles.header]}
         >
           <Animated.View

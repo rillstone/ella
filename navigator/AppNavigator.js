@@ -1,5 +1,5 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import Overview from "../screens/Overview";
+import Overview from "../screens/overview/Overview";
 import CategoryView from "../screens/CategoryView";
 import TabNavigator from "./TabNavigator";
 

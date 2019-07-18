@@ -9,10 +9,10 @@ import {
     Animated,
     TouchableOpacity,
 } from "react-native";
-import { connect } from "../store";
+import { connect } from "../../store";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric"};
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(

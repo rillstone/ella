@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import { Button, Input, Avatar, Card, Divider } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 // import { ImagePicker, Permissions, Constants } from "expo";
@@ -21,7 +21,7 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import * as firebase from "firebase";
-import { dispatch, connect } from '../store';
+import { dispatch, connect } from '../../store';
 
 import "firebase/storage";
 import "firebase/firestore";

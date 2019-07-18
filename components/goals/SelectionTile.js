@@ -9,7 +9,7 @@ import {
   ImageBackground
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 const icons = [
   "ios-tennisball",
   "ios-stopwatch",
