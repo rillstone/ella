@@ -85,7 +85,8 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
   if (
     routeName === "ViewGoal" ||
-    routeName === "OverviewChart" 
+    routeName === "OverviewChart" ||
+    routeName === "TransactionView"
   ) {
     tabBarVisible = false;
   }
@@ -144,7 +145,7 @@ TransactionsStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
-  if (routeName == "TransactionCategory") {
+  if (routeName == "TransactionCategory" || routeName === "TransactionView2") {
     tabBarVisible = false;
   }
 
