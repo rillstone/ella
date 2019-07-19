@@ -17,8 +17,9 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Transaction from "../../components/transactions/Transaction";
 import TransactionCategorySelect from "../../components/transactions/TransactionCategorySelect";
 import { sliderWidth, itemWidth } from "../../styles/SliderEntry.style";
-import { LineChart,XAxis } from "react-native-svg-charts";
+import { LineChart, XAxis } from "react-native-svg-charts";
 import * as shape from "d3-shape";
+import * as scale from "d3-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
@@ -29,8 +30,12 @@ import * as Animatable from "react-native-animatable";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { Button } from "react-native-elements";
 import TimeAgo from "react-native-timeago";
-const axesSvg = { fontSize: 10, fill: 'white' };
-const xAxisHeight =30;
+const axesSvg = {
+  fontSize: 10,
+  fill: "white",
+  onPress: () => console.log("yes")
+};
+const xAxisHeight = 30;
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -50,6 +55,7 @@ class TransactionsScreen extends Component {
       transactions: [],
       loading: false,
       data: [],
+      pressed: [0,0,0,0,0,0,0],
       sum: 0,
       scroll: false,
       scrollY: new Animated.Value(0),
@@ -61,8 +67,18 @@ class TransactionsScreen extends Component {
     this.sum = 0;
     this.transactionList = [];
     this.transactionState("Leisure");
-  }
 
+    this.weekTrans = [
+      { value: 0, day: "Sun" },
+      { value: 0, day: "Mon" },
+      { value: 0, day: "Tue" },
+      { value: 0, day: "Wed" },
+      { value: 0, day: "Thu" },
+      { value: 0, day: "Fri" },
+      { value: 0, day: "Sat" }
+    ];
+    this.dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  }
   componentWillMount() {
     this.mounted = true;
     this.startHeaderHeight = 80;
@@ -71,23 +87,25 @@ class TransactionsScreen extends Component {
     }
   }
   onScrollTop = ({ layoutMeasurement, contentOffset, contentSize }) => {
-    console.log(contentOffset.y);
-    console.log(viewportHeight - 150);
-
-    if (contentOffset.y == 103) {
-      this.setState({
-        scroll: true
-      });
-    }
+    // console.log(contentOffset.y);
+    // console.log(viewportHeight - 150);
+    // if (contentOffset.y == 103) {
+    //   this.setState({
+    //     scroll: true
+    //   });
+    // }
   };
   componentDidMount() {
     this.transactionState(this.state.category);
-    setTimeout(() => this.setState({ loading: true }), 500);
+    // setTimeout(() => this.setState({ loading: true }), 500);
+    this.setState({ loading: true });
   }
 
   categoryPress = selected => {
-    this.setState({ category: selected });
-    this.transactionState(selected);
+    if (this.mounted) {
+      this.setState({ category: selected });
+      this.transactionState(selected);
+    }
   };
 
   transactionState(transaction_cat) {
@@ -102,13 +120,37 @@ class TransactionsScreen extends Component {
     let sortedTransactions = payments[transaction_cat].sort(
       (a, b) => new Date(b.date) - new Date(a.date)
     );
-
+    let days = 0;
+    var greater = true;
+    var ourDate = new Date();
+    var weekAgo = ourDate.getDate() - 7;
+    this.weekTrans.forEach(function(element) {
+      element.value = 0;
+    });
     let currentDate = sortedTransactions[0] ? sortedTransactions[0].date : null;
     this.sum = 0;
     this.transactionList = [];
     return sortedTransactions.map((tr, i) => {
       this.sum += tr.amount <= 0 ? Math.abs(tr.amount) : 0;
       tr.amount <= 0 ? this.transactionList.push(Math.abs(tr.amount)) : null;
+      if (greater && Date.parse(tr.date) >= weekAgo) {
+        let date = new Date(tr.date);
+        let dayof = date.getDay();
+        if (i == 0) {
+          this.weekTrans[dayof].value = Math.abs(tr.amount);
+        } else if (
+          tr.date != currentDate &&
+          i != 0 &&
+          this.weekTrans[dayof].value == 0
+        ) {
+          this.weekTrans[dayof].value = Math.abs(tr.amount);
+        } else if (tr.date == currentDate) {
+          this.weekTrans[dayof].value =
+            Math.abs(this.weekTrans[dayof].value) + Math.abs(tr.amount);
+        }
+      } else {
+        greater = false;
+      }
       var x =
         i == 0 || tr.date != currentDate ? (
           <View key={tr._id}>
@@ -232,7 +274,9 @@ class TransactionsScreen extends Component {
                     return "$" + val.toFixed(2);
                   }}
                 />
-                <Text style={styles.subtitle}>{this.state.category} spending</Text>
+                <Text style={styles.subtitle}>
+                  {this.state.category} spending
+                </Text>
               </Animated.View>
               <View style={styles.inOut}>
                 <View style={styles.inOutColumn}>
@@ -318,24 +362,59 @@ class TransactionsScreen extends Component {
                   elevation: 1
                 }}
               >
+
                 <LineChart
-                  style={{ height: viewportWidth / 3.6 }}
-                  data={this.transactionList}
+                  style={{ height: viewportWidth / 3.6}}
+                  data={this.weekTrans}
+                  yAccessor={({ item }) => item.value}
+                  // xAccessor={({ item }) => item.day}
+                  xScale={scale.scaleTime}
                   curve={shape.curveNatural}
                   animate
+                  numberOfTicks={7}
                   contentInset={{ top: 20, bottom: 20 }}
                   svg={{
                     strokeWidth: 2,
-                    stroke: "white"
+                    stroke: "white",
+
                   }}
                 />
-                {/* <XAxis
-                        style={{ marginHorizontal: -10, height: xAxisHeight }}
-                        data={this.transactionList}
-                        formatLabel={(value, index) => index}
-                        contentInset={{ left: 20, right: 20 }}
-                        svg={axesSvg}
-                    /> */}
+                <XAxis
+                  style={{ marginHorizontal: -10, height: xAxisHeight }}
+                  data={this.weekTrans}
+                  // xAccessor={({ item }) => item}
+                  formatLabel={value => this.dayOfWeek[value]}
+                  contentInset={{ left: 30, right: 30 }}
+                  svg={{
+                    fontSize: 10,
+                    fill: "white",
+                    onPress: () => console.log("touched: ")
+                  }}
+                  scale={scale.scaleTime}
+                  numberOfTicks={7}
+                />
+                                <View
+                  style={{
+                    marginHorizontal: 20,
+                    position: "absolute",
+                    height: viewportWidth / 3,
+                    borderRadius: 12,
+                    width: viewportWidth - 40,
+                    overflow: "hidden",
+                    alignSelf: "center",
+                    backgroundColor: "transparent",
+
+                    flexDirection: "row"
+                  }}
+                >
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[0]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [1,0,0,0,0,0,0]})} />
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[1]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,1,0,0,0,0,0]})} />
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[2]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,1,0,0,0,0]})} />
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[3]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,1,0,0,0]})} />
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[4]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,0,1,0,0]})} />
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[5]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,0,0,1,0]})} />
+                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[6]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,0,0,0,1]})} />
+                </View>
               </View>
             </Paragraph>
           </View>
