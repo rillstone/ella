@@ -13,9 +13,9 @@ import { connect } from "../../store";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
 import * as theme from "../../theme";
+import moment from "moment";
 
 import Svg, { Defs, Circle, G, ClipPath, Rect, Line } from "react-native-svg";
-const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -59,7 +59,7 @@ class TransactionScreen extends Component {
           <Icon name="ios-close-circle" size={60} color={theme.colors.white} />
         </TouchableOpacity>
         <Svg
-          height={viewportWidth*0.8}
+          height={viewportWidth * 0.8}
           width={viewportWidth * 0.6}
           style={{
             position: "absolute",
@@ -77,7 +77,7 @@ class TransactionScreen extends Component {
                 <Rect
                   x="0"
                   y="0"
-                  height={viewportWidth*0.8}
+                  height={viewportWidth * 0.8}
                   width={viewportWidth * 0.6}
                   r="60"
                 />
@@ -91,7 +91,7 @@ class TransactionScreen extends Component {
           <Rect
             x="0"
             y="0"
-            height={viewportWidth*0.8}
+            height={viewportWidth * 0.8}
             width={viewportWidth}
             fill={theme.colors.back}
             clipPath="url(#clip)"
@@ -119,7 +119,7 @@ class TransactionScreen extends Component {
           <View
             style={{
               borderBottomLeftRadius: 12,
-              top: viewportWidth*0.8 - 16,
+              top: viewportWidth * 0.8 - 16,
               borderBottomRightRadius: 12,
               height: 15,
               width: viewportWidth * 0.6 - 0.5,
@@ -150,10 +150,7 @@ class TransactionScreen extends Component {
                 <View style={styles.column}>
                   <Text style={styles.title}>DATE</Text>
                   <Text style={styles.text}>
-                    {new Date(transaction.date).toLocaleDateString(
-                      "en-NZ",
-                      DATE_OPTIONS
-                    )}
+                    {moment(transaction.date).format("ddd, D MMM")}
                   </Text>
                 </View>
 
@@ -162,11 +159,7 @@ class TransactionScreen extends Component {
                     TIME
                   </Text>
                   <Text style={styles.text}>
-                    {new Date(transaction.date).toLocaleString("en-NZ", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true
-                    })}
+                    {moment(transaction.date).format("h:mm a")}
                   </Text>
                 </View>
               </View>
