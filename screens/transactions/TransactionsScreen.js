@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Transaction from "../../components/transactions/Transaction";
 import TransactionCategorySelect from "../../components/transactions/TransactionCategorySelect";
 import { sliderWidth, itemWidth } from "../../styles/SliderEntry.style";
-import { LineChart } from "react-native-svg-charts";
+import { LineChart,XAxis } from "react-native-svg-charts";
 import * as shape from "d3-shape";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
@@ -29,7 +29,8 @@ import * as Animatable from "react-native-animatable";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { Button } from "react-native-elements";
 import TimeAgo from "react-native-timeago";
-
+const axesSvg = { fontSize: 10, fill: 'white' };
+const xAxisHeight =30;
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -81,7 +82,7 @@ class TransactionsScreen extends Component {
   };
   componentDidMount() {
     this.transactionState(this.state.category);
-    setTimeout(() => this.setState({ loading: true }), 1000);
+    setTimeout(() => this.setState({ loading: true }), 500);
   }
 
   categoryPress = selected => {
@@ -231,7 +232,7 @@ class TransactionsScreen extends Component {
                     return "$" + val.toFixed(2);
                   }}
                 />
-                <Text style={styles.subtitle}>Total spendings</Text>
+                <Text style={styles.subtitle}>{this.state.category} spending</Text>
               </Animated.View>
               <View style={styles.inOut}>
                 <View style={styles.inOutColumn}>
@@ -328,6 +329,13 @@ class TransactionsScreen extends Component {
                     stroke: "white"
                   }}
                 />
+                {/* <XAxis
+                        style={{ marginHorizontal: -10, height: xAxisHeight }}
+                        data={this.transactionList}
+                        formatLabel={(value, index) => index}
+                        contentInset={{ left: 20, right: 20 }}
+                        svg={axesSvg}
+                    /> */}
               </View>
             </Paragraph>
           </View>
