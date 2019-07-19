@@ -88,7 +88,10 @@ class Overview extends Component {
         querySnapshot.forEach(function (doc) {
           items.push(doc.data());
         });
-        this.setState({ items, refreshing: false });
+        let sortedGoals = items.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+        this.setState({ items:sortedGoals, refreshing: false });
       });
   }
 

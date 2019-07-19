@@ -120,7 +120,7 @@ PlannerStack.navigationOptions = {
   tabBarLabel: "Planner",
   tabBarIcon: ({ focused }) => (
     <Icon
-      name="ios-create"
+      name="ios-heart"
       size={26}
       color={focused ? activeColor : inactiveColor}
     />
@@ -186,11 +186,17 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      // showLabel: false,
+      showLabel: false,
       inactiveTintColor: inactiveColor,
       activeTintColor: activeColor,
       style: {
-
+        borderTopColor: "transparent",
+        backgroundColor: theme.colors.back,
+        shadowOffset: { width: 0, height: 1 },
+        shadowColor: "black",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 1,
       }
     }
   }
