@@ -10,10 +10,10 @@ import {
   Image,
   Dimensions
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import IntroSlider from "../components/IntroSlider";
+import IntroSlider from "../../components/IntroSlider";
 import { Transition } from "react-navigation-fluid-transitions";
 import * as Animatable from "react-native-animatable";
 import { Button, Input } from "react-native-elements";
@@ -38,19 +38,19 @@ class NewUserWelcomeScreen extends Component {
       slides: [
         {
           id: 1,
-          image: require("../assets/images/slide_1.png"),
+          image: require("../../assets/images/slide_1.png"),
           title: "This is a title for 1",
           text: "this is the text under the title. Placeholder text for 1."
         },
         {
           id: 2,
-          image: require("../assets/images/slide_2.png"),
+          image: require("../../assets/images/slide_2.png"),
           title: "This is a title for 2",
           text: "this is the text under the title. Placeholder text for 2."
         },
         {
           id: 3,
-          image: require("../assets/images/slide_3.png"),
+          image: require("../../assets/images/slide_3.png"),
           title: "This is a title for 3",
           text: "this is the text under the title. Placeholder text for 3."
         }
@@ -129,7 +129,7 @@ class NewUserWelcomeScreen extends Component {
             <Transition shared="logo">
               <Image
                 style={[styles.backgroundImage]}
-                source={require("../assets/images/ella_logo_text_pink.png")}
+                source={require("../../assets/images/ella_logo_text_pink.png")}
               />
             </Transition>
           </Animatable.View>

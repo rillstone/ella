@@ -7,10 +7,10 @@ import {
   Dimensions,
   Image
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
-import { dispatch } from "../store";
+import { dispatch } from "../../store";
 const colors = [
   theme.scheme.crusta,
   theme.scheme.royal_blue2,

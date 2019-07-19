@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 import { Button } from "react-native-elements";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 
 export default class TransactionCategorySelect extends Component {
   static propTypes = {
