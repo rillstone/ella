@@ -13,7 +13,7 @@ import { connect } from "../../store";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
 import * as theme from "../../theme";
-import Receipt from "./Receipt";
+
 import Svg, { Defs, Circle, G, ClipPath, Rect, Line } from "react-native-svg";
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -45,36 +45,21 @@ class TransactionScreen extends Component {
         style={[styles.container, { backgroundColor: interpolateColor }]}
       >
         <StatusBar hidden={true} />
-
-        {/* <Receipt
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({ scrollOp: 0 });
+            this.props.navigation.dispatch(NavigationActions.back());
+          }}
           style={{
             position: "absolute",
-            shadowOffset: { width: 0, height: 0 },
-            shadowColor: "black",
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            elevation: 1
+            bottom: (viewportHeight - viewportWidth * 0.8) / 7,
+            zIndex: 99999
           }}
-        /> */}
-        <TouchableOpacity
-            onPress={() => {
-              this.setState({ scrollOp: 0 });
-              this.props.navigation.dispatch(NavigationActions.back());
-            }}
-            style={{
-              position: "absolute",
-              bottom: 50,
-              zIndex: 99999
-            }}
-          >
-            <Icon
-              name="ios-close-circle"
-              size={60}
-              color={theme.colors.white}
-            />
-          </TouchableOpacity>
+        >
+          <Icon name="ios-close-circle" size={60} color={theme.colors.white} />
+        </TouchableOpacity>
         <Svg
-          height={viewportWidth * 1.2}
+          height={viewportWidth*0.8}
           width={viewportWidth * 0.6}
           style={{
             position: "absolute",
@@ -83,7 +68,7 @@ class TransactionScreen extends Component {
             shadowOpacity: 0.4,
             shadowRadius: 2,
             elevation: 1,
-            borderRadius: 12,
+            borderRadius: 12
           }}
         >
           <Defs>
@@ -92,17 +77,13 @@ class TransactionScreen extends Component {
                 <Rect
                   x="0"
                   y="0"
-                  height={viewportWidth * 1.2}
+                  height={viewportWidth*0.8}
                   width={viewportWidth * 0.6}
                   r="60"
                 />
 
-                <Circle cx="0" cy={viewportWidth * 1.2 -80} r="10" />
-                <Circle
-                  cx={viewportWidth * 0.6}
-                  cy={viewportWidth * 1.2 -80}
-                  r="10"
-                />
+                <Circle cx="0" cy={80} r="10" />
+                <Circle cx={viewportWidth * 0.6} cy={80} r="10" />
               </G>
             </ClipPath>
           </Defs>
@@ -110,57 +91,144 @@ class TransactionScreen extends Component {
           <Rect
             x="0"
             y="0"
-            height={viewportWidth * 1.2}
+            height={viewportWidth*0.8}
             width={viewportWidth}
-            fill="white"
+            fill={theme.colors.back}
             clipPath="url(#clip)"
           />
           <Line
-            x1="10"
-            y1={viewportWidth * 1.2 -80}
-            x2={viewportWidth * 0.6 - 10}
-            y2={viewportWidth * 1.2 -80}
+            x1="20"
+            y1={80}
+            x2={viewportWidth * 0.6 - 20}
+            y2={80}
             stroke="#cccccc"
             strokeWidth="1"
-            strokeDasharray="3"
+            strokeDasharray="8"
           />
-          
+          <View
+            style={{
+              borderTopLeftRadius: 12,
+              top: -10,
+              borderTopRightRadius: 12,
+              height: 15,
+              width: viewportWidth * 0.6 - 0.5,
+              backgroundColor: theme.colors.back,
+              zIndex: 999999
+            }}
+          />
+          <View
+            style={{
+              borderBottomLeftRadius: 12,
+              top: viewportWidth*0.8 - 16,
+              borderBottomRightRadius: 12,
+              height: 15,
+              width: viewportWidth * 0.6 - 0.5,
+              backgroundColor: theme.colors.back,
+              zIndex: 999999
+            }}
+          />
           <View style={styles.receipt}>
-              <View style={styles.receipt_top}></View>
-              <View style={styles.receipt_bot}></View>
-            <Image
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-                marginVertical: 20
-              }}
-              source={{ uri: transaction.logo }}
-            />
-            <View style={styles.column}>
-              <Text style={styles.title}>TO</Text>
-              <Text style={styles.text}>{transaction.name}</Text>
-            </View>
-            <View style={styles.column}>
-              <Text style={styles.title}>AMOUNT</Text>
-              <Text style={styles.text}>${transaction.amount}</Text>
-            </View>
-            <View style={styles.column}>
-              <Text style={styles.title}>INFO</Text>
-              <Text style={styles.text}>{transaction.type}</Text>
-            </View>
-            <View style={styles.column}>
-              <Text style={styles.title}>DATE</Text>
-              <Text style={styles.text}>
-                {new Date(transaction.date).toLocaleDateString(
-                  "en-NZ",
-                  DATE_OPTIONS
-                )}
+            <View style={styles.receipt_top}>
+              <Text
+                style={{
+                  fontWeight: "700",
+                  fontSize: 20,
+                  color: theme.colors.gray
+                }}
+              >
+                Transaction Details
               </Text>
+            </View>
+            <View style={styles.receipt_bot}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 20
+                }}
+              >
+                <View style={styles.column}>
+                  <Text style={styles.title}>DATE</Text>
+                  <Text style={styles.text}>
+                    {new Date(transaction.date).toLocaleDateString(
+                      "en-NZ",
+                      DATE_OPTIONS
+                    )}
+                  </Text>
+                </View>
+
+                <View style={styles.columnRight}>
+                  <Text style={[styles.title, { textAlign: "right" }]}>
+                    TIME
+                  </Text>
+                  <Text style={styles.text}>
+                    {new Date(transaction.date).toLocaleString("en-NZ", {
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true
+                    })}
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <View style={styles.column}>
+                  <Text style={styles.title}>TO</Text>
+                  <Text style={styles.text}>{transaction.name}</Text>
+                </View>
+                <View style={styles.columnRight}>
+                  <Image
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25
+                      // marginVertical: 20
+                    }}
+                    source={{ uri: transaction.logo }}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <View style={styles.column}>
+                  <Text style={styles.title}>AMOUNT</Text>
+                  <Text style={{ fontSize: 20, fontWeight: "600" }}>
+
+                    {transaction.amount.toString().startsWith("-")
+                      ? transaction.amount.toString().replace("-", "$")
+                      : "$" + transaction.amount}
+                  </Text>
+                </View>
+                <View style={styles.columnRight}>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: theme.colors.lightGray,
+                      borderRadius: 5
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.title,
+                        { padding: 2, textTransform: "uppercase" }
+                      ]}
+                    >
+                      {transaction.type}
+                    </Text>
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
         </Svg>
-
       </Animated.View>
     );
   }
@@ -175,19 +243,29 @@ const styles = StyleSheet.create({
     // backgroundColor: '#00000040',
   },
   receipt: {
-
-    alignItems: "center",
+    // alignItems: "center",
     width: viewportWidth * 0.6,
-    height: viewportWidth * 1.2,
+    height: viewportWidth,
     // backgroundColor: "#ff000030",
     top: 0,
     zIndex: 9999,
     position: "absolute"
   },
-  receipt_top:{
-
+  receipt_top: {
+    // backgroundColor: "#ff000030",
+    height: 80,
+    width: viewportWidth * 0.6,
+    alignContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    textAlignVertical: "center",
+    justifyContent: "center"
   },
-  receipt_bot:{},
+  receipt_bot: {
+    // backgroundColor: "#00ff0030",
+    height: viewportWidth - 80,
+    width: viewportWidth * 0.6
+  },
   text: {
     fontSize: 15,
     fontWeight: "600"
@@ -202,7 +280,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     alignSelf: "flex-start",
-    marginLeft: 30,
-    marginVertical: 8
+    marginLeft: 20,
+    marginVertical: 15
+  },
+  columnRight: {
+    flexDirection: "column",
+    alignContent: "flex-end",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    alignSelf: "flex-end",
+    marginRight: 20,
+    marginVertical: 15
   }
 });
