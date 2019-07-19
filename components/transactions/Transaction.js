@@ -8,6 +8,7 @@ import {
 import * as theme from "../../theme";
 import PropTypes from 'prop-types';
 import TransitionView from '../TransitionView';
+import ProgressiveImage from '../ProgressiveImage';
 
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 export default class Transaction extends Component {
@@ -22,7 +23,17 @@ export default class Transaction extends Component {
         return (
             <TransitionView style={[styles.balance2]} index={index} >
             <View style={{ flex: 1.3 }}>
-              <Image
+            <ProgressiveImage
+          source={{ uri: logo }}
+          style={{ width: 50,
+            height: 50,
+            alignSelf: "flex-start",
+            justifyContent: "center",
+            position: "absolute",
+            borderRadius: 25 }}
+          resizeMode="cover"
+        />
+              {/* <Image
                 style={{
                   width: 50,
                   height: 50,
@@ -32,7 +43,7 @@ export default class Transaction extends Component {
                   borderRadius: 25
                 }}
                 source={{ uri: logo }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 5, flexDirection: "row" }}>
               <View
