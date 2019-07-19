@@ -12,19 +12,19 @@ import {
   Animated,
   RefreshControl
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Avatar } from "react-native-elements";
-import AccountSlider from "../components/AccountSlider";
-import OverviewChart from "../components/OverviewChart";
-import OverviewTransactionView from "../components/OverviewTransactionView";
-import Goal from "../components/Goal";
+import AccountSlider from "../../components/account/AccountSlider";
+import OverviewChart from "../../components/OverviewChart";
+import OverviewTransactionView from "../../components/transactions/OverviewTransactionView";
+import Goal from "../../components/goals/Goal";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
-import AccountEdit from "../components/AccountEdit";
-import { dispatch, connect } from '../store';
+import AccountEdit from "../../components/account/AccountEdit";
+import { dispatch, connect } from '../../store';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -88,7 +88,10 @@ class Overview extends Component {
         querySnapshot.forEach(function (doc) {
           items.push(doc.data());
         });
-        this.setState({ items, refreshing: false });
+        let sortedGoals = items.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+        this.setState({ items:sortedGoals, refreshing: false });
       });
   }
 

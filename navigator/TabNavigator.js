@@ -5,21 +5,21 @@ import {
   createSwitchNavigator
 } from "react-navigation";
 
-import TransactionScreen from "../screens/TransactionScreen";
-import Overview from "../screens/Overview";
-import NewGoal from "../screens/NewGoal";
-import GoalView from "../screens/GoalView";
-import OverviewChartView from "../screens/OverviewChartView";
+import TransactionScreen from "../screens/transactions/TransactionScreen";
+import Overview from "../screens/overview/Overview";
+import NewGoal from "../screens/goals/NewGoal";
+import GoalView from "../screens/goals/GoalView";
+import OverviewChartView from "../screens/overview/OverviewChartView";
 // import AuthLoadingScreen from "../screens/AuthLoadingScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
-import NewUserWelcomeScreen from "../screens/NewUserWelcomeScreen";
-import SignInScreen from "../screens/SignInScreen";
-import SignUpScreen from "../screens/SignUpScreen";
+import WelcomeScreen from "../screens/intro/WelcomeScreen";
+import NewUserWelcomeScreen from "../screens/intro/NewUserWelcomeScreen";
+import SignInScreen from "../screens/intro/SignInScreen";
+import SignUpScreen from "../screens/intro/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import Planner from "../screens/Planner";
-import Transactions from "../screens/Transactions";
-import TransactionsScreen from "../screens/TransactionsScreen";
-import TransactionsCategoryView from "../screens/TransactionCategoryView";
+import Transactions from "../screens/transactions/Transactions";
+import TransactionsScreen from "../screens/transactions/TransactionsScreen";
+import TransactionsCategoryView from "../screens/transactions/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 import * as theme from '../theme';
@@ -74,10 +74,11 @@ const HomeStack = createStackNavigator(
   },
   {
     mode: "modal",
-    headerMode: "none"
+    headerMode: "none",
+    transparentCard: true,
   }
 );
-
+HomeStack.TranitionConfig
 HomeStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
@@ -88,6 +89,11 @@ HomeStack.navigationOptions = ({ navigation }) => {
     routeName === "TransactionView"
   ) {
     tabBarVisible = false;
+  }
+
+  if (routeName === "TransactionView") {
+    
+
   }
 
 
@@ -107,37 +113,31 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const PlannerStack = createStackNavigator(
-  {
-    PlannerScreen: Planner
-  },
-  {
-    mode: "modal",
-    headerMode: "none"
-  }
-);
+const PlannerStack = createStackNavigator({
+  PlannerScreen: Planner
+});
 
-PlannerStack.navigationOptions = ({ navigation }) => {
-  return {
-    tabBarLabel: "Planner",
-    tabBarIcon: ({ focused }) => (
-      <Icon
-        name="ios-create"
-        size={26}
-        color={focused ? activeColor : inactiveColor}
-      />
-    )
-  }
+PlannerStack.navigationOptions = {
+  tabBarLabel: "Planner",
+  tabBarIcon: ({ focused }) => (
+    <Icon
+      name="ios-heart"
+      size={26}
+      color={focused ? activeColor : inactiveColor}
+    />
+  )
 };
 
 const TransactionsStack = createStackNavigator(
   {
     TransactionsScreen: TransactionsScreen,
-    TransactionCategory: TransactionsCategoryView
+    TransactionCategory: TransactionsCategoryView,
+    TransactionView2: TransactionScreen,
   },
   {
     mode: "modal",
-    headerMode: "none"
+    headerMode: "none",
+    transparentCard: true,
   }
 );
 
@@ -145,7 +145,7 @@ TransactionsStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
-  if (routeName == "TransactionCategory") {
+  if (routeName == "TransactionCategory" || routeName === "TransactionView2") {
     tabBarVisible = false;
   }
 
@@ -187,11 +187,17 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      // showLabel: false,
+      showLabel: false,
       inactiveTintColor: inactiveColor,
       activeTintColor: activeColor,
       style: {
-
+        borderTopColor: "transparent",
+        backgroundColor: theme.colors.back,
+        shadowOffset: { width: 0, height: 1 },
+        shadowColor: "black",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 1,
       }
     }
   }

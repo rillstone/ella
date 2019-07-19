@@ -28,7 +28,7 @@
     "react-native-popup-menu": "^0.15.6",
     "react-native-safe-area-view": "^0.14.6",
     "react-native-snap-carousel": "^3.8.0",
-    "react-native-svg": "^9.5.1",
+    "react-native-svg": "^9.5.3",
     "react-native-svg-animated-linear-gradient": "^0.3.0",
     "react-native-svg-charts": "^5.2.0",
     "react-native-timeago": "^0.4.0",

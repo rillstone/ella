@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Dimensions
 } from "react-native";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import {
   Slider
 } from "react-native-elements";

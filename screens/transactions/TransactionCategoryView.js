@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import { Button, ButtonProps } from "react-native-ui-kitten";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-import TransitionView from '../components/TransitionView';
+import TransitionView from '../../components/TransitionView';
 import { LineChart, Grid } from "react-native-svg-charts";
 import * as shape from "d3-shape";
-import * as theme from "../theme";
+import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -88,7 +88,7 @@ class TransactionCategoryView extends Component {
     const chartPeriod = "Month";
     const data = navigation.getParam(
       "data",
-      require("../assets/images/default_back.jpg")
+      require("../../assets/images/default_back.jpg")
     );
     const chartColor = navigation.getParam("chartColor", "#FFF");
     const lineData = navigation.getParam("lineD", data2);
