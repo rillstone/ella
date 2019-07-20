@@ -92,7 +92,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   }
 
   if (routeName === "TransactionView") {
-    
+
 
   }
 
@@ -113,9 +113,13 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const PlannerStack = createStackNavigator({
-  PlannerScreen: Planner
-});
+const PlannerStack = createStackNavigator(
+  {
+    PlannerScreen: Planner
+  },
+  {
+    headerMode: "none",
+  });
 
 PlannerStack.navigationOptions = {
   tabBarLabel: "Planner",
