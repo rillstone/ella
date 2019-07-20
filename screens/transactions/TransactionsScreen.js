@@ -16,6 +16,7 @@ import payments from "../../assets/payments.json";
 import Icon from "react-native-vector-icons/Ionicons";
 import Transaction from "../../components/transactions/Transaction";
 import TransactionCategorySelect from "../../components/transactions/TransactionCategorySelect";
+import TransactionGraphSection from "../../components/transactions/TransactionGraphSection";
 import { sliderWidth, itemWidth } from "../../styles/SliderEntry.style";
 import { LineChart, XAxis } from "react-native-svg-charts";
 import * as shape from "d3-shape";
@@ -27,7 +28,14 @@ import { Paragraph } from "rn-placeholder";
 import { dispatch } from "../../store";
 
 import * as Animatable from "react-native-animatable";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
+import {
+  Defs,
+  LinearGradient,
+  Stop,
+  Circle,
+  G,
+  Text as SvgText
+} from "react-native-svg";
 import { Button } from "react-native-elements";
 import TimeAgo from "react-native-timeago";
 const axesSvg = {
@@ -55,7 +63,10 @@ class TransactionsScreen extends Component {
       transactions: [],
       loading: false,
       data: [],
-      pressed: [0,0,0,0,0,0,0],
+      graphSection: null,
+      toolTipColor: "transparent",
+      pressed: [0, 0, 0, 0, 0, 0, 0],
+      toolTip: 0,
       sum: 0,
       scroll: false,
       scrollY: new Animated.Value(0),
@@ -115,7 +126,13 @@ class TransactionsScreen extends Component {
       });
     }
   }
-
+  graphSectionPress = dataFromSection => {
+    this.setState({
+      graphSection: dataFromSection,
+      toolTip: this.dayOfWeek.indexOf(dataFromSection),
+      toolTipColor: "white"
+    });
+  };
   transactionData(transaction_cat) {
     let sortedTransactions = payments[transaction_cat].sort(
       (a, b) => new Date(b.date) - new Date(a.date)
@@ -215,6 +232,41 @@ class TransactionsScreen extends Component {
       outputRange: [1, 1, 0],
       extrapolate: "clamp"
     });
+
+    const Tooltip = ({ x, y }) => (
+      <G x={x(this.state.toolTip) - 75 / 2}>
+        <G x={75 / 2}>
+          <Circle
+            cy={y(this.weekTrans[this.state.toolTip].value)}
+            r={3}
+            stroke={this.state.toolTipColor}
+            strokeWidth={2}
+            fill={"transparent"}
+          />
+          <SvgText
+            strokeWidth={2}
+            fill={
+              this.state.toolTipColor !== "transparent"
+                ? 'black'
+                : "transparent"
+            }
+            stroke={"transparent"}
+            fontSize="13"
+            fontWeight="500"
+            x={this.state.toolTip == 0 ? x(this.state.toolTip) + 30 : this.state.toolTip == 6 ? (75 / 2)-60 : 75 / 2}
+            y={
+              y(this.weekTrans[this.state.toolTip].value) < 25
+                ? y(this.weekTrans[this.state.toolTip].value) + 20
+                : y(this.weekTrans[this.state.toolTip].value) - 15
+            }
+            textAnchor="middle"
+          >
+            {"$" + this.weekTrans[this.state.toolTip].value}
+          </SvgText>
+        </G>
+      </G>
+    );
+
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <Animated.ScrollView
@@ -343,28 +395,9 @@ class TransactionsScreen extends Component {
               firstLineWidth="50%"
               isReady={this.state.loading}
             >
-              <View
-                style={{
-                  marginHorizontal: 20,
-                  marginTop: 20,
-                  height: viewportWidth / 3,
-                  borderRadius: 12,
-                  width: viewportWidth - 40,
-                  alignSelf: "center",
-                  backgroundColor: theme.scheme.crusta,
-                  shadowColor: theme.scheme.crusta,
-                  shadowOffset: {
-                    width: 0,
-                    height: 0
-                  },
-                  shadowOpacity: 0.7,
-                  shadowRadius: 4,
-                  elevation: 1
-                }}
-              >
-
+              <View style={styles.chartContainer}>
                 <LineChart
-                  style={{ height: viewportWidth / 3.6}}
+                  style={{ height: viewportWidth / 3.6 }}
                   data={this.weekTrans}
                   yAccessor={({ item }) => item.value}
                   // xAccessor={({ item }) => item.day}
@@ -375,10 +408,11 @@ class TransactionsScreen extends Component {
                   contentInset={{ top: 20, bottom: 20 }}
                   svg={{
                     strokeWidth: 2,
-                    stroke: "white",
-
+                    stroke: "white"
                   }}
-                />
+                >
+                  <Tooltip />
+                </LineChart>
                 <XAxis
                   style={{ marginHorizontal: -10, height: xAxisHeight }}
                   data={this.weekTrans}
@@ -393,28 +427,10 @@ class TransactionsScreen extends Component {
                   scale={scale.scaleTime}
                   numberOfTicks={7}
                 />
-                                <View
-                  style={{
-                    marginHorizontal: 20,
-                    position: "absolute",
-                    height: viewportWidth / 3,
-                    borderRadius: 12,
-                    width: viewportWidth - 40,
-                    overflow: "hidden",
-                    alignSelf: "center",
-                    backgroundColor: "transparent",
-
-                    flexDirection: "row"
-                  }}
-                >
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[0]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [1,0,0,0,0,0,0]})} />
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[1]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,1,0,0,0,0,0]})} />
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[2]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,1,0,0,0,0]})} />
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[3]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,1,0,0,0]})} />
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[4]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,0,1,0,0]})} />
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[5]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,0,0,1,0]})} />
-                  <TouchableOpacity style={{ flex: 1, backgroundColor: this.state.pressed[6]?'#fed33060' : '#00000001' }} onPress={() => this.setState({pressed: [0,0,0,0,0,0,1]})} />
-                </View>
+                <TransactionGraphSection
+                  options={this.weekTrans}
+                  callBack={this.graphSectionPress}
+                />
               </View>
             </Paragraph>
           </View>
@@ -503,6 +519,23 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "center",
     alignItems: "center"
+  },
+  chartContainer: {
+    marginHorizontal: 20,
+    marginTop: 20,
+    height: viewportWidth / 3,
+    borderRadius: 12,
+    width: viewportWidth - 40,
+    alignSelf: "center",
+    backgroundColor: theme.scheme.crusta,
+    shadowColor: theme.scheme.crusta,
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 4,
+    elevation: 1
   },
   inOut: {
     flexDirection: "row",
