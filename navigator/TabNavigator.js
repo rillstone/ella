@@ -16,7 +16,7 @@ import NewUserWelcomeScreen from "../screens/intro/NewUserWelcomeScreen";
 import SignInScreen from "../screens/intro/SignInScreen";
 import SignUpScreen from "../screens/intro/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
-import Planner from "../screens/Planner";
+import Planner from "../screens/planner/Planner";
 import Transactions from "../screens/transactions/Transactions";
 import TransactionsScreen from "../screens/transactions/TransactionsScreen";
 import TransactionsCategoryView from "../screens/transactions/TransactionCategoryView";
