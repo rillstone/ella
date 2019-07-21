@@ -17,6 +17,7 @@ import SignInScreen from "../screens/intro/SignInScreen";
 import SignUpScreen from "../screens/intro/SignUpScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import Planner from "../screens/planner/Planner";
+import MealView from "../screens/planner/MealView";
 import Transactions from "../screens/transactions/Transactions";
 import TransactionsScreen from "../screens/transactions/TransactionsScreen";
 import TransactionsCategoryView from "../screens/transactions/TransactionCategoryView";
@@ -115,7 +116,8 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
 const PlannerStack = createStackNavigator(
   {
-    PlannerScreen: Planner
+    PlannerScreen: Planner,
+    MealView: MealView,
   },
   {
     headerMode: "none",

@@ -1,6 +1,23 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { Dimensions, Platform } from 'react-native';
+import * as theme from '../../theme';
+import { Transition } from 'react-navigation-fluid-transitions';
+
+const IS_IOS = Platform.OS === 'ios';
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+function wp(percentage) {
+    const value = (percentage * viewportWidth) / 100;
+    return Math.round(value);
+}
+const entryBorderRadius = 8;
+const slideHeight = 300;
+const slideWidth = wp(85);
+const itemHorizontalMargin = wp(2);
+export const sliderWidth = viewportWidth;
+export const itemWidth = slideWidth + itemHorizontalMargin * 2;
+
 
 export default class SliderEntry extends Component {
 
@@ -14,50 +31,30 @@ export default class SliderEntry extends Component {
         return (
             <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => navigation.navigate('TransactionCategory', { chartColor: color, lineD: lineData, fontColor: textColor })}
+                onPress={() => navigation.navigate('MealView', { data: { title, subtitle, image } })}
             >
-                <ImageBackground
-                    source={image}
-                    imageStyle={{ borderRadius: entryBorderRadius }}
-                    style={styles.slideInnerContainer}
-                >
-                    <View style={styles.textContainer}>
-                        <Text
-                            style={styles.title}
-                            numberOfLines={2}>
-                            {title}
-                        </Text>
-                        <Text
-                            style={styles.subtitle}
-                            numberOfLines={2}>
-                            {subtitle}
-                        </Text>
-                    </View>
-                </ImageBackground>
+                    <ImageBackground
+                        source={image}
+                        imageStyle={{ borderRadius: entryBorderRadius }}
+                        style={styles.slideInnerContainer}
+                    >
+                        <View style={styles.textContainer}>
+                            <Text
+                                style={styles.title}
+                                numberOfLines={2}>
+                                {title}
+                            </Text>
+                            <Text
+                                style={styles.subtitle}
+                                numberOfLines={2}>
+                                {subtitle}
+                            </Text>
+                        </View>
+                    </ImageBackground>
             </TouchableOpacity >
         );
     }
 }
-
-import { Dimensions, Platform } from 'react-native';
-import * as theme from '../../theme';
-
-const IS_IOS = Platform.OS === 'ios';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-
-function wp(percentage) {
-    const value = (percentage * viewportWidth) / 100;
-    return Math.round(value);
-}
-
-const slideHeight = 300;
-const slideWidth = wp(85);
-const itemHorizontalMargin = wp(2);
-
-export const sliderWidth = viewportWidth;
-export const itemWidth = slideWidth + itemHorizontalMargin * 2;
-
-const entryBorderRadius = 8;
 
 const styles = StyleSheet.create({
     slideInnerContainer: {
