@@ -63,7 +63,7 @@ class Planner extends Component {
   render() {
     // console.log(mfb.deliveryDays[0].orders[0].recipes);
     const weekCarousels = mfb.deliveryDays && mfb.deliveryDays.map((week) => (
-      <React.Fragment key={week.date}>
+      <View key={week.date} style={styles.carouselItem}>
         {console.log()}
         <Text style={styles.subtitle_two}>
           Meals for the week beginning {moment(week.date.substring(1), ' YYYY-MM-DD').format('Do MMMM')}:
@@ -86,7 +86,7 @@ class Planner extends Component {
           layout={"default"}
           firstItem={0}
         />
-      </React.Fragment>
+      </View>
     ));
     return (
       <SafeAreaView style={styles.outContainer}>
@@ -103,6 +103,7 @@ class Planner extends Component {
           <ScrollView
             style={styles.carousel}
             contentContainerStyle={styles.scroll}
+            showsVerticalScrollIndicator={false}
           >
             {weekCarousels}
           </ScrollView>
@@ -130,7 +131,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.back,
   },
   carousel: {
-    paddingTop: 30,
+    flex: 1,
+  },
+  carouselItem: {
+    paddingTop: 20,
   },
   titleContain: {
     paddingTop: 30,
@@ -158,11 +162,10 @@ const styles = StyleSheet.create({
     color: theme.colors.warn
   },
   slider: {
-    marginTop: 15,
+    // marginTop: 15,
     overflow: "visible" // for custom animations
   },
   scroll: {
-    alignItems: "center",
     justifyContent: "flex-start"
   }
 });
