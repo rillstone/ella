@@ -26,15 +26,14 @@ export default class SliderEntry extends Component {
     };
 
     render() {
-        const { data: { title, subtitle, image }, navigation } = this.props;
-
+        const { data, navigation } = this.props;
         return (
             <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => navigation.navigate('MealView', { data: { title, subtitle, image } })}
+                onPress={() => navigation.navigate('MealView', { data: data })}
             >
                     <ImageBackground
-                        source={image}
+                        source={{uri: data.imageUrl}}
                         imageStyle={{ borderRadius: entryBorderRadius }}
                         style={styles.slideInnerContainer}
                     >
@@ -42,12 +41,12 @@ export default class SliderEntry extends Component {
                             <Text
                                 style={styles.title}
                                 numberOfLines={2}>
-                                {title}
+                                {data.name}
                             </Text>
                             <Text
                                 style={styles.subtitle}
                                 numberOfLines={2}>
-                                {subtitle}
+                                {data.subtitle}yeeeet
                             </Text>
                         </View>
                     </ImageBackground>
@@ -71,8 +70,8 @@ const styles = StyleSheet.create({
     textContainer: {
         justifyContent: 'center',
         paddingTop: 20 - entryBorderRadius,
-        height: 80,
-        paddingBottom: 16,
+        height: 100,
+        paddingBottom: 10,
         paddingHorizontal: 16,
         marginHorizontal: wp(2),
         backgroundColor: 'white',

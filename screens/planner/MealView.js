@@ -113,14 +113,14 @@ class MealView extends Component {
                     <Icon name="ios-more" size={36} color={theme.colors.white} />
                 </TouchableOpacity>
                     <ImageBackground
-                        source={meal.image && meal.image}
+                        source={{uri: meal.imageUrl && meal.imageUrl}}
                         style={{
                             flex: 1,
                             alignItems: "center",
                             alignContent: "center",
                             flexDirection: "column"
                         }}
-                        imageStyle={{ resizeMode: "repeat" }}
+                        imageStyle={{ resizeMode: "cover" }}
                     />
                 <View style={styles.scrollOver}>
                     <ScrollView
@@ -134,7 +134,7 @@ class MealView extends Component {
                         }}
                     >
                         <View style={{ flexDirection: "column", left: 15, alignItems: "center", marginTop: 30 }}>
-                            <Text style={styles.title}>{meal.title}</Text>
+                            <Text style={styles.title}>{meal.name}</Text>
                             <Text style={styles.date}>
                                 {meal.subtitle}
                             </Text>
