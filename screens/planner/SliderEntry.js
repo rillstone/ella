@@ -32,24 +32,24 @@ export default class SliderEntry extends Component {
                 activeOpacity={1}
                 onPress={() => navigation.navigate('MealView', { data: data })}
             >
-                    <ImageBackground
-                        source={{uri: data.imageUrl}}
-                        imageStyle={{ borderRadius: entryBorderRadius }}
-                        style={styles.slideInnerContainer}
-                    >
-                        <View style={styles.textContainer}>
-                            <Text
-                                style={styles.title}
-                                numberOfLines={2}>
-                                {data.name}
+                <ImageBackground
+                    source={{ uri: data.imageUrl }}
+                    imageStyle={{ borderRadius: entryBorderRadius }}
+                    style={styles.slideInnerContainer}
+                >
+                    <View style={styles.textContainer}>
+                        <Text
+                            style={styles.title}
+                            numberOfLines={2}>
+                            {data.name}
+                        </Text>
+                        <Text
+                            style={styles.subtitle}
+                            numberOfLines={2}>
+                            Preparation time: {data.readyInTime} mins
                             </Text>
-                            <Text
-                                style={styles.subtitle}
-                                numberOfLines={2}>
-                                {data.subtitle}yeeeet
-                            </Text>
-                        </View>
-                    </ImageBackground>
+                    </View>
+                </ImageBackground>
             </TouchableOpacity >
         );
     }
