@@ -23,17 +23,15 @@ import TransactionsScreen from "../screens/transactions/TransactionsScreen";
 import TransactionsCategoryView from "../screens/transactions/TransactionCategoryView";
 import Settings from "../screens/Settings";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
-import * as theme from '../theme';
-
+import * as theme from "../theme";
 
 import {
   ActivityIndicator,
   AsyncStorage,
   StatusBar,
   StyleSheet,
-  View,
-} from 'react-native';
-
+  View
+} from "react-native";
 
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
@@ -43,11 +41,11 @@ class AuthLoadingScreen extends React.Component {
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
+    const userToken = await AsyncStorage.getItem("userToken");
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    this.props.navigation.navigate(userToken ? "App" : "Auth");
   };
 
   // Render any loading content that you like here
@@ -61,7 +59,6 @@ class AuthLoadingScreen extends React.Component {
   }
 }
 
-
 const activeColor = theme.scheme.crusta;
 const inactiveColor = "#B2B2B2";
 
@@ -71,15 +68,15 @@ const HomeStack = createStackNavigator(
     Goal: NewGoal,
     ViewGoal: GoalView,
     OverviewChart: OverviewChartView,
-    TransactionView: TransactionScreen,
+    TransactionView: TransactionScreen
   },
   {
     mode: "modal",
     headerMode: "none",
-    transparentCard: true,
+    transparentCard: true
   }
 );
-HomeStack.TranitionConfig
+HomeStack.TranitionConfig;
 HomeStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
@@ -93,14 +90,11 @@ HomeStack.navigationOptions = ({ navigation }) => {
   }
 
   if (routeName === "TransactionView") {
-
-
   }
-
 
   return {
     headerStyle: {
-      backgroundColor: 'green',
+      backgroundColor: "green"
     },
     tabBarVisible,
     tabBarLabel: "Overview",
@@ -117,33 +111,44 @@ HomeStack.navigationOptions = ({ navigation }) => {
 const PlannerStack = createStackNavigator(
   {
     PlannerScreen: Planner,
-    MealView: MealView,
+    MealView: MealView
   },
   {
     headerMode: "none",
-  });
+    mode: "modal"
+  }
+);
 
-PlannerStack.navigationOptions = {
-  tabBarLabel: "Planner",
-  tabBarIcon: ({ focused }) => (
-    <Icon
-      name="ios-heart"
-      size={26}
-      color={focused ? activeColor : inactiveColor}
-    />
-  )
+PlannerStack.navigationOptions = ({ navigation }) => {
+  var tabBarVisible = true;
+  const routeName = navigation.state.routes[navigation.state.index].routeName;
+
+  if (routeName === "MealView") {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarLabel: "Planner",
+    tabBarVisible,
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="ios-heart"
+        size={26}
+        color={focused ? activeColor : inactiveColor}
+      />
+    )
+  };
 };
 
 const TransactionsStack = createStackNavigator(
   {
     TransactionsScreen: TransactionsScreen,
     TransactionCategory: TransactionsCategoryView,
-    TransactionView2: TransactionScreen,
+    TransactionView2: TransactionScreen
   },
   {
     mode: "modal",
     headerMode: "none",
-    transparentCard: true,
+    transparentCard: true
   }
 );
 
@@ -173,7 +178,6 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-
   tabBarLabel: "Settings",
   tabBarIcon: ({ focused }) => (
     <Icon
@@ -203,7 +207,7 @@ const TabNavigator = createBottomTabNavigator(
         shadowColor: "black",
         shadowOpacity: 0.3,
         shadowRadius: 2,
-        elevation: 1,
+        elevation: 1
       }
     }
   }
@@ -214,24 +218,24 @@ const SignInStack = FluidNavigator(
     // NewUser: NewUserWelcomeScreen,
     Welcome: WelcomeScreen,
     SignIn: SignInScreen,
-    SignUp: SignUpScreen,
+    SignUp: SignUpScreen
     // HomePage: TabNavigator
-  }, { navigationOptions: { gesturesEnabled: false } },
+  },
+  { navigationOptions: { gesturesEnabled: false } },
   {
     mode: "card",
     headerMode: "none"
   }
-
 );
 export default createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     App: TabNavigator,
-    Auth: SignInStack,
+    Auth: SignInStack
   },
   {
-    initialRouteName: 'AuthLoading',
+    initialRouteName: "AuthLoading"
   }
-)
+);
 
 // export default SignInStack;
