@@ -7,12 +7,15 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
 import * as theme from "../../theme";
 import Carousel from "react-native-snap-carousel";
 import SliderEntry, { sliderWidth, itemWidth } from "./SliderEntry";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
+import mfb from "../../assets/mfb.json";
+import moment from "moment";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -38,43 +41,7 @@ class Planner extends Component {
     this.props = props;
 
     this._carousel = {};
-    this.init();
     this.sum = 0;
-  }
-
-  init() {
-    this.state = {
-      categories: [
-        {
-          id: "WpIAc9by5iU",
-          title: "Burmese Chicken Curry",
-          subtitle: "$25.78   Serves: 4   Time: 35-40min",
-          image: require("../../assets/images/mfb/1.jpg"),
-        },
-        {
-          id: "sNPnbI1arSE",
-          title: "Lamb and Pumpkin Pie",
-          subtitle: "$25.78   Serves: 4   Time: 35-40min",
-          image: require("../../assets/images/mfb/2.jpg"),
-        },
-        {
-          id: "VOgFZfRVaww",
-          title: "Winter Chicken Caesar",
-          subtitle: "$25.78   Serves: 4   Time: 35-40min",
-          image: require("../../assets/images/mfb/3.jpg"),
-        },
-        {
-          id: "VOgYYfRVaww",
-          title: "Citrus Salmon",
-          subtitle: "$25.78   Serves: 4   Time: 35-40min",
-          image: require("../../assets/images/mfb/4.jpg"),
-        },
-      ],
-      spendings: 0,
-      data: [],
-      colors: [theme.scheme.cerise + '90', theme.scheme.carnation + '90'],
-      keys: ["current", "average"]
-    };
   }
 
   _renderItem({ item, index }) {
@@ -87,9 +54,6 @@ class Planner extends Component {
     if (Platform.OS == "android") {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
-    this.setState({
-      data: this.state.categories[0].data
-    });
   }
 
   componentDidMount() {
@@ -97,45 +61,52 @@ class Planner extends Component {
   }
 
   render() {
+    // console.log(mfb.deliveryDays[0].orders[0].recipes);
+    const weekCarousels = mfb.deliveryDays && mfb.deliveryDays.map((week) => (
+      <View key={week.date} style={styles.carouselItem}>
+        {console.log()}
+        <Text style={styles.subtitle_two}>
+          Meals for the week beginning {moment(week.date.substring(1), ' YYYY-MM-DD').format('Do MMMM')}:
+        </Text>
+        <Carousel
+          ref={c => {
+            this._carousel = c;
+          }}
+          key={week.date}
+          data={week.orders[0].recipes}
+          renderItem={this._renderItem.bind(this)}
+          inactiveSlideShift={0}
+          inactiveSlideScale={1}
+          inactiveSlideOpacity={1}
+          enableSnap
+          containerCustomStyle={styles.slider}
+          contentContainerCustomStyle={{ paddingVertical: 10 }}
+          sliderWidth={sliderWidth}
+          itemWidth={itemWidth}
+          layout={"default"}
+          firstItem={0}
+        />
+      </View>
+    ));
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.outContainer}>
         <ImageBackground
-          imageStyle={{ resizeMode: "stretch" }}
+          imageStyle={{ height: "40%" }}
+          resizeMode="stretch"
           source={require("../../assets/images/tran_screen_back_green.png")}
-          style={styles.header}
+          style={styles.container}
         >
           <View style={styles.titleContain}>
             <Text style={styles.title}>Planner</Text>
             <Text style={styles.subtitle}>Meal suggestions</Text>
           </View>
-          <View style={styles.carousel}>
-            <Carousel
-              ref={c => {
-                this._carousel = c;
-              }}
-              data={this.state.categories}
-              renderItem={this._renderItem.bind(this)}
-              inactiveSlideShift={0}
-              inactiveSlideScale={1}
-              inactiveSlideOpacity={1}
-              enableSnap
-              containerCustomStyle={styles.slider}
-              contentContainerCustomStyle={{ paddingVertical: 10 }}
-              sliderWidth={sliderWidth}
-              itemWidth={itemWidth}
-              layout={"default"}
-              firstItem={1}
-              loop={true}
-              onSnapToItem={index => {
-                this.setState({
-                  graph: this.state.categories[index].graph,
-                  data: this.state.categories[index].data,
-                  keys: this.state.categories[index].keys,
-                  colors: this.state.categories[index].colors
-                });
-              }}
-            />
-          </View>
+          <ScrollView
+            style={styles.carousel}
+            contentContainerStyle={styles.scroll}
+            showsVerticalScrollIndicator={false}
+          >
+            {weekCarousels}
+          </ScrollView>
         </ImageBackground>
       </SafeAreaView>
     );
@@ -144,20 +115,26 @@ class Planner extends Component {
 export default Planner;
 
 const styles = StyleSheet.create({
-  header: {
+  container: {
+    flex: 1,
+    position: "absolute",
     top: 0,
-    left: 0,
-    right: 0,
     backgroundColor: "transparent",
     overflow: "visible",
-    height: viewportHeight / 2,
+    height: viewportHeight,
     width: viewportWidth,
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  container: {
+  outContainer: {
     flex: 1,
     backgroundColor: theme.colors.back,
+  },
+  carousel: {
+    flex: 1,
+  },
+  carouselItem: {
+    paddingTop: 20,
   },
   titleContain: {
     paddingTop: 30,
@@ -175,9 +152,9 @@ const styles = StyleSheet.create({
     color: theme.colors.gray
   },
   subtitle_two: {
-    fontSize: theme.sizes.subtitle_two,
-    fontWeight: "600",
-    color: theme.colors.gray
+    fontSize: 24,
+    color: theme.colors.gray,
+    paddingHorizontal: viewportWidth * 0.05
   },
   microtitle: {
     fontSize: theme.sizes.microsub,
@@ -185,7 +162,10 @@ const styles = StyleSheet.create({
     color: theme.colors.warn
   },
   slider: {
-    marginTop: 15,
+    // marginTop: 15,
     overflow: "visible" // for custom animations
   },
+  scroll: {
+    justifyContent: "flex-start"
+  }
 });
