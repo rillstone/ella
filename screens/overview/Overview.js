@@ -25,6 +25,7 @@ import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
 import AccountEdit from "../../components/account/AccountEdit";
 import { dispatch, connect } from '../../store';
+import { Notifications } from "expo";
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -91,7 +92,7 @@ class Overview extends Component {
         let sortedGoals = items.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
-        this.setState({ items:sortedGoals, refreshing: false });
+        this.setState({ items: sortedGoals, refreshing: false });
       });
   }
 
@@ -153,14 +154,26 @@ class Overview extends Component {
     if (Platform.OS == "android") {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
+    let notificationId = Notifications.scheduleLocalNotificationAsync(
+      {
+        title: "Ella",
+        body: 'Test local notification',
+      },
+      {
+        repeat: 'minute',
+        time: new Date().getTime() + 4000,
+      },
+    );
+    console.log(notificationId);
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.getGoals();
   };
-
+  
   _draggedValue = new Animated.Value(180);
   render() {
+    Notifications.dismissAllNotificationsAsync()
     const data = [50, 10, 40, 30, 20, 85, 91, 35, 53];
     const headerTranslate = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -179,7 +192,7 @@ class Overview extends Component {
     });
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
-        <StatusBar barStyle="dark-content" translucent/>
+        <StatusBar barStyle="dark-content" translucent />
         <SlidingUpPanel
           // onDragStart={() => console.log("start")}
           // onDragEnd={() => console.log("end")}
