@@ -13,13 +13,13 @@ function wp(percentage) {
 }
 const entryBorderRadius = 8;
 const slideHeight = 180;
-const slideWidth = wp(60);
+const slideWidth = wp(40);
 const itemHorizontalMargin = wp(2);
-export const sliderWidth = viewportWidth;
-export const itemWidth = slideWidth + itemHorizontalMargin * 2;
+export const sliderWidthSmall = viewportWidth;
+export const itemWidthSmall = slideWidth + itemHorizontalMargin * 2;
 
 
-export default class SliderEntry extends Component {
+export default class SliderEntryUpcoming extends Component {
 
     static propTypes = {
         data: PropTypes.object.isRequired,
@@ -32,25 +32,19 @@ export default class SliderEntry extends Component {
                 activeOpacity={1}
                 onPress={() => navigation.navigate('MealView', { data: data })}
             >
-                
                 <ImageBackground
                     source={{ uri: data.imageUrl }}
                     imageStyle={{ borderRadius: entryBorderRadius }}
                     style={styles.slideInnerContainer}
                 >
+                </ImageBackground>
                     <View style={styles.textContainer}>
                         <Text
                             style={styles.title}
                             numberOfLines={2}>
                             {data.name}
                         </Text>
-                        <Text
-                            style={styles.subtitle}
-                            numberOfLines={2}>
-                            Preparation time: {data.readyInTime} mins
-                            </Text>
                     </View>
-                </ImageBackground>
             </TouchableOpacity >
         );
     }
@@ -72,20 +66,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 20 - entryBorderRadius,
         // height: 100,
+        width: slideWidth,
         paddingBottom: 10,
-        paddingHorizontal: 16,
+        paddingHorizontal: 0,
         marginHorizontal: wp(2),
-        backgroundColor: theme.scheme.green,
+        backgroundColor: 'transparent',
         borderRadius: entryBorderRadius,
     },
     title: {
         fontSize: 16,
         fontWeight: "700",
-        color: theme.colors.white
+        color: theme.colors.gray,
+
     },
     subtitle: {
         marginTop: 2,
         fontSize: 15,
-        color: theme.colors.white
+        color: theme.colors.gray
     },
 });
