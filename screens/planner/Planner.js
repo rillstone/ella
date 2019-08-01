@@ -17,6 +17,7 @@ import SliderEntryUpcoming, {
   sliderWidthSmall,
   itemWidthSmall
 } from "./SliderEntryUpcoming";
+import { getInset } from "react-native-safe-area-view";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { Paragraph, Box } from "rn-placeholder";
 import mfb from "../../assets/mfb.json";
@@ -24,14 +25,8 @@ import moment from "moment";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-const Gradient = ({ index }) => (
-  <Defs key={index}>
-    <LinearGradient id={"gradient"} x1={"0%"} y={"0%"} x2={"0%"} y2={"100%"}>
-      <Stop offset={"0%"} stopColor={"#D7D8DC"} stopOpacity={1} />
-      <Stop offset={"100%"} stopColor={"#DFE0E4"} stopOpacity={0} />
-    </LinearGradient>
-  </Defs>
-);
+const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
+
 class Planner extends Component {
   mounted = false;
   constructor(props) {
@@ -153,33 +148,32 @@ class Planner extends Component {
           contentContainerStyle={styles.scroll}
           showsVerticalScrollIndicator={false}
         >
-            <Paragraph
-              style={{ left: 40, top: viewportHeight/4 }}
-              animation="fade"
-              lineNumber={3}
-              textSize={16}
-              color="#DAD7D7"
-              width="80%"
-              lastLineWidth="70%"
-              firstLineWidth="50%"
-              isReady={this.state.loading}
-            >
-          {weekCarousels}
-  </Paragraph>
+          <Paragraph
+            style={{ left: 40, top: viewportHeight / 4 }}
+            animation="fade"
+            lineNumber={3}
+            textSize={16}
+            color="#DAD7D7"
+            width="80%"
+            lastLineWidth="70%"
+            firstLineWidth="50%"
+            isReady={this.state.loading}
+          >
+            {weekCarousels}
+          </Paragraph>
 
-  <Paragraph
-              style={{ left: 40, top: viewportHeight/4 + 40}}
-              animation="fade"
-              lineNumber={3}
-              textSize={16}
-              color="#DAD7D7"
-              width="80%"
-              lastLineWidth="70%"
-              firstLineWidth="50%"
-              isReady={this.state.loading}
-            >
-
-          {upcomingCarousels}
+          <Paragraph
+            style={{ left: 40, top: viewportHeight / 4 + 40 }}
+            animation="fade"
+            lineNumber={3}
+            textSize={16}
+            color="#DAD7D7"
+            width="80%"
+            lastLineWidth="70%"
+            firstLineWidth="50%"
+            isReady={this.state.loading}
+          >
+            {upcomingCarousels}
           </Paragraph>
         </ScrollView>
       </SafeAreaView>
@@ -232,7 +226,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   titleContain: {
-    paddingTop: 30,
+    marginTop: TOP_SAFE_AREA + 40,
     alignItems: "flex-start",
     width: viewportWidth * 0.9
   },
