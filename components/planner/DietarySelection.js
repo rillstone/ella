@@ -10,11 +10,22 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as theme from "../../theme";
-
+const icons = [
+  "ios-tennisball",
+  "ios-stopwatch",
+  "ios-pie",
+  "ios-happy",
+  "ios-chatbubbles",
+  "ios-basketball",
+  "ios-baseball",
+  "ios-aperture",
+  "ios-analytics",
+  "ios-appstore"
+];
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-export default class PlannerTypeSelection extends Component {
+export default class DietarySelection extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -41,14 +52,14 @@ export default class PlannerTypeSelection extends Component {
     return (
       <View
         style={{
-          flexDirection: "column",
+          flexDirection: "row",
           // justifyContent: "space-between",
-          marginHorizontal: 30,
+          marginHorizontal: 10,
           left: 0,
           alignContent: "center",
           alignItems: "center",
           alignSelf: "center",
-
+          flexWrap: options.length > 4 ? "wrap" : "nowrap"
         }}
       >
         {options.map(item => {
@@ -58,18 +69,21 @@ export default class PlannerTypeSelection extends Component {
               style={[
                 styles.card,
                 {
-                  width: viewportWidth -30,
+                  width: viewportWidth / item.width,
                   backgroundColor: theme.colors.lightGray
                 },
-                value === item.key && { backgroundColor: theme.scheme.green }
+                value === item.key && { backgroundColor: item.color }
               ]}
               onPress={() => {
                 this.setState({ value: item.key });
                 this.props.callBack(item.key);
               }}
             >
-              <View style={styles.typeText}>
-                <Text style={styles.typeTitle}>{item.text}</Text>
+              <View style={styles.icon}>
+                <Icon name={item.icon} color={"#FFF"} size={30} />
+              </View>
+              <View style={styles.dietaryText}>
+                <Text style={styles.dietaryTitle}>{item.key}</Text>
               </View>
             </TouchableOpacity>
           );
@@ -134,23 +148,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center"
   },
-  typeText: {
+  dietaryText: {
     padding: 15,
     alignItems: "center",
-    justifyContent: 'center',
-    
     borderRadius: 5,
     flex: 1
   },
-  typeTitle: {
+  dietaryTitle: {
     backgroundColor: "transparent",
-    fontSize: 22,
+    fontSize: 12,
     fontWeight: "700",
-    textAlignVertical: 'center',
-    textAlign: 'center',
     color: "#fff"
   },
-  typeSubtitle: {
+  dietarySubtitle: {
     backgroundColor: "transparent",
     fontSize: 15,
     fontWeight: "500",

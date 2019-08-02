@@ -216,7 +216,7 @@ class PlannerIntro extends Component {
                 Skip
               </Text>
             </View>
-            <Text onPress={() => this.props.navigation.navigate("Planner")}
+            <Text onPress={() => this.props.navigation.navigate("PlannerInitQuestions")}
               style={{
                 display: this.state.showStart ? "flex" : "none",
                 fontWeight: "600",
