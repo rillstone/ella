@@ -194,7 +194,7 @@ class PlannerIntro extends Component {
               justifyContent: "center",
               width: viewportWidth,
               marginBottom: 40,
-              display: this.state.showLogo ? "none" : "block"
+              display: this.state.showLogo ? "none" : "flex"
             }}
           >
             <View
@@ -203,7 +203,7 @@ class PlannerIntro extends Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "flex-start",
-                display: this.state.showStart ? "none" : "block"
+                display: this.state.showStart ? "none" : "flex"
               }}
             >
               <Text onPress={() => { this.refs.carousel.snapToItem(2); }}
@@ -232,7 +232,7 @@ class PlannerIntro extends Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "flex-end",
-                display: this.state.showStart ? "none" : "block"
+                display: this.state.showStart ? "none" : "flex"
               }}
             >
               <Text onPress={() => { this.refs.carousel.snapToNext(); }}
