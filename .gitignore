@@ -5,6 +5,11 @@
 # package stuff
 .expo
 
+#stuff we don't want people to see :)
+constants/ApiKeys.js
+assets/mfb.json
+assets/payments.json
+
 ### Node ###
 # Logs
 logs
