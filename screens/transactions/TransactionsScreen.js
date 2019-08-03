@@ -377,7 +377,8 @@ class TransactionsScreen extends Component {
         >
           <View style={{ paddingTop: TOP_SAFE_AREA }} />
           <Paragraph
-            style={{ top: safetyZone, paddingTop: 20 }}
+            style={{ top: safetyZone, paddingTop: 20, backgroundColor: theme.colors.back,    borderTopLeftRadius: 12,
+              borderTopRightRadius: 12, }}
             animation="fade"
             lineNumber={3}
             textSize={16}
