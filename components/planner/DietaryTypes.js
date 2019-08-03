@@ -13,7 +13,7 @@ const dietaryTypes = [
     width: 2.4
   },
   {
-    key: "Vegitarian",
+    key: "Vegetarian",
     icon: "ios-nutrition",
     color: theme.scheme.sunshade,
     width: 2.4
@@ -47,7 +47,7 @@ const dietaryTypes = [
 const dietaryColors = {
   Meat: theme.scheme.royal_blue,
   Fish: theme.scheme.carnation,
-  Vegitarian: theme.scheme.sunshade,
+  Vegetarian: theme.scheme.sunshade,
   Vegan: theme.scheme.cerise,
   Gluten: theme.scheme.curious_blue,
   Dairy: theme.scheme.ufo_green,
@@ -56,7 +56,7 @@ const dietaryColors = {
 const dietaryIcons = {
     Meat: "ios-egg",
     Fish: "ios-analytics",
-    Vegitarian: "ios-nutrition",
+    Vegetarian: "ios-nutrition",
     Vegan: "ios-leaf",
     Gluten: "ios-flower",
     Dairy: "ios-ice-cream",
