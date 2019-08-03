@@ -52,7 +52,7 @@ class MealServicePlanSliderEntry extends Component {
         dietaryRequirements: dietary,
         mealCompany: service,
         chosenPlan: plan
-      })
+    }, { merge: true })
       .catch(error => {})
       .then(() => {
         Linking.openURL(url);
