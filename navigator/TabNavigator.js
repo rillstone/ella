@@ -133,7 +133,7 @@ PlannerStack.navigationOptions = ({ navigation }) => {
       <Icon
         name="ios-heart"
         size={26}
-        color={focused ? activeColor : inactiveColor}
+        color={focused ? theme.scheme.green : inactiveColor}
       />
     )
   };
@@ -167,7 +167,7 @@ TransactionsStack.navigationOptions = ({ navigation }) => {
       <Icon
         name="ios-card"
         size={26}
-        color={focused ? activeColor : inactiveColor}
+        color={focused ? theme.scheme.cerise : inactiveColor}
       />
     )
   };
@@ -183,7 +183,7 @@ SettingsStack.navigationOptions = {
     <Icon
       name="ios-settings"
       size={26}
-      color={focused ? activeColor : inactiveColor}
+      color={focused ? theme.colors.gray : inactiveColor}
     />
   )
 };
