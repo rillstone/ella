@@ -52,12 +52,13 @@ const styles = StyleSheet.create({
   slideInnerContainer: {
     width: viewportWidth - 60,
     height: viewportWidth - 60,
+   alignSelf: 'center'
     // backgroundColor: 'green'
   },
   imageContainer: {
     flex: 1,
     marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
-    backgroundColor: "white",
+    backgroundColor: "transparent",
     borderRadius: 8,
     resizeMode: "cover",
     // backgroundColor: 'green'

@@ -10,19 +10,20 @@ import {
   Image,
   Dimensions
 } from "react-native";
-import * as theme from "../../theme";
+import * as theme from "../../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import IntroSlider from "../../components/IntroSlider";
+import IntroSlider from "../../../components/IntroSlider";
 import { Transition } from "react-navigation-fluid-transitions";
 import * as Animatable from "react-native-animatable";
 import { Button, Input } from "react-native-elements";
 import PropTypes from "prop-types";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 
-class NewUserWelcomeScreen extends Component {
+class PlannerIntro extends Component {
   mounted = false;
   constructor(props) {
     super();
@@ -38,27 +39,27 @@ class NewUserWelcomeScreen extends Component {
       slides: [
         {
           id: 1,
-          image: require("../../assets/images/slide_1.png"),
-          title: "This is a title for 1",
-          text: "this is the text under the title. Placeholder text for 1."
+          image: require("../../../assets/images/slide_1.png"),
+          title: "Meal planning",
+          text: "Can't think what's healthy, cheap and tasty?"
         },
         {
           id: 2,
-          image: require("../../assets/images/slide_2.png"),
-          title: "This is a title for 2",
-          text: "this is the text under the title. Placeholder text for 2."
+          image: require("../../../assets/images/slide_2.png"),
+          title: "Meal delivery",
+          text: "Want to just handle the cooking?"
         },
         {
           id: 3,
-          image: require("../../assets/images/slide_3.png"),
-          title: "This is a title for 3",
-          text: "this is the text under the title. Placeholder text for 3."
+          image: require("../../../assets/images/slide_3.png"),
+          title: "Ella wants to help you live your best life",
+          text: "Let us get to know you a bit more so we can get started"
         }
       ],
       activeSlide: 0,
       animationType: "fadeInDown",
       animationType2: "fadeIn",
-      showLogo: true,
+      showLogo: false,
       showStart: false
     };
   }
@@ -78,9 +79,8 @@ class NewUserWelcomeScreen extends Component {
     setTimeout(
       () =>
         this.setState({ animationType: "fadeOut", animationType2: "fadeOut" }),
-      3000
+      500
     );
-    setTimeout(() => this.setState({ showLogo: false }), 3200);
   }
 
   get pagination() {
@@ -95,7 +95,7 @@ class NewUserWelcomeScreen extends Component {
           height: 10,
           borderRadius: 5,
           marginHorizontal: 8,
-          backgroundColor: "#F6699A"
+          backgroundColor: theme.scheme.green
         }}
         inactiveDotStyle={
           {
@@ -113,72 +113,34 @@ class NewUserWelcomeScreen extends Component {
       <Transition shared="back">
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
           <StatusBar barStyle="dark-content" />
-          <Animatable.View
-            animation={this.state.animationType}
-            duration={700}
-            delay={900}
-            useNativeDriver
-            style={{
-              flex: 2,
-              flexDirection: "column",
-              alignContent: "flex-end",
-              justifyContent: "flex-end",
-              display: this.state.showLogo ? "block" : "none"
-            }}
-          >
-            <Transition shared="logo">
-              <Image
-                style={[styles.backgroundImage]}
-                source={require("../../assets/images/ella_logo_text_pink.png")}
-              />
-            </Transition>
-          </Animatable.View>
-          <Animatable.View
-            animation={this.state.animationType2}
-            duration={800}
-            delay={1500}
-            useNativeDriver
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              alignContent: "flex-start",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              display: this.state.showLogo ? "block" : "none"
-            }}
-          >
-            {/* <Text style={{fontWeight: '900', fontSize: 40, color: '#3F4F5A'}}>Hello, there!</Text> */}
-            <Text style={{ fontWeight: "900", fontSize: 40, color: "#3F4F5A" }}>
-              Hello,
-              <Text style={{ color: "#F6699A" }}> there!</Text>
-            </Text>
-          </Animatable.View>
 
           <Animatable.View
             animation="fadeInRight"
             duration={900}
-            delay={3500}
+            delay={0}
             useNativeDriver
             style={{
               flex: 1,
               flexDirection: "column",
               alignContent: "flex-end",
-              justifyContent: "flex-end"
-              //   backgroundColor: 'brown'
+              justifyContent: "flex-end",
+              alignSelf: 'center',
+              alignItems: 'center',
+              backgroundColor: "transparent"
             }}
           >
             <Carousel
               autoplay
               lockScrollWhileSnapping
               enableMomentum={false}
-              autoplayDelay={2500}
+              autoplayDelay={900}
               sliderWidth={viewportWidth}
-              ref={'carousel'}
+              ref={"carousel"}
               containerCustomStyle={{
                 flexGrow: 0
               }}
               //   sliderHeight={viewportWidth-120}
-              itemWidth={viewportWidth - 60}
+              itemWidth={viewportWidth}
               autoplayInterval={2500}
               data={this.state.slides}
               renderItem={this._renderItem.bind(this)}
@@ -192,17 +154,19 @@ class NewUserWelcomeScreen extends Component {
             <View
               style={{
                 marginHorizontal: 30,
-                flex: 1,
+                // flex: 1,
                 flexDirection: "column",
                 // alignContent: "flex-start",
-                // justifyContent: "flex-start",
-                alignItems: "center"
+                // justifyContent: "center",
+                // alignItems: "center"
               }}
             >
               <Text
                 style={{
+
+
                   textAlign: "center",
-                  fontWeight: "900",
+                  fontWeight: "600",
                   fontSize: 30,
                   color: "#3F4F5A"
                 }}
@@ -214,13 +178,14 @@ class NewUserWelcomeScreen extends Component {
                   textAlign: "center",
                   fontWeight: "400",
                   fontSize: 20,
+
                   color: "#3F4F5A"
                 }}
               >
                 {this.state.slides[this.state.activeSlide].text}
               </Text>
             </View>
-            <View style={{ flex: 3 }}>{this.pagination}</View>
+            <View style={{ flex: 3, marginTop: 20 }}>{this.pagination}</View>
           </Animatable.View>
           <View
             style={{
@@ -229,7 +194,7 @@ class NewUserWelcomeScreen extends Component {
               alignContent: "center",
               justifyContent: "center",
               width: viewportWidth,
-              marginBottom: 20,
+              marginBottom: 40,
               display: this.state.showLogo ? "none" : "flex"
             }}
           >
@@ -242,26 +207,40 @@ class NewUserWelcomeScreen extends Component {
                 display: this.state.showStart ? "none" : "flex"
               }}
             >
-              <Text onPress={() => { this.refs.carousel.snapToItem(2); }}
+              <Text
+                onPress={() => {
+                  this.refs.carousel.snapToItem(2);
+                }}
                 style={{
-                    fontWeight: "400",
-                    fontSize: 15,
+                  fontWeight: "400",
+                  fontSize: 15,
                   color: "#C1C1C2"
                 }}
               >
                 Skip
               </Text>
             </View>
-            <Text onPress={() => this.props.navigation.navigate("SignIn")}
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("PlannerInitQuestions")
+              }
               style={{
                 display: this.state.showStart ? "flex" : "none",
-                fontWeight: "600",
-                fontSize: 19,
-                color: "#F6699A"
+                backgroundColor: theme.scheme.green,
+                borderRadius: 8,
+                padding: 9,
               }}
             >
-              Get started
-            </Text>
+              <Text
+                style={{
+                  fontWeight: "600",
+                  fontSize: 19,
+                  color: theme.colors.white
+                }}
+              >
+                Get started
+              </Text>
+            </TouchableOpacity>
             <View
               style={{
                 flex: 1,
@@ -271,66 +250,28 @@ class NewUserWelcomeScreen extends Component {
                 display: this.state.showStart ? "none" : "flex"
               }}
             >
-              <Text onPress={() => { this.refs.carousel.snapToNext(); }}
+              <Text
+                onPress={() => {
+                  this.refs.carousel.snapToNext();
+                }}
                 style={{
-                    fontWeight: "400",
-                    fontSize: 15,
-                  color: "#F6699A"
+                  fontWeight: "400",
+                  fontSize: 15,
+                  color: theme.scheme.ufo_green
                 }}
               >
                 Next
               </Text>
             </View>
           </View>
-
-          {/* <Animatable.View
-            animation="fadeIn"
-            duration={900}
-            delay={900}
-            useNativeDriver
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
-              style={{
-                flex: 0.8,
-                top: 40,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Transition delay={500} shared="enter">
-                <Button
-                  buttonStyle={styles.button}
-                  // raised
-                  titleStyle={{ fontWeight: "bold", color: "#FFF" }}
-                  icon={
-                    <Icon name="ios-arrow-forward" size={30} color="white" />
-                  }
-                  onPress={() => this.props.navigation.navigate("SignIn")}
-                />
-              </Transition>
-            </View>
-            <Button
-          buttonStyle={styles.button}
-          titleStyle={{fontWeight: 'bold', color: '#FFF'}}
-            title="SIGN UP"
-            onPress={() => this.props.navigation.navigate("SignUp")}
-          />
-          </Animatable.View> */}
         </SafeAreaView>
       </Transition>
     );
   }
 }
-export default NewUserWelcomeScreen;
+export default PlannerIntro;
 
 const styles = StyleSheet.create({
-
   backgroundImage: {
     // position: "absolute",
     // top: 0,
