@@ -53,6 +53,7 @@ const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
 const HEADER_MAX_HEIGHT = 150;
 const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
+const safetyZone = HEADER_MAX_HEIGHT;
 class TransactionsScreen extends Component {
   mounted = false;
   startHeaderHeight;
@@ -141,7 +142,7 @@ class TransactionsScreen extends Component {
     var greater = true;
     var ourDate = new Date();
     var weekAgo = ourDate.getDate() - 7;
-    this.weekTrans.forEach(function(element) {
+    this.weekTrans.forEach(function (element) {
       element.value = 0;
     });
     let currentDate = sortedTransactions[0] ? sortedTransactions[0].date : null;
@@ -193,18 +194,18 @@ class TransactionsScreen extends Component {
             </TouchableOpacity>
           </View>
         ) : (
-          <View key={tr._id}>
-            <TouchableOpacity
-              key={i}
-              onPress={() => {
-                this.props.navigation.navigate("TransactionView2");
-                dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
-              }}
-            >
-              <Transaction data={tr} key={tr._id} index={i} />
-            </TouchableOpacity>
-          </View>
-        );
+            <View key={tr._id}>
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  this.props.navigation.navigate("TransactionView2");
+                  dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
+                }}
+              >
+                <Transaction data={tr} key={tr._id} index={i} />
+              </TouchableOpacity>
+            </View>
+          );
       currentDate = tr.date;
       return x;
     });
@@ -253,7 +254,7 @@ class TransactionsScreen extends Component {
             stroke={"transparent"}
             fontSize="13"
             fontWeight="500"
-            x={this.state.toolTip == 0 ? x(this.state.toolTip) + 30 : this.state.toolTip == 6 ? (75 / 2)-60 : 75 / 2}
+            x={this.state.toolTip == 0 ? x(this.state.toolTip) + 30 : this.state.toolTip == 6 ? (75 / 2) - 60 : 75 / 2}
             y={
               y(this.weekTrans[this.state.toolTip].value) < 25
                 ? y(this.weekTrans[this.state.toolTip].value) + 20
@@ -375,71 +376,61 @@ class TransactionsScreen extends Component {
           )}
         >
           <View style={{ paddingTop: TOP_SAFE_AREA }} />
-          <View
-            style={{
-              borderTopLeftRadius: 12,
-              backgroundColor: theme.colors.back,
-              borderTopRightRadius: 12,
-              overflow: "visible",
-              marginTop: HEADER_SCROLL_DISTANCE * 5
-            }}
+          <Paragraph
+            style={{ top: safetyZone, paddingTop: 20 }}
+            animation="fade"
+            lineNumber={3}
+            textSize={16}
+            color="#DAD7D7"
+            width="80%"
+            lastLineWidth="70%"
+            firstLineWidth="50%"
+            isReady={this.state.loading}
           >
-            <Paragraph
-              style={{ left: 40, top: 20 }}
-              animation="fade"
-              lineNumber={3}
-              textSize={16}
-              color="#DAD7D7"
-              width="80%"
-              lastLineWidth="70%"
-              firstLineWidth="50%"
-              isReady={this.state.loading}
-            >
-              <View style={styles.chartContainer}>
-                <LineChart
-                  style={{ height: viewportWidth / 3.6 }}
-                  data={this.weekTrans}
-                  yAccessor={({ item }) => item.value}
-                  // xAccessor={({ item }) => item.day}
-                  xScale={scale.scaleTime}
-                  curve={shape.curveNatural}
-                  animate
-                  numberOfTicks={7}
-                  contentInset={{ top: 20, bottom: 20 }}
-                  svg={{
-                    strokeWidth: 2,
-                    stroke: "white"
-                  }}
-                >
-                  <Tooltip />
-                </LineChart>
-                <XAxis
-                  style={{ marginHorizontal: -10, height: xAxisHeight }}
-                  data={this.weekTrans}
-                  // xAccessor={({ item }) => item}
-                  formatLabel={value => this.dayOfWeek[value]}
-                  contentInset={{ left: 30, right: 30 }}
-                  svg={{
-                    fontSize: 10,
-                    fill: "white",
-                    onPress: () => console.log("touched: ")
-                  }}
-                  scale={scale.scaleTime}
-                  numberOfTicks={7}
-                />
-                <TransactionGraphSection
-                  options={this.weekTrans}
-                  callBack={this.graphSectionPress}
-                />
-              </View>
-            </Paragraph>
-          </View>
+            <View style={styles.chartContainer}>
+              <LineChart
+                style={{ height: viewportWidth / 3.6 }}
+                data={this.weekTrans}
+                yAccessor={({ item }) => item.value}
+                // xAccessor={({ item }) => item.day}
+                xScale={scale.scaleTime}
+                curve={shape.curveNatural}
+                animate
+                numberOfTicks={7}
+                contentInset={{ top: 20, bottom: 20 }}
+                svg={{
+                  strokeWidth: 2,
+                  stroke: "white"
+                }}
+              >
+                <Tooltip />
+              </LineChart>
+              <XAxis
+                style={{ marginHorizontal: -10, height: xAxisHeight }}
+                data={this.weekTrans}
+                // xAccessor={({ item }) => item}
+                formatLabel={value => this.dayOfWeek[value]}
+                contentInset={{ left: 30, right: 30 }}
+                svg={{
+                  fontSize: 10,
+                  fill: "white",
+                  onPress: () => console.log("touched: ")
+                }}
+                scale={scale.scaleTime}
+                numberOfTicks={7}
+              />
+              <TransactionGraphSection
+                options={this.weekTrans}
+                callBack={this.graphSectionPress}
+              />
+            </View>
+          </Paragraph>
           <View
             style={{ width: viewportWidth, backgroundColor: theme.colors.back }}
           >
             <View
               style={{
-                marginVertical: 10,
+                marginTop: xAxisHeight + safetyZone,
                 marginHorizontal: 20
               }}
             >

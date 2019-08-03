@@ -47,7 +47,6 @@ export default class TransactionGraphSelection extends Component {
           overflow: "hidden",
           alignSelf: "center",
           backgroundColor: "transparent",
-
           flexDirection: "row"
         }}
       >
@@ -64,14 +63,7 @@ export default class TransactionGraphSelection extends Component {
                 this.setState({ value: item.day });
                 this.props.callBack(item.day);
               }}
-            >
-              {/* <View
-                style={[
-                    styles.dot,
-                    value === item.day && { backgroundColor: "white",bottom: item.value/3.0375652174 }
-                  ]}
-              /> */}
-            </TouchableOpacity>
+            />
           );
         })}
       </View>
