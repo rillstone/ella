@@ -230,7 +230,7 @@ class NewUserWelcomeScreen extends Component {
               justifyContent: "center",
               width: viewportWidth,
               marginBottom: 20,
-              display: this.state.showLogo ? "none" : "block"
+              display: this.state.showLogo ? "none" : "flex"
             }}
           >
             <View
@@ -239,7 +239,7 @@ class NewUserWelcomeScreen extends Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "flex-start",
-                display: this.state.showStart ? "none" : "block"
+                display: this.state.showStart ? "none" : "flex"
               }}
             >
               <Text onPress={() => { this.refs.carousel.snapToItem(2); }}
@@ -268,7 +268,7 @@ class NewUserWelcomeScreen extends Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "flex-end",
-                display: this.state.showStart ? "none" : "block"
+                display: this.state.showStart ? "none" : "flex"
               }}
             >
               <Text onPress={() => { this.refs.carousel.snapToNext(); }}
