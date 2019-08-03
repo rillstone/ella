@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   slideInnerContainer: {
     width: viewportWidth - 60,
     height: viewportWidth - 60,
+   alignSelf: 'center'
     // backgroundColor: 'green'
   },
   imageContainer: {

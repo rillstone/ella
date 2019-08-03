@@ -1,4 +1,4 @@
-import * as theme from '../../theme';
+
 const plannerTypes = [
   {
     key: "save",

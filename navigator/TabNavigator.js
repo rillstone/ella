@@ -20,6 +20,8 @@ import Planner from "../screens/planner/Planner";
 import PlannerIntro from "../screens/planner/plannerIntro/PlannerIntro";
 import MealSizeCount from "../screens/planner/plannerIntro/MealSizeCount";
 import DietaryReq from "../screens/planner/plannerIntro/DietaryReq";
+import MealServicesList from "../screens/planner/plannerIntro/MealServicesList";
+import MealServicePlans from "../screens/planner/plannerIntro/MealServicePlans";
 import PlannerInitQuestions from "../screens/planner/plannerIntro/PlannerInitQuestions";
 import MealView from "../screens/planner/MealView";
 import Transactions from "../screens/transactions/Transactions";
@@ -36,6 +38,7 @@ import {
   StyleSheet,
   View
 } from "react-native";
+
 
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
@@ -119,11 +122,16 @@ const PlannerStack = createStackNavigator(
     PlannerInitQuestions: PlannerInitQuestions,
     MealSizeCount: MealSizeCount,
     DietaryReq: DietaryReq,
-    MealView: MealView
+    MealView: MealView,
+    MealServicesList: MealServicesList,
+    MealServicePlans: MealServicePlans
   },
   {
     headerMode: "none",
-    mode: "modal"
+    mode: "modal",
+    defaultNavigationOptions: {
+      gesturesEnabled: false
+    }
   }
 );
 
@@ -131,12 +139,20 @@ PlannerStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
 
-  if (routeName === "MealView" || routeName === "PlannerInitQuestions" || routeName === "MealSizeCount" || routeName === "DietaryReq") {
+  if (
+    routeName === "MealView" ||
+    routeName === "PlannerInitQuestions" ||
+    routeName === "MealSizeCount" ||
+    routeName === "DietaryReq" || 
+    routeName === "MealServicesList" ||
+    routeName === "MealServicePlans"
+  ) {
     tabBarVisible = false;
   }
   return {
     tabBarLabel: "Planner",
     tabBarVisible,
+
     tabBarIcon: ({ focused }) => (
       <Icon
         name="ios-heart"

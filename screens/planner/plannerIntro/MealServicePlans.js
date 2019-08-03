@@ -18,9 +18,12 @@ import RNListSlider from "react-native-list-slider";
 import * as theme from "../../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
-import DietarySelection from "../../../components/planner/DietarySelection";
-import * as dietaryTypes from "../../../components/planner/DietaryTypes";
 import { getInset } from "react-native-safe-area-view";
+import Carousel from "react-native-snap-carousel";
+import MealServicePlanSliderEntry, {
+  sliderWidth,
+  itemWidth
+} from "../../../components/planner/MealServicePlanSliderEntry";
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
 import { Button, Input } from "react-native-elements";
@@ -41,16 +44,22 @@ const nouns = {
   3: "Triple",
   4: "Family"
 };
-class DietaryReq extends Component {
+class MealSizeCount extends Component {
   mounted = false;
   constructor(props) {
     super();
-    this.state = { 
-      value: 1,
-      // selected: "",
-      selected: [],
-    };
+    this.state = { value: 1 };
     this.props = props;
+    this._carousel = {};
+  }
+
+  _renderItem({ item, index }) {
+    return (
+      <MealServicePlanSliderEntry
+        navigation={this.props.navigation}
+        data={item}
+      />
+    );
   }
 
   componentWillMount() {
@@ -60,28 +69,11 @@ class DietaryReq extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
   }
-  typePress = dataFromTile => {
-    this.checkSelected(dataFromTile);
-  };
-
-  checkSelected(data) {
-    var index = this.state.selected.indexOf(data);
-    var array = this.state.selected;
-    if (index !== -1) {
-      array.splice(index,1);
-      this.setState({selected:array});
-    } else {
-      array.push(data);
-      this.setState({selected:array});
-    }
-  }
-
   onValueChanged = value => this.setState({ value });
   render() {
     const { navigation } = this.props;
     // const { navigation } = this.props;
-    const type = navigation.getParam("type", "other");
-    const count = navigation.getParam("count", 2);
+    const data = navigation.getParam("data", {});
 
     return (
       <View style={styles.fill}>
@@ -106,70 +98,52 @@ class DietaryReq extends Component {
             color={theme.colors.white}
           />
         </TouchableOpacity>
-        <View
+        <ImageBackground
+          source={data.images.background}
           style={{
             flex: 1,
             alignItems: "center",
             alignContent: "center",
             flexDirection: "column",
-            backgroundColor: theme.scheme.royal_blue,
-            paddingBottom: viewportHeight * 0.75
+            paddingBottom: viewportHeight / 2,
           }}
+          imageStyle={{ resizeMode: "cover" }}
         >
+            <View style={styles.overlay} />
           <View
             style={{
               flex: 0.3,
               justifyContent: "center",
               alignContent: "center",
               marginHorizontal: 30,
-              top: 60
+              top: viewportHeight / 5
             }}
           >
             <Text
               style={{
                 textAlign: "center",
-
-                fontWeight: "400",
-                fontSize: 25,
-
+                fontWeight: "800",
+                fontSize: 50,
                 color: "#FFF"
+
               }}
             >
-              What food types do you not eat?
+              Plans
             </Text>
           </View>
           {/* <View
-            style={{
-              flex: 0.6,
-              justifyContent: "center",
-              alignContent: "center",
-              marginHorizontal: 30
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "600",
-                fontSize: 40,
-                marginBottom: 10,
-                color: "#FFF"
-              }}
-            >
-              {this.state.value >=4 ? Object.values(nouns)[3] : Object.values(nouns)[this.state.value - 1]}
-            </Text>
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "300",
-                fontSize: 16,
+          style={{
+            flex: 1,
+            alignItems: "center",
+            alignContent: "center",
+            flexDirection: "column",
+            backgroundColor: theme.scheme.crusta,
+            paddingBottom: viewportHeight / 3
+          }}
+        > */}
 
-                color: "#FFF"
-              }}
-            >
-              meal deliveries for {ntw.toWords(this.state.value)} {this.state.value==1? 'person' : 'people'} per night
-            </Text>
-          </View> */}
-        </View>
+          {/* </View> */}
+        </ImageBackground>
         <Animatable.View
           animation={"fadeInUpBig"}
           duration={600}
@@ -187,63 +161,37 @@ class DietaryReq extends Component {
               backgroundColor: "transparent"
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                top: 20,
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                width: viewportWidth - 20,
-                // justifyContent: "center",
-                alignSelf: "center",
-                marginHorizontal: 10
-              }}
-            >
-              <DietarySelection
-                options={dietaryTypes.dietaryTypes}
-                callBack={this.typePress}
+            <View style={{ flex: 1, top: 20 }}>
+              <Carousel
+                ref={c => {
+                  this._carousel = c;
+                }}
+                data={data.plans}
+                renderItem={this._renderItem.bind(this)}
+                removeClippedSubviews={false}
+                inactiveSlideShift={0}
+                inactiveSlideScale={1}
+                inactiveSlideOpacity={1}
+                enableSnap
+                activeSlideAlignment={"start"}
+                containerCustomStyle={styles.slider}
+                contentContainerCustomStyle={{
+                  paddingVertical: 10,
+                  paddingLeft: 15
+                }}
+                sliderWidth={sliderWidth}
+                itemWidth={itemWidth}
+                layout={"default"}
+                firstItem={0}
               />
             </View>
           </View>
-          <View
-            style={{
-              flex: 0.3,
-              // top: 40,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Button
-              buttonStyle={styles.button}
-              titleStyle={{ fontWeight: "bold", color: "#FFF" }}
-              icon={<Icon name="ios-arrow-forward" size={30} color="white" />}
-              onPress={() =>
-                this.props.navigation.navigate("MealServicesList", {
-                  navigation: this.props.navigation,
-                  type: type,
-                  count: count,
-                  dietary: this.state.selected
-                })
-              }
-            />
-          </View>
-          {/* <ScrollView
-            borderRadius={10}
-            style={{
-              overflow: "hidden",
-              elevation: 1,
-              position: "relative",
-              borderRadius: 10,
-              backgroundColor: "transparent"
-            }}
-          /> */}
         </Animatable.View>
       </View>
     );
   }
 }
-export default DietaryReq;
+export default MealSizeCount;
 
 const styles = StyleSheet.create({
   fill: {
@@ -251,7 +199,7 @@ const styles = StyleSheet.create({
   },
   scrollOver: {
     width: viewportWidth,
-    height: viewportHeight * 0.75,
+    height: viewportHeight / 2,
     bottom: 0,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
@@ -268,6 +216,14 @@ const styles = StyleSheet.create({
     zIndex: 10000,
     backgroundColor: "white"
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.2)'
+  },
+  slider: {
+    // marginTop: 15,
+    overflow: "visible" // for custom animations
+  },
   button: {
     borderRadius: 30,
     width: 60,
@@ -275,8 +231,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     height: 60,
-    backgroundColor: theme.scheme.royal_blue,
-    shadowColor: theme.scheme.royal_blue,
+    backgroundColor: theme.scheme.crusta,
+    shadowColor: theme.scheme.crusta,
     shadowOffset: {
       width: 0,
       height: 0

@@ -30,7 +30,7 @@ export default class DietarySelection extends Component {
     super();
     this.state = {
       selected: false,
-      value: null
+      value: []
     };
     this.props = props;
   }
@@ -72,10 +72,31 @@ export default class DietarySelection extends Component {
                   width: viewportWidth / item.width,
                   backgroundColor: theme.colors.lightGray
                 },
-                value === item.key && { backgroundColor: item.color }
+                value.indexOf(item.key) !== -1 && { backgroundColor: item.color }
               ]}
               onPress={() => {
-                this.setState({ value: item.key });
+                var index = this.state.value.indexOf(item.key);
+                var array = this.state.value;
+                if (index !== -1) {
+                  array.splice(index,1);
+                  this.setState({value:array});
+                } else {
+                  array.push(item.key);
+                  this.setState({value:array});
+                }
+
+
+
+
+                // if (this.state.value === item.key) {
+                //   this.setState({
+                //     value: ""
+                //   });
+                // } else {
+                //   this.setState({
+                //     value: item.key
+                //   });
+                // }
                 this.props.callBack(item.key);
               }}
             >

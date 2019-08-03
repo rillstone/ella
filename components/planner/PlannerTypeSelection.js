@@ -64,7 +64,16 @@ export default class PlannerTypeSelection extends Component {
                 value === item.key && { backgroundColor: theme.scheme.green }
               ]}
               onPress={() => {
-                this.setState({ value: item.key });
+                if (this.state.value === item.key) {
+                  this.setState({
+                    value: ""
+                  });
+                } else {
+                  this.setState({
+                    value: item.key
+                  });
+                }
+                // this.setState({ value: item.key });
                 this.props.callBack(item.key);
               }}
             >

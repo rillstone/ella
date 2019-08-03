@@ -18,8 +18,9 @@ import RNListSlider from "react-native-list-slider";
 import * as theme from "../../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
-import DietarySelection from "../../../components/planner/DietarySelection";
-import * as dietaryTypes from "../../../components/planner/DietaryTypes";
+import * as myFoodBagPlans from "../../../components/planner/MyFoodBagPlans";
+import * as helloFreshPlans from "../../../components/planner/HelloFreshPlans";
+import * as mealServices from "../../../components/planner/MealServices";
 import { getInset } from "react-native-safe-area-view";
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
@@ -41,14 +42,14 @@ const nouns = {
   3: "Triple",
   4: "Family"
 };
-class DietaryReq extends Component {
+class MealServicesList extends Component {
   mounted = false;
   constructor(props) {
     super();
-    this.state = { 
+    this.state = {
       value: 1,
       // selected: "",
-      selected: [],
+      selected: []
     };
     this.props = props;
   }
@@ -68,11 +69,11 @@ class DietaryReq extends Component {
     var index = this.state.selected.indexOf(data);
     var array = this.state.selected;
     if (index !== -1) {
-      array.splice(index,1);
-      this.setState({selected:array});
+      array.splice(index, 1);
+      this.setState({ selected: array });
     } else {
       array.push(data);
-      this.setState({selected:array});
+      this.setState({ selected: array });
     }
   }
 
@@ -82,6 +83,8 @@ class DietaryReq extends Component {
     // const { navigation } = this.props;
     const type = navigation.getParam("type", "other");
     const count = navigation.getParam("count", 2);
+    const dietary = navigation.getParam("dietary", []);
+
 
     return (
       <View style={styles.fill}>
@@ -112,7 +115,7 @@ class DietaryReq extends Component {
             alignItems: "center",
             alignContent: "center",
             flexDirection: "column",
-            backgroundColor: theme.scheme.royal_blue,
+            backgroundColor: theme.scheme.green,
             paddingBottom: viewportHeight * 0.75
           }}
         >
@@ -135,40 +138,10 @@ class DietaryReq extends Component {
                 color: "#FFF"
               }}
             >
-              What food types do you not eat?
+              Select a meal service provider
             </Text>
           </View>
-          {/* <View
-            style={{
-              flex: 0.6,
-              justifyContent: "center",
-              alignContent: "center",
-              marginHorizontal: 30
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "600",
-                fontSize: 40,
-                marginBottom: 10,
-                color: "#FFF"
-              }}
-            >
-              {this.state.value >=4 ? Object.values(nouns)[3] : Object.values(nouns)[this.state.value - 1]}
-            </Text>
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "300",
-                fontSize: 16,
 
-                color: "#FFF"
-              }}
-            >
-              meal deliveries for {ntw.toWords(this.state.value)} {this.state.value==1? 'person' : 'people'} per night
-            </Text>
-          </View> */}
         </View>
         <Animatable.View
           animation={"fadeInUpBig"}
@@ -190,60 +163,58 @@ class DietaryReq extends Component {
             <View
               style={{
                 flexDirection: "row",
-                top: 20,
-                justifyContent: "space-between",
+                //   justifyContent: "space-between",
+                marginHorizontal: 10,
+                left: 0,
+                top: 30,
                 alignContent: "center",
                 alignItems: "center",
-                width: viewportWidth - 20,
-                // justifyContent: "center",
                 alignSelf: "center",
-                marginHorizontal: 10
+                flexWrap: "nowrap"
               }}
             >
-              <DietarySelection
-                options={dietaryTypes.dietaryTypes}
-                callBack={this.typePress}
-              />
+              {mealServices.mealServices.map(item => {
+                return (
+                  <TouchableOpacity
+                    key={item.key}
+                    style={[
+                      styles.card,
+                      {
+                        width: viewportWidth / 2.5,
+
+                        height: viewportWidth / 2.5,
+                        backgroundColor: theme.colors.white
+                      }
+                    ]}
+                    onPress={() => navigation.navigate('MealServicePlans', { 
+                        data: item.key==="My Food Bag"? myFoodBagPlans : helloFreshPlans,
+                        type: type,
+                        count: count,
+                        dietary: dietary,
+                        service: item.key,
+                    })}
+                  >
+                    <View style={styles.icon}>
+                      <Image
+                        source={item.image}
+                        resizeMode={"center"}
+                        style={{
+                          width: viewportWidth / 2.6,
+                          height: viewportWidth / 2.6
+                        }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           </View>
-          <View
-            style={{
-              flex: 0.3,
-              // top: 40,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Button
-              buttonStyle={styles.button}
-              titleStyle={{ fontWeight: "bold", color: "#FFF" }}
-              icon={<Icon name="ios-arrow-forward" size={30} color="white" />}
-              onPress={() =>
-                this.props.navigation.navigate("MealServicesList", {
-                  navigation: this.props.navigation,
-                  type: type,
-                  count: count,
-                  dietary: this.state.selected
-                })
-              }
-            />
-          </View>
-          {/* <ScrollView
-            borderRadius={10}
-            style={{
-              overflow: "hidden",
-              elevation: 1,
-              position: "relative",
-              borderRadius: 10,
-              backgroundColor: "transparent"
-            }}
-          /> */}
         </Animatable.View>
       </View>
     );
   }
 }
-export default DietaryReq;
+export default MealServicesList;
 
 const styles = StyleSheet.create({
   fill: {
@@ -267,6 +238,44 @@ const styles = StyleSheet.create({
     // overflow: 'hidden',
     zIndex: 10000,
     backgroundColor: "white"
+  },
+  card: {
+    borderRadius: 12,
+    // alignSelf: "center",
+    // alignItems:'center',
+    // justifyContent: "center",
+    // alignContent: "center",
+
+    // height: viewportWidth / 5,
+    width: viewportWidth / 2.5,
+
+    height: viewportWidth / 2.5,
+    // justifyContent: "center",
+
+    // alignContent: "center",
+    marginVertical: 5,
+    marginHorizontal: 15,
+    flexDirection: "column",
+    // overflow: "hidden",
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: "black",
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 1
+  },
+  icon: {
+    flex: 3,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    // backgroundColor: 'blue',
+    width: viewportWidth / 2.5,
+
+    height: viewportWidth / 2.5
+    // overflow:"hidden",
+    // top: 10
+    // left: 10,
   },
   button: {
     borderRadius: 30,
@@ -368,6 +377,9 @@ const styles = StyleSheet.create({
   },
   menu: {
     bottom: BOTTOM_SAFE_AREA
+  },
+  carouselItem: {
+    paddingTop: 20
   },
 
   // title: {

@@ -22,6 +22,7 @@ import { getInset } from "react-native-safe-area-view";
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
 import { Button, Input } from "react-native-elements";
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -58,7 +59,8 @@ class MealSizeCount extends Component {
   render() {
     const { navigation } = this.props;
     // const { navigation } = this.props;
-    const category = navigation.getParam("category", "Goal");
+    const type = navigation.getParam("type", "other");
+
 
     return (
       <View style={styles.fill}>
@@ -196,7 +198,7 @@ class MealSizeCount extends Component {
                   }
                   onPress={() =>
                     this.props.navigation.navigate("DietaryReq", {
-                      navigation: this.props.navigation, type: this.state.selected
+                      navigation: this.props.navigation, type: type, count: this.state.value
                     })
                   }
                 />

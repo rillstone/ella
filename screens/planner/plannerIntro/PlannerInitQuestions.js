@@ -7,6 +7,7 @@ import {
   TextInput,
   Platform,
   StatusBar,
+  TouchableOpacity,
   Image,
   Dimensions
 } from "react-native";
@@ -17,11 +18,15 @@ import PlannerTypeSelection from "../../../components/planner/PlannerTypeSelecti
 import { Transition } from "react-navigation-fluid-transitions";
 import * as Animatable from "react-native-animatable";
 import { Button, Input } from "react-native-elements";
+import { NavigationActions } from "react-navigation";
+import { getInset } from "react-native-safe-area-view";
+
 import PropTypes from "prop-types";
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-
+const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
 class PlannerInitQuestions extends Component {
   mounted = false;
   constructor(props) {
@@ -41,16 +46,47 @@ class PlannerInitQuestions extends Component {
   }
 
   typePress = dataFromTile => {
-    this.setState({
-      selected: dataFromTile
-    });
+    if (this.state.selected === dataFromTile) {
+      this.setState({
+        selected: ""
+      });
+    } else {
+      this.setState({
+        selected: dataFromTile
+      });
+    }
   };
 
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <StatusBar barStyle="dark-content" />
-        <View style={{ flex: 0.3, justifyContent: 'center',alignContent:'center' }}>
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({ scrollOp: 0 });
+            this.props.navigation.dispatch(NavigationActions.back());
+          }}
+          style={{
+            position: "absolute",
+            left: 25,
+            top: TOP_SAFE_AREA,
+            zIndex: 999,
+            opacity: 0.5
+          }}
+        >
+          <Icon
+            name="ios-arrow-dropleft-circle"
+            size={36}
+            color={theme.scheme.green}
+          />
+        </TouchableOpacity>
+        <View
+          style={{
+            flex: 0.3,
+            justifyContent: "center",
+            alignContent: "center"
+          }}
+        >
           <Text
             style={{
               textAlign: "center",
@@ -71,29 +107,29 @@ class PlannerInitQuestions extends Component {
         </View>
 
         <View
-              style={{
-                flex: 0.3,
-                // top: 40,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-
-                <Button
-                  buttonStyle={styles.button}
-                  titleStyle={{ fontWeight: "bold", color: "#FFF" }}
-                  icon={
-                    <Icon name="ios-arrow-forward" size={30} color="white" />
-                  }
-                  onPress={() =>
-                    this.props.navigation.navigate("MealSizeCount", {
-                      navigation: this.props.navigation, type: this.state.selected
-                    })
-                  }
-                />
-
-            </View>
-
+          style={{
+            flex: 0.3,
+            // top: 40,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Button
+            buttonStyle={styles.button}
+            titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+            disabled={this.state.selected === ""}
+            icon={<Icon name="ios-arrow-forward" size={30} color="white" />}
+            onPress={() =>
+              {
+                var type = this.state.selected.toString();
+              this.props.navigation.navigate("MealSizeCount", {
+                navigation: this.props.navigation,
+                type: type
+              })
+            }
+            }
+          />
+        </View>
       </SafeAreaView>
     );
   }
@@ -131,5 +167,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 0
-  },
+  }
 });

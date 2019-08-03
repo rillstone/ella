@@ -18,6 +18,7 @@ import { Transition } from "react-navigation-fluid-transitions";
 import * as Animatable from "react-native-animatable";
 import { Button, Input } from "react-native-elements";
 import PropTypes from "prop-types";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -46,12 +47,12 @@ class PlannerIntro extends Component {
           id: 2,
           image: require("../../../assets/images/slide_2.png"),
           title: "Meal delivery",
-          text: "Want do just handle the cooking?"
+          text: "Want to just handle the cooking?"
         },
         {
           id: 3,
           image: require("../../../assets/images/slide_3.png"),
-          title: "Ella wants to help you live your best lifestyle",
+          title: "Ella wants to help you live your best life",
           text: "Let us get to know you a bit more so we can get started"
         }
       ],
@@ -113,8 +114,6 @@ class PlannerIntro extends Component {
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
           <StatusBar barStyle="dark-content" />
 
-
-
           <Animatable.View
             animation="fadeInRight"
             duration={900}
@@ -125,7 +124,9 @@ class PlannerIntro extends Component {
               flexDirection: "column",
               alignContent: "flex-end",
               justifyContent: "flex-end",
-                backgroundColor: 'transparent'
+              alignSelf: 'center',
+              alignItems: 'center',
+              backgroundColor: "transparent"
             }}
           >
             <Carousel
@@ -134,12 +135,12 @@ class PlannerIntro extends Component {
               enableMomentum={false}
               autoplayDelay={900}
               sliderWidth={viewportWidth}
-              ref={'carousel'}
+              ref={"carousel"}
               containerCustomStyle={{
                 flexGrow: 0
               }}
               //   sliderHeight={viewportWidth-120}
-              itemWidth={viewportWidth - 60}
+              itemWidth={viewportWidth}
               autoplayInterval={2500}
               data={this.state.slides}
               renderItem={this._renderItem.bind(this)}
@@ -153,21 +154,21 @@ class PlannerIntro extends Component {
             <View
               style={{
                 marginHorizontal: 30,
-                flex: 1,
+                // flex: 1,
                 flexDirection: "column",
-                
                 // alignContent: "flex-start",
-                justifyContent: "center",
-                alignItems: "center"
+                // justifyContent: "center",
+                // alignItems: "center"
               }}
             >
               <Text
                 style={{
+
+
                   textAlign: "center",
                   fontWeight: "600",
-                  fontSize: 24,
-                  color: "#3F4F5A",
-
+                  fontSize: 30,
+                  color: "#3F4F5A"
                 }}
               >
                 {this.state.slides[this.state.activeSlide].title}
@@ -206,26 +207,40 @@ class PlannerIntro extends Component {
                 display: this.state.showStart ? "none" : "block"
               }}
             >
-              <Text onPress={() => { this.refs.carousel.snapToItem(2); }}
+              <Text
+                onPress={() => {
+                  this.refs.carousel.snapToItem(2);
+                }}
                 style={{
-                    fontWeight: "400",
-                    fontSize: 15,
+                  fontWeight: "400",
+                  fontSize: 15,
                   color: "#C1C1C2"
                 }}
               >
                 Skip
               </Text>
             </View>
-            <Text onPress={() => this.props.navigation.navigate("PlannerInitQuestions")}
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("PlannerInitQuestions")
+              }
               style={{
                 display: this.state.showStart ? "flex" : "none",
-                fontWeight: "600",
-                fontSize: 19,
-                color: theme.scheme.green
+                backgroundColor: theme.scheme.green,
+                borderRadius: 8,
+                padding: 9,
               }}
             >
-              Get started
-            </Text>
+              <Text
+                style={{
+                  fontWeight: "600",
+                  fontSize: 19,
+                  color: theme.colors.white
+                }}
+              >
+                Get started
+              </Text>
+            </TouchableOpacity>
             <View
               style={{
                 flex: 1,
@@ -235,10 +250,13 @@ class PlannerIntro extends Component {
                 display: this.state.showStart ? "none" : "block"
               }}
             >
-              <Text onPress={() => { this.refs.carousel.snapToNext(); }}
+              <Text
+                onPress={() => {
+                  this.refs.carousel.snapToNext();
+                }}
                 style={{
-                    fontWeight: "400",
-                    fontSize: 15,
+                  fontWeight: "400",
+                  fontSize: 15,
                   color: theme.scheme.ufo_green
                 }}
               >
@@ -254,7 +272,6 @@ class PlannerIntro extends Component {
 export default PlannerIntro;
 
 const styles = StyleSheet.create({
-
   backgroundImage: {
     // position: "absolute",
     // top: 0,
