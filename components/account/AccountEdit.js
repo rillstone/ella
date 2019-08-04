@@ -391,12 +391,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: -1
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.4,
     shadowRadius: 2,
     elevation: 0
   },
@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginHorizontal: 30,
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOpacity: 0.1,
     shadowRadius: 1,
     elevation: 1

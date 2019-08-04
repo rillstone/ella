@@ -36,26 +36,36 @@ const mapStateToProps = state => ({
 });
 
 class MealServicePlanSliderEntry extends Component {
+  constructor(props) {
+    super();
+    this.state = { loaded: false };
+  }
   db = firebase.firestore();
   storage = firebase.storage();
   static propTypes = {
     data: PropTypes.object.isRequired
   };
-
-  saveProfile(type, count, dietary, service, plan, url) {
+  _onLoad = () => {
+    this.setState(() => ({ loaded: true }));
+  };
+  saveProfile(type, count, dietary, service, plan, url, navigation) {
     this.db
       .collection("users")
       .doc(this.props.user.uid)
-      .set({
-        plannerType: type,
-        mealSize: count,
-        dietaryRequirements: dietary,
-        mealCompany: service,
-        chosenPlan: plan
-    }, { merge: true })
+      .set(
+        {
+          plannerType: type,
+          mealSize: count,
+          dietaryRequirements: dietary,
+          mealCompany: service,
+          chosenPlan: plan
+        },
+        { merge: true }
+      )
       .catch(error => {})
       .then(() => {
-        Linking.openURL(url);
+        navigation.navigate("Planner", {});
+        // Linking.openURL(url);
       });
   }
 
@@ -71,12 +81,31 @@ class MealServicePlanSliderEntry extends Component {
       <TouchableOpacity
         activeOpacity={1}
         // onPress={() => navigation.navigate('MealView', { data: data })}
-        onPress={() => {this.saveProfile(type, count, dietary, service, data.name.toString(), data.url)}}
+        onPress={() => {
+          this.saveProfile(
+            type,
+            count,
+            dietary,
+            service,
+            data.name.toString(),
+            data.url,
+            navigation
+          );
+        }}
       >
         <ImageBackground
           source={data.image}
           imageStyle={{ borderRadius: entryBorderRadius }}
-          style={styles.slideInnerContainer}
+          onLoad={this._onLoad}
+          style={[
+            styles.slideInnerContainer,
+            {
+              shadowOpacity: this.state.loaded ? 0.4 : 0.1,
+              backgroundColor: this.state.loaded
+                ? "transparent"
+                : theme.colors.lightGray
+            }
+          ]}
         >
           <View style={styles.textContainer}>
             <Text style={styles.title} numberOfLines={2}>
@@ -98,8 +127,9 @@ const styles = StyleSheet.create({
     width: slideWidth,
     height: slideHeight,
     marginHorizontal: itemHorizontalMargin,
+    borderRadius: entryBorderRadius,
     paddingBottom: itemHorizontalMargin,
-    shadowColor: "#000",
+    shadowColor: "#6b6b6b",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
@@ -115,7 +145,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.95)",
     borderRadius: entryBorderRadius,
     shadowOffset: { width: 0, height: 2 },
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 1

@@ -64,7 +64,7 @@ class TransactionScreen extends Component {
           style={{
             position: "absolute",
             shadowOffset: { width: 0, height: 0 },
-            shadowColor: "black",
+            shadowColor: "#6b6b6b",
             shadowOpacity: 0.4,
             shadowRadius: 2,
             elevation: 1,

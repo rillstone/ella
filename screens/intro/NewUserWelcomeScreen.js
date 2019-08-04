@@ -148,7 +148,7 @@ class NewUserWelcomeScreen extends Component {
             }}
           >
             {/* <Text style={{fontWeight: '900', fontSize: 40, color: '#3F4F5A'}}>Hello, there!</Text> */}
-            <Text style={{ fontWeight: "900", fontSize: 40, color: "#3F4F5A" }}>
+            <Text style={{ fontWeight: "900", fontSize: 40, color: theme.colors.gray }}>
               Hello,
               <Text style={{ color: "#F6699A" }}> there!</Text>
             </Text>
@@ -204,7 +204,7 @@ class NewUserWelcomeScreen extends Component {
                   textAlign: "center",
                   fontWeight: "900",
                   fontSize: 30,
-                  color: "#3F4F5A"
+                  color: theme.colors.gray
                 }}
               >
                 {this.state.slides[this.state.activeSlide].title}
@@ -214,7 +214,7 @@ class NewUserWelcomeScreen extends Component {
                   textAlign: "center",
                   fontWeight: "400",
                   fontSize: 20,
-                  color: "#3F4F5A"
+                  color: theme.colors.gray
                 }}
               >
                 {this.state.slides[this.state.activeSlide].text}

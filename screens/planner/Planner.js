@@ -34,6 +34,7 @@ class Planner extends Component {
     this.state = {
       errors: [],
       loading: false,
+      loaded: false,
       data: [],
       colors: ["url(#gradient)", "#CBCCCF"],
       keys: ["current", "average"]
@@ -64,8 +65,12 @@ class Planner extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: true }), 1000);
+    setTimeout(() => this.setState({ loading: true }), 0);
   }
+  _onLoad = () => {
+    this.setState(() => ({ loaded: true }));
+
+  };
 
   render() {
     const thisWeek = mfb.deliveryDays[0];
@@ -135,8 +140,9 @@ class Planner extends Component {
       <SafeAreaView style={styles.outContainer}>
         <ImageBackground
           resizeMode="stretch"
-          source={require("../../assets/images/tran_screen_back_green.png")}
+          source={this.state.loaded? require("../../assets/images/tran_screen_back_green.png") : require("../../assets/images/plan_screen_back_grey.png")}
           style={styles.header}
+          onLoad={this._onLoad}
         >
           <View style={styles.titleContain}>
             <Text style={styles.title}>Planner</Text>
@@ -148,33 +154,11 @@ class Planner extends Component {
           contentContainerStyle={styles.scroll}
           showsVerticalScrollIndicator={false}
         >
-          <Paragraph
-            style={{ left: 40, top: viewportHeight / 4 }}
-            animation="fade"
-            lineNumber={3}
-            textSize={16}
-            color="#DAD7D7"
-            width="80%"
-            lastLineWidth="70%"
-            firstLineWidth="50%"
-            isReady={this.state.loading}
-          >
-            {weekCarousels}
-          </Paragraph>
 
-          <Paragraph
-            style={{ left: 40, top: viewportHeight / 4 + 40 }}
-            animation="fade"
-            lineNumber={3}
-            textSize={16}
-            color="#DAD7D7"
-            width="80%"
-            lastLineWidth="70%"
-            firstLineWidth="50%"
-            isReady={this.state.loading}
-          >
+            {weekCarousels}
+         
             {upcomingCarousels}
-          </Paragraph>
+
         </ScrollView>
       </SafeAreaView>
     );
@@ -207,9 +191,9 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "transparent",
     overflow: "visible",
-    shadowColor: "#000",
+    shadowColor: "#6b6b6b",
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.4,
     shadowRadius: 2,
     height: viewportHeight / 4
     // borderBottomWidth: 0.5,

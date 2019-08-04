@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     height: HEADER_MAX_HEIGHT
   },
   avatar: {
-    shadowColor: "#000",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: 0

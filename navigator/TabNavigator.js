@@ -228,8 +228,8 @@ const TabNavigator = createBottomTabNavigator(
         borderTopColor: "transparent",
         backgroundColor: theme.colors.back,
         shadowOffset: { width: 0, height: 1 },
-        shadowColor: "black",
-        shadowOpacity: 0.3,
+        shadowColor: "#6b6b6b",
+        shadowOpacity: 0.2,
         shadowRadius: 2,
         elevation: 1
       }

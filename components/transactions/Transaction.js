@@ -12,26 +12,40 @@ import ProgressiveImage from '../ProgressiveImage';
 
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 export default class Transaction extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      loaded: false
+    };
+  }
     static propTypes = {
         data: PropTypes.object.isRequired,
         index: PropTypes.number
     };
+    _onLoad = () => {
+      this.setState(() => ({ loaded: true }));
 
+    };
     render() {
         const { data: { logo, name, date,amount}, index} = this.props;
 
         return (
             <TransitionView style={[styles.balance2]} index={index} >
             <View style={{ flex: 1.3 }}>
-            <ProgressiveImage
+            <Image
           source={{ uri: logo }}
           style={{ width: 50,
             height: 50,
             alignSelf: "flex-start",
             justifyContent: "center",
             position: "absolute",
-            borderRadius: 25 }}
+            borderRadius: 25 ,
+            backgroundColor: this.state.loaded
+            ? "transparent"
+            : theme.colors.lightGray
+          }}
           resizeMode="cover"
+          onLoad={this._onLoad}
         />
               {/* <Image
                 style={{

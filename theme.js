@@ -32,6 +32,8 @@ const scheme = {
   bermuda_gray: '#778ca2',
   cadet_blue: '#a5b1c2',
   geyser: '#d1d9e1',
+  dark_grey: '#313239',
+  
   
 };
 

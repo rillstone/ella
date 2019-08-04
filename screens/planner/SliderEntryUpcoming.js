@@ -20,10 +20,19 @@ export const itemWidthSmall = slideWidth + itemHorizontalMargin * 2;
 
 
 export default class SliderEntryUpcoming extends Component {
-
+    constructor(props) {
+        super();
+        this.state = {
+          loaded: false
+        };
+      }
     static propTypes = {
         data: PropTypes.object.isRequired,
     };
+    _onLoad = () => {
+        this.setState(() => ({ loaded: true }));
+
+      };
 
     render() {
         const { data, navigation } = this.props;
@@ -35,7 +44,16 @@ export default class SliderEntryUpcoming extends Component {
                 <ImageBackground
                     source={{ uri: data.imageUrl }}
                     imageStyle={{ borderRadius: entryBorderRadius }}
-                    style={styles.slideInnerContainer}
+                    style={[
+                        styles.slideInnerContainer,
+                        {
+                          shadowOpacity: this.state.loaded ? 0.4 : 0.1,
+                          backgroundColor: this.state.loaded
+                            ? "transparent"
+                            : theme.colors.lightGray
+                        }
+                      ]}
+                      onLoad={this._onLoad}
                 >
                 </ImageBackground>
                     <View style={styles.textContainer}>
@@ -57,6 +75,7 @@ const styles = StyleSheet.create({
         marginHorizontal: itemHorizontalMargin,
         paddingBottom: itemHorizontalMargin,
         shadowColor: '#000',
+        borderRadius: entryBorderRadius,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.4,
         shadowRadius: 4,

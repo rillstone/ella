@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
   },
   tile: {
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: "black",
-    shadowOpacity: 0.3,
+    shadowColor: "#6b6b6b",
+    shadowOpacity: 0.4,
     shadowRadius: 2,
     elevation: 1,
     backgroundColor: "#0000"
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     flexDirection: "column",
     overflow: "hidden",
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: 0
