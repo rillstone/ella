@@ -542,7 +542,7 @@ const styles = StyleSheet.create({
     // marginBottom: 10
   },
   shadow: {
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: 0

@@ -93,7 +93,7 @@ class PlannerInitQuestions extends Component {
               fontWeight: "400",
               fontSize: 25,
 
-              color: "#3F4F5A"
+              color: theme.colors.gray
             }}
           >
             What do you want to achieve?

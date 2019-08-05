@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
   },
   tile: {
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: "black",
-    shadowOpacity: 0.3,
+    shadowColor: "#6b6b6b",
+    shadowOpacity: 0.4,
     shadowRadius: 2,
     elevation: 1,
     backgroundColor: "#0000"
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     width: viewportWidth / 3.6,
     height: viewportWidth / 2.5,
     overflow: "hidden",
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: 0

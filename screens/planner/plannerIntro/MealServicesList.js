@@ -48,6 +48,7 @@ class MealServicesList extends Component {
     super();
     this.state = {
       value: 1,
+      loaded: false,
       // selected: "",
       selected: []
     };
@@ -64,7 +65,9 @@ class MealServicesList extends Component {
   typePress = dataFromTile => {
     this.checkSelected(dataFromTile);
   };
-
+  _onLoad = () => {
+    this.setState(() => ({ loaded: true }));
+  };
   checkSelected(data) {
     var index = this.state.selected.indexOf(data);
     var array = this.state.selected;
@@ -84,7 +87,6 @@ class MealServicesList extends Component {
     const type = navigation.getParam("type", "other");
     const count = navigation.getParam("count", 2);
     const dietary = navigation.getParam("dietary", []);
-
 
     return (
       <View style={styles.fill}>
@@ -141,7 +143,6 @@ class MealServicesList extends Component {
               Select a meal service provider
             </Text>
           </View>
-
         </View>
         <Animatable.View
           animation={"fadeInUpBig"}
@@ -186,13 +187,18 @@ class MealServicesList extends Component {
                         backgroundColor: theme.colors.white
                       }
                     ]}
-                    onPress={() => navigation.navigate('MealServicePlans', { 
-                        data: item.key==="My Food Bag"? myFoodBagPlans : helloFreshPlans,
+                    onPress={() =>
+                      navigation.navigate("MealServicePlans", {
+                        data:
+                          item.key === "My Food Bag"
+                            ? myFoodBagPlans
+                            : helloFreshPlans,
                         type: type,
                         count: count,
                         dietary: dietary,
-                        service: item.key,
-                    })}
+                        service: item.key
+                      })
+                    }
                   >
                     <View style={styles.icon}>
                       <Image
@@ -200,8 +206,12 @@ class MealServicesList extends Component {
                         resizeMode={"center"}
                         style={{
                           width: viewportWidth / 2.6,
-                          height: viewportWidth / 2.6
+                          height: viewportWidth / 2.6,
+                          backgroundColor: this.state.loaded
+                            ? "transparent"
+                            : theme.colors.lightGray
                         }}
+                        onLoad={this._onLoad}
                       />
                     </View>
                   </TouchableOpacity>
@@ -226,7 +236,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: -1
@@ -258,9 +268,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     // overflow: "hidden",
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOpacity: 0.3,
-    shadowRadius: 2,
+    shadowRadius: 3,
     elevation: 1
   },
   icon: {

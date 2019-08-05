@@ -63,6 +63,7 @@ class TransactionsScreen extends Component {
       errors: [],
       transactions: [],
       loading: false,
+      loaded: false,
       data: [],
       graphSection: null,
       toolTipColor: "transparent",
@@ -98,6 +99,10 @@ class TransactionsScreen extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
   }
+  _onLoad = () => {
+    this.setState(() => ({ loaded: true }));
+
+  };
   onScrollTop = ({ layoutMeasurement, contentOffset, contentSize }) => {
     // console.log(contentOffset.y);
     // console.log(viewportHeight - 150);
@@ -311,7 +316,9 @@ class TransactionsScreen extends Component {
         <ImageBackground
           imageStyle={{ resizeMode: "stretch" }}
           source={require("../../assets/images/tran_screen_back_small.png")}
+          source={this.state.loaded? require("../../assets/images/tran_screen_back_small.png") : require("../../assets/images/tran_screen_back_grey.png")}
           style={[styles.header]}
+          onLoad={this._onLoad}
         >
           <Animated.View
             style={{ flex: 1, transform: [{ translateY: inputTranslate }] }}

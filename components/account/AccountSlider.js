@@ -39,12 +39,12 @@ export default class AccountSlider extends Component {
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "row",
-                  shadowColor: "black",
+                  shadowColor: "#6b6b6b",
                   shadowOffset: {
                     width: 0,
                     height: -1
                   },
-                  shadowOpacity: 0.3,
+                  shadowOpacity: 0.4,
                   shadowRadius: 2,
                   elevation: 0
                 }}

@@ -29,10 +29,11 @@ export default class OverviewTransaction extends Component {
 
   render() {
     const {
-      data: { logo, name, date, amount },
+      data: { logo, name, date, amount,category },
       index
     } = this.props;
-    const background = colors[Math.floor(Math.random() * colors.length)];
+    // const background = colors[Math.floor(Math.random() * colors.length)];
+    const background = colors[category==='transport'? 0 : category==='food'? 1 : category==='bills'? 2 : category==='leisure'? 3 : category==='clothing'? 4 : 4]
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity
@@ -93,12 +94,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignContent: "center",
     alignItems: "center",
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: 0
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.4,
     shadowRadius: 1.5,
     elevation: 1
   },
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     width: viewportWidth / 3.6,
     height: viewportWidth / 3.6,
     // overflow: "hidden",
-    shadowColor: "black",
+    shadowColor: "#6b6b6b",
     shadowOffset: {
       width: 0,
       height: 0

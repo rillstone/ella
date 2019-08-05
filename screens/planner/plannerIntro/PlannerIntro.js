@@ -168,7 +168,7 @@ class PlannerIntro extends Component {
                   textAlign: "center",
                   fontWeight: "600",
                   fontSize: 30,
-                  color: "#3F4F5A"
+                  color: theme.colors.gray
                 }}
               >
                 {this.state.slides[this.state.activeSlide].title}
@@ -179,7 +179,7 @@ class PlannerIntro extends Component {
                   fontWeight: "400",
                   fontSize: 20,
 
-                  color: "#3F4F5A"
+                  color: theme.colors.gray
                 }}
               >
                 {this.state.slides[this.state.activeSlide].text}
@@ -227,8 +227,8 @@ class PlannerIntro extends Component {
               style={{
                 display: this.state.showStart ? "flex" : "none",
                 backgroundColor: theme.scheme.green,
-                borderRadius: 8,
-                padding: 9,
+                borderRadius: 12,
+                padding: 11,
               }}
             >
               <Text
