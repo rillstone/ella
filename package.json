@@ -27,6 +27,7 @@
     "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.3.0",
     "react-native-list-slider": "^1.2.1",
+    "react-native-modalize": "^1.2.1",
     "react-native-popup-menu": "^0.15.6",
     "react-native-safe-area-view": "^0.14.6",
     "react-native-snap-carousel": "^3.8.0",
