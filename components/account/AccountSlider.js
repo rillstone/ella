@@ -196,9 +196,14 @@ export default class AccountSlider extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: viewportHeight-140,
     alignItems: "center",
+
     justifyContent: "center",
-    backgroundColor: "#f6f5f7"
+    backgroundColor: "#f6f5f7",
+
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13
   },
   dragHandler: {
     alignSelf: "stretch",

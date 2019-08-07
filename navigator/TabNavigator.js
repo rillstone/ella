@@ -40,6 +40,7 @@ import {
 } from "react-native";
 
 
+
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -98,14 +99,14 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
   if (routeName === "TransactionView") {
   }
-
+  
   return {
     headerStyle: {
       backgroundColor: "green"
     },
     tabBarVisible,
     tabBarLabel: "Overview",
-    tabBarIcon: ({ focused }) => (
+    tabBarIcon: ({ focused }) => (console.log(navigation.state),
       <Icon
         name="ios-today"
         size={26}

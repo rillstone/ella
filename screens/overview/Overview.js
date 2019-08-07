@@ -24,8 +24,9 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
 import AccountEdit from "../../components/account/AccountEdit";
+import { NavigationActions } from 'react-navigation';
 import { dispatch, connect } from '../../store';
-
+import Modalize from "react-native-modalize";
 const mapStateToProps = state => ({
   user: state.user,
 });
@@ -41,6 +42,7 @@ const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class Overview extends Component {
   mounted = false;
   db = firebase.firestore();
+  modal = React.createRef();
   constructor(props) {
     super();
     this.state = {
@@ -60,7 +62,73 @@ class Overview extends Component {
     this.goBack = this.goBack.bind(this);
     var items = [];
   }
+  renderContent = () => {
+    return ( 
+      !this.state.edit ? (
+        <AccountSlider
+          data={{
 
+            firstName: this.state.firstname,
+            lastName: this.state.lastname,
+            email: this.state.email,
+            icon:
+              this.state.lastname && this.state.firstname
+                ? this.state.firstname[0] + this.state.lastname[0]
+                : "XX",
+            image: this.state.photoURL
+          }}
+          action={this.childHandler}
+          signOut={this.signoutPress}
+          editProfile={this.editProfile}
+        />
+      ) : (
+          <AccountEdit
+            data={{
+              firstName: this.state.firstname,
+              lastName: this.state.lastname,
+              email: this.state.email,
+              icon:
+                this.state.lastname && this.state.firstname
+                  ? this.state.firstname[0] + this.state.lastname[0]
+                  : "XX",
+              image: this.state.photoURL
+            }}
+            action={this.childHandler}
+            goBack={this.goBack}
+            editProfile={this.editProfile}
+            saved={this.updateUser}
+          />
+        )  
+    );
+  }
+
+  onClosed = () => {
+    const { onClosed } = this.props;
+    NavigationActions.setParams({
+      hideTabBar: false
+    });
+    this.setState({
+
+    });
+    if (onClosed) {
+      onClosed();
+    }
+  };
+
+  openModal = () => {
+    if (this.modal.current) {
+      this.modal.current.open();
+      NavigationActions.setParams({
+        hideTabBar: true
+      });
+    }
+  };
+
+  closeModal = () => {
+    if (this.modal.current) {
+      this.modal.current.close();
+    }
+  };
   componentDidMount() {
     this.getGoals();
     this._componentFocused();
@@ -134,7 +202,7 @@ class Overview extends Component {
   childHandler() {
     this.updateUser();
     this.setState({ edit: false });
-    this._panel.hide();
+    this.closeModal();
   }
   goBack() {
     this.updateUser();
@@ -153,6 +221,14 @@ class Overview extends Component {
     if (Platform.OS == "android") {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
+    // NavigationActions.setParams({
+    //   hideTabBar: false
+    // });
+    const setParamsAction = NavigationActions.setParams({
+      params: {hideTabBar: true},
+      key: '12123'
+    });
+    this.props.navigation.dispatch(setParamsAction);
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
@@ -180,68 +256,20 @@ class Overview extends Component {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
         <StatusBar barStyle="dark-content" translucent/>
-        <SlidingUpPanel
-          // onDragStart={() => console.log("start")}
-          // onDragEnd={() => console.log("end")}
-          containerStyle={{
-            zIndex: 9999,
-            elevation: 2,
-            backgroundColor: "#fff",
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15,
-            overflow: "hidden"
-          }}
-          allowDragging
-          height={viewportHeight - 140}
-          backdropOpacity={0.4}
-          draggableRange={{ top: viewportHeight - 140, bottom: 0 }}
-          ref={c => (this._panel = c)}
-        >
-          {dragHandler =>
-            !this.state.edit ? (
-              <AccountSlider
-                data={{
-                  dragHandler: dragHandler,
-                  firstName: this.state.firstname,
-                  lastName: this.state.lastname,
-                  email: this.state.email,
-                  icon:
-                    this.state.lastname && this.state.firstname
-                      ? this.state.firstname[0] + this.state.lastname[0]
-                      : "XX",
-                  image: this.state.photoURL
-                }}
-                action={this.childHandler}
-                signOut={this.signoutPress}
-                editProfile={this.editProfile}
-              />
-            ) : (
-                <AccountEdit
-                  data={{
-                    dragHandler: dragHandler,
-                    firstName: this.state.firstname,
-                    lastName: this.state.lastname,
-                    email: this.state.email,
-                    icon:
-                      this.state.lastname && this.state.firstname
-                        ? this.state.firstname[0] + this.state.lastname[0]
-                        : "XX",
-                    image: this.state.photoURL
-                  }}
-                  action={this.childHandler}
-                  goBack={this.goBack}
-                  editProfile={this.editProfile}
-                  saved={this.updateUser}
-                />
-              )
-          }
-        </SlidingUpPanel>
+        <Modalize
+            ref={this.modal}
+            onClosed={this.onClosed}
+            adjustToContentHeight
+            modalStyle={{borderRadius:12, backgroundColor: theme.colors.back,zIndex: 99999,}}
+          >
+            {this.renderContent()}
+          </Modalize>
         <View
           style={[
             styles.avatar,
             {
               borderRadius: 36,
-              zIndex: 9998,
+              zIndex: 999,
               right: 20,
               backgroundColor: "transparent",
               top: TOP_SAFE_AREA + 25,
@@ -253,7 +281,8 @@ class Overview extends Component {
             rounded
             size="medium"
             avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-            onPress={() => this._panel.show()}
+            // onPress={() => this._panel.show()}
+            onPress={() => this.openModal()}
             title={
               this.state.lastname && this.state.firstname
                 ? this.state.firstname[0] + this.state.lastname[0]
