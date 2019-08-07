@@ -39,8 +39,6 @@ import {
   View
 } from "react-native";
 
-
-
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -99,14 +97,16 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
   if (routeName === "TransactionView") {
   }
-  
+
   return {
     headerStyle: {
       backgroundColor: "green"
     },
+    // tabBarVisible: (navigation.state.routes[0].params && navigation.state.routes[0].params.showTabBar) && tabBarVisible,
+    animationEnabled: true,
     tabBarVisible,
     tabBarLabel: "Overview",
-    tabBarIcon: ({ focused }) => (console.log(navigation.state),
+    tabBarIcon: ({ focused }) => (
       <Icon
         name="ios-today"
         size={26}
@@ -144,7 +144,7 @@ PlannerStack.navigationOptions = ({ navigation }) => {
     routeName === "MealView" ||
     routeName === "PlannerInitQuestions" ||
     routeName === "MealSizeCount" ||
-    routeName === "DietaryReq" || 
+    routeName === "DietaryReq" ||
     routeName === "MealServicesList" ||
     routeName === "MealServicePlans"
   ) {
@@ -198,9 +198,12 @@ TransactionsStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const SettingsStack = createStackNavigator({
-  SettingsScreen: Settings
-});
+const SettingsStack = createStackNavigator(
+  {
+    SettingsScreen: Settings
+  },
+  { mode: "modal", headerMode: "none" }
+);
 
 SettingsStack.navigationOptions = {
   tabBarLabel: "Settings",
@@ -230,7 +233,7 @@ const TabNavigator = createBottomTabNavigator(
         backgroundColor: theme.colors.back,
         shadowOffset: { width: 0, height: 1 },
         shadowColor: "#6b6b6b",
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.0,
         shadowRadius: 2,
         elevation: 1
       }

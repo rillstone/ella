@@ -103,13 +103,11 @@ class Overview extends Component {
   }
 
   onClosed = () => {
+    // const setParamsAction = NavigationActions.setParams({
+    //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
+    // });
+    // this.props.navigation.dispatch(setParamsAction);
     const { onClosed } = this.props;
-    NavigationActions.setParams({
-      hideTabBar: false
-    });
-    this.setState({
-
-    });
     if (onClosed) {
       onClosed();
     }
@@ -118,15 +116,21 @@ class Overview extends Component {
   openModal = () => {
     if (this.modal.current) {
       this.modal.current.open();
-      NavigationActions.setParams({
-        hideTabBar: true
-      });
+      // const setParamsAction = NavigationActions.setParams({
+      //   params: { showTabBar: false }, key: this.props.navigation.state.key, 
+      // });
+      // this.props.navigation.dispatch(setParamsAction);
     }
   };
 
   closeModal = () => {
     if (this.modal.current) {
+      // const setParamsAction = NavigationActions.setParams({
+      //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
+      // });
+      // this.props.navigation.dispatch(setParamsAction);
       this.modal.current.close();
+
     }
   };
   componentDidMount() {
@@ -222,13 +226,12 @@ class Overview extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
     // NavigationActions.setParams({
-    //   hideTabBar: false
+    //   params: { showTabBar: false }, key: this.props.navigation.state.key, 
     // });
-    const setParamsAction = NavigationActions.setParams({
-      params: {hideTabBar: true},
-      key: '12123'
-    });
-    this.props.navigation.dispatch(setParamsAction);
+    // const setParamsAction = NavigationActions.setParams({
+    //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
+    // });
+    // this.props.navigation.dispatch(setParamsAction);
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
@@ -259,6 +262,7 @@ class Overview extends Component {
         <Modalize
             ref={this.modal}
             onClosed={this.onClosed}
+            handlePosition={"inside"}
             adjustToContentHeight
             modalStyle={{borderRadius:12, backgroundColor: theme.colors.back,zIndex: 99999,}}
           >

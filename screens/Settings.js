@@ -7,14 +7,25 @@ import {
   TextInput,
   Platform,
   StatusBar,
-  Image
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+   Animated, ScrollView
 } from "react-native";
-import { ListItem } from "react-native-elements";
+
+import { Button, Avatar, Divider } from "react-native-elements";
 import * as theme from "../theme";
+import { getInset } from "react-native-safe-area-view";
 import payments from "../assets/payments.json";
 import Icon from "react-native-vector-icons/Ionicons";
 import SvgAnimatedLinearGradient from "react-native-svg-animated-linear-gradient";
-import Svg, { Circle, Rect } from "react-native-svg";
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  "window"
+);
+const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
+const HEADER_MIN_HEIGHT = 100;
+const HEADER_MAX_HEIGHT = 200;
 const list = [
   {
     title: "Linked Accounts",
@@ -35,30 +46,6 @@ const list = [
 
 
 ];
-const MyLoader = () => (
-  <SvgAnimatedLinearGradient height={100}>
-    <Circle cx="20" cy="90" r="30" transform="rotate(-49.5, 32.5, 32.5)" />
-    <Rect
-      x="70"
-      y="67"
-      rx="0"
-      ry="0"
-      width="197"
-      height="19"
-      transform="rotate(-49.5, 32.5, 32.5)"
-    />
-    <Rect
-      x="70"
-      y="99"
-      rx="0"
-      ry="0"
-      width="134"
-      height="17"
-      transform="rotate(-49.5, 32.5, 32.5)"
-    />
-  </SvgAnimatedLinearGradient>
-);
-const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 class Settings extends Component {
   mounted = false;
   constructor(props) {
@@ -67,23 +54,72 @@ class Settings extends Component {
       errors: [],
       transactions: []
     };
+    this.scrollYAnimatedValue = new Animated.Value(0);
+
+    this.array = [];
     this.props = props;
   }
-  static navigationOptions = ({ navigation }) => ({
-    title: "Settings",
 
-    headerTitleStyle: {
-      fontSize: 25,
-      color: theme.colors.gray,
-      fontWeight: "700"
-    },
-    headerStyle: {
-      height: 80,
-      backgroundColor: "#F7F7F7",
-      borderBottomColor: "rgba(0, 0, 0, .3)"
-    },
-    headerTintColor: "rgba(0, 0, 0, .9)"
-  });
+  renderMenu = () => {
+    return (
+      <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: 20,
+            marginRight: 20,
+            paddingBottom: 20,
+            // marginTop: 40
+          }}
+          onPress={() => {
+            this.props.action();
+            this.props.signOut();
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              alignContent: "center",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Avatar
+              rounded
+              icon={{  name:'exit-to-app', color: 'white'}}
+              size="medium"
+              avatarStyle={{backgroundColor: theme.scheme.crusta}}
+            />
+
+          </View>
+          <View style={{ flex: 5, flexDirection: "column", marginLeft: 10 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "500",
+                color: theme.colors.gray
+              }}
+            >
+              {/* {this.state.firstname + ' ' + this.state.lastname} */}
+              Sign Out
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              alignContent: "flex-end",
+              justifyContent: "flex-end",
+              alignItems: "flex-end"
+            }}
+          >
+            <Icon name="ios-arrow-forward" size={26} color={"#E1E1E1"} />
+          </View>
+        </TouchableOpacity>
+    )
+  }
+
 
   componentWillMount() {
     this.mounted = true;
@@ -91,48 +127,171 @@ class Settings extends Component {
     if (Platform.OS == "android") {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
+    for (var i = 1; i <= 75; i++) {
+      this.array.push(i);
+    }
   }
 
   render() {
+    const headerHeight = this.scrollYAnimatedValue.interpolate(
+      {
+        inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
+        outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+        extrapolate: 'clamp'
+      });
+      const fontSize = this.scrollYAnimatedValue.interpolate(
+        {
+          inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
+          outputRange: [40, 30],
+          extrapolate: 'clamp'
+        });
+
+    // const headerBackgroundColor = this.scrollYAnimatedValue.interpolate(
+    //   {
+    //     inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
+    //     outputRange: ['#e91e63', '#1DA1F2'],
+    //     extrapolate: 'clamp'
+    //   });
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
-        <View style={{ flex: 1.2 }}>
-          <View>
-            {list.map((item, i) => (
-              <ListItem
-              
-                key={i}
-                title={item.title}
-                rightIcon={<Icon name={"ios-arrow-forward"} size={26} color={"#E1E1E1"} />}
-                leftIcon={ <Icon name={item.icon} size={26} color={"#E1E1E1"} />}
-              />
-            ))}
+  
+
+        <SafeAreaView style={styles.container} >
+          <ScrollView
+            contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: this.scrollYAnimatedValue } } }]
+            )}>
+             <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: 20,
+            marginTop: 10
+          }}
+          onPress={() => {
+
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              alignContent: "center",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Avatar
+              rounded
+              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
+              size="medium"
+              title={"CR"}
+              // source={{ uri: image === "" ? null : image }}
+            />
+            {/* <Avatar
+                  rounded
+                  avatarStyle={{backgroundColor: theme.scheme.cadet_blue}}
+                  size="medium"
+                  title={
+                    icon
+                  }
+                //   source={{
+                    
+                //       uri: icon
+                // }}
+                /> */}
           </View>
-          {/* <View style={styles.titleContain}>
-            <Text style={styles.title}>Settings</Text>
-          </View> */}
-        </View>
-      </SafeAreaView>
+          <View style={{ flex: 5, flexDirection: "column", marginLeft: 10 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "500",
+                color: theme.colors.gray
+              }}
+            >
+              {/* {this.state.firstname + ' ' + this.state.lastname} */}
+              {'Charlie' + " " + 'Rillstone'}
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "400",
+                color: "#5B7282"
+              }}
+            >
+              {/* {this.state.email} */}
+              {'charlierillstone@gmail.com'}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              alignContent: "flex-end",
+              justifyContent: "flex-end",
+              alignItems: "flex-end"
+            }}
+          >
+            <Icon name="ios-arrow-forward" size={26} color={"#E1E1E1"} />
+          </View>
+        </TouchableOpacity>
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+            {this.renderMenu()}
+        
+          </ScrollView>
+  
+          <Animated.View style={[styles.animatedHeaderContainer, { height: headerHeight, backgroundColor: theme.scheme.wedgewood }]}>
+            <Animated.Text style={[styles.headerText, {fontSize: fontSize}]}>Settings</Animated.Text>
+          </Animated.View>
+  
+        </SafeAreaView>
     );
   }
 }
 export default Settings;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f6f5f7"
-  },
-  titleContain: {
-    paddingLeft: 20,
-    paddingTop: 20,
-    flex: 1
-  },
-  title: {
-    fontSize: theme.sizes.title,
-    fontWeight: "800",
-    color: theme.colors.gray
-  }
+
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      top: 0,
+      backgroundColor: theme.colors.back,
+
+    },
+    animatedHeaderContainer: {
+      position: 'absolute',
+      top:  0,
+      left: 0,
+      right: 0,
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+
+    },
+    headerText: {
+      color: 'white',
+      // fontSize: theme.sizes.title,
+      fontWeight: "800",
+      textAlign:'left',
+      left:20
+    },
+    item: {
+      backgroundColor: '#ff9e80',
+      margin: 8,
+      height: 45,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    itemText: {
+      color: 'black',
+      fontSize: 16
+    }
 });
