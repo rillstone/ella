@@ -58,8 +58,10 @@ class SignInScreen extends Component {
   }
 
   _signInAsync = async () => {
-    await AsyncStorage.setItem("userToken", "App");
-    this.props.navigation.navigate("App");
+    await AsyncStorage.setItem("userToken", "App").then( () => {
+
+      // this.props.navigation.navigate("App");
+    })
   };
   componentWillMount() {
     this.mounted = true;
@@ -144,7 +146,7 @@ class SignInScreen extends Component {
                   New user?{" "}
                   <Text
                     onPress={() => this.props.navigation.navigate("SignUp")}
-                    style={{ color: "#F6699A" }}
+                    style={{ color: "#fc5c65" }}
                   >
                     Sign up
                   </Text>
@@ -166,7 +168,7 @@ class SignInScreen extends Component {
                     loading={this.state.loading}
                     titleStyle={{ fontWeight: "bold", color: "#FFF" }}
                     icon={
-                      <Icon name="ios-arrow-forward" size={30} color="white" />
+                      <Icon name="ios-arrow-forward" size={35} color="white" style={{left:2, top: 2}}/>
                     }
                     onPress={() => {
                       this.loginPress();
@@ -198,21 +200,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    backgroundColor: "#F6699A",
-    shadowColor: "#F6699A",
+    backgroundColor: '#E34455',
+    shadowColor: '#E34455',
     shadowOffset: {
       width: 0,
       height: 0
     },
     shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowRadius: 2,
     elevation: 0
   },
   input: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F6699A70",
+    backgroundColor: '#fc5c6570',
     borderBottomWidth: 0,
     // borderWidth: .5,
     // borderColor: '#000',

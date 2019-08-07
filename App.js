@@ -1,5 +1,5 @@
 import React from "react";
-import { YellowBox } from "react-native";
+import { YellowBox,AsyncStorage } from "react-native";
 import { mapping, light as lightTheme } from "@eva-design/eva";
 import { ApplicationProvider } from "react-native-ui-kitten";
 import AppNavigator from "./navigator/AppNavigator";
