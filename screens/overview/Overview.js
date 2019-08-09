@@ -24,11 +24,13 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
 import AccountEdit from "../../components/account/AccountEdit";
-import { NavigationActions } from 'react-navigation';
-import { dispatch, connect } from '../../store';
+import { NavigationActions } from "react-navigation";
+import { dispatch, connect } from "../../store";
 import Modalize from "react-native-modalize";
+import AccountModal from "../../components/account/AccountModal";
+import TransactionModal from "../../components/transactions/TransactionModal";
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -43,6 +45,8 @@ class Overview extends Component {
   mounted = false;
   db = firebase.firestore();
   modal = React.createRef();
+  modal2 = React.createRef();
+  transactionModal = React.createRef();
   constructor(props) {
     super();
     this.state = {
@@ -62,49 +66,10 @@ class Overview extends Component {
     this.goBack = this.goBack.bind(this);
     var items = [];
   }
-  renderContent = () => {
-    return ( 
-      !this.state.edit ? (
-        <AccountSlider
-          data={{
-
-            firstName: this.state.firstname,
-            lastName: this.state.lastname,
-            email: this.state.email,
-            icon:
-              this.state.lastname && this.state.firstname
-                ? this.state.firstname[0] + this.state.lastname[0]
-                : "XX",
-            image: this.state.photoURL
-          }}
-          action={this.childHandler}
-          signOut={this.signoutPress}
-          editProfile={this.editProfile}
-        />
-      ) : (
-          <AccountEdit
-            data={{
-              firstName: this.state.firstname,
-              lastName: this.state.lastname,
-              email: this.state.email,
-              icon:
-                this.state.lastname && this.state.firstname
-                  ? this.state.firstname[0] + this.state.lastname[0]
-                  : "XX",
-              image: this.state.photoURL
-            }}
-            action={this.childHandler}
-            goBack={this.goBack}
-            editProfile={this.editProfile}
-            saved={this.updateUser}
-          />
-        )  
-    );
-  }
 
   onClosed = () => {
     // const setParamsAction = NavigationActions.setParams({
-    //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
+    //   params: { showTabBar: true }, key: this.props.navigation.state.key,
     // });
     // this.props.navigation.dispatch(setParamsAction);
     const { onClosed } = this.props;
@@ -117,7 +82,7 @@ class Overview extends Component {
     if (this.modal.current) {
       this.modal.current.open();
       // const setParamsAction = NavigationActions.setParams({
-      //   params: { showTabBar: false }, key: this.props.navigation.state.key, 
+      //   params: { showTabBar: false }, key: this.props.navigation.state.key,
       // });
       // this.props.navigation.dispatch(setParamsAction);
     }
@@ -126,11 +91,10 @@ class Overview extends Component {
   closeModal = () => {
     if (this.modal.current) {
       // const setParamsAction = NavigationActions.setParams({
-      //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
+      //   params: { showTabBar: true }, key: this.props.navigation.state.key,
       // });
       // this.props.navigation.dispatch(setParamsAction);
       this.modal.current.close();
-
     }
   };
   componentDidMount() {
@@ -157,13 +121,13 @@ class Overview extends Component {
       .get()
       .then(querySnapshot => {
         const items = [];
-        querySnapshot.forEach(function (doc) {
+        querySnapshot.forEach(function(doc) {
           items.push(doc.data());
         });
         let sortedGoals = items.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
-        this.setState({ items:sortedGoals, refreshing: false });
+        this.setState({ items: sortedGoals, refreshing: false });
       });
   }
 
@@ -196,7 +160,6 @@ class Overview extends Component {
       uid: user.uid,
       photoURL: user.photoURL ? user.photoURL : ""
     });
-
   }
   signoutPress = async () => {
     await AsyncStorage.clear();
@@ -226,10 +189,10 @@ class Overview extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
     // NavigationActions.setParams({
-    //   params: { showTabBar: false }, key: this.props.navigation.state.key, 
+    //   params: { showTabBar: false }, key: this.props.navigation.state.key,
     // });
     // const setParamsAction = NavigationActions.setParams({
-    //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
+    //   params: { showTabBar: true }, key: this.props.navigation.state.key,
     // });
     // this.props.navigation.dispatch(setParamsAction);
   }
@@ -237,6 +200,10 @@ class Overview extends Component {
     this.setState({ refreshing: true });
     this.getGoals();
   };
+  openTransaction = () => {
+    this.transactionModal.openModal();
+    // console.log('overview')
+  }
 
   _draggedValue = new Animated.Value(180);
   render() {
@@ -258,8 +225,8 @@ class Overview extends Component {
     });
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
-        <StatusBar barStyle="dark-content" translucent/>
-        <Modalize
+        <StatusBar barStyle="dark-content" translucent />
+        {/* <Modalize
             ref={this.modal}
             onClosed={this.onClosed}
             handlePosition={"inside"}
@@ -267,7 +234,15 @@ class Overview extends Component {
             modalStyle={{borderRadius:12, backgroundColor: theme.colors.back,zIndex: 99999,}}
           >
             {this.renderContent()}
-          </Modalize>
+          </Modalize> */}
+        <AccountModal
+          onRef={ref => (this.modal2 = ref)}
+          navigation={this.props.navigation}
+        />
+        <TransactionModal
+          onRef={ref => (this.transactionModal = ref)}
+          navigation={this.props.navigation}
+        />
         <View
           style={[
             styles.avatar,
@@ -286,7 +261,7 @@ class Overview extends Component {
             size="medium"
             avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
             // onPress={() => this._panel.show()}
-            onPress={() => this.openModal()}
+            onPress={() => this.modal2.openModal()}
             title={
               this.state.lastname && this.state.firstname
                 ? this.state.firstname[0] + this.state.lastname[0]
@@ -307,9 +282,7 @@ class Overview extends Component {
           <Animated.View
             style={[styles.titleContain, { opacity: titleOpacity }]}
           >
-            <Text style={styles.title}>
-              Hi, {this.state.firstname}
-            </Text>
+            <Text style={styles.title}>Hi, {this.state.firstname}</Text>
           </Animated.View>
         </Animated.View>
 
@@ -414,11 +387,13 @@ class Overview extends Component {
                 data={{
                   position: "center",
                   // image: require("../assets/images/entertainment_back.jpg"),
+
                   image: ["#388acf", theme.scheme.crusta],
                   data: [51, 52, 45, 51, 52, 53, 54],
                   color: theme.scheme.sunshade,
                   title: "Bad Spending"
                 }}
+                openTransactionModal={this.openTransaction}
                 navigation={this.props.navigation}
               />
             </View>

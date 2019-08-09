@@ -26,6 +26,7 @@ import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
 import { Paragraph } from "rn-placeholder";
 import { dispatch } from "../../store";
+import TransactionModal from "../../components/transactions/TransactionModal";
 
 import * as Animatable from "react-native-animatable";
 import {
@@ -55,6 +56,7 @@ const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 const safetyZone = HEADER_MAX_HEIGHT;
 class TransactionsScreen extends Component {
+  transactionModal = React.createRef();
   mounted = false;
   startHeaderHeight;
   constructor(props) {
@@ -191,7 +193,8 @@ class TransactionsScreen extends Component {
             <TouchableOpacity
               key={i}
               onPress={() => {
-                this.props.navigation.navigate("TransactionView2");
+                // this.props.navigation.navigate("TransactionView2");
+                this.transactionModal.openModal();
                 dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
               }}
             >
@@ -203,7 +206,8 @@ class TransactionsScreen extends Component {
               <TouchableOpacity
                 key={i}
                 onPress={() => {
-                  this.props.navigation.navigate("TransactionView2");
+                  // this.props.navigation.navigate("TransactionView2");
+                  this.transactionModal.openModal();
                   dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
                 }}
               >
@@ -275,6 +279,10 @@ class TransactionsScreen extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+                <TransactionModal
+          onRef={ref => (this.transactionModal = ref)}
+          navigation={this.props.navigation}
+        />
         <Animated.ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal
