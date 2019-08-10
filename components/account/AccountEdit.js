@@ -21,13 +21,13 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import * as firebase from "firebase";
-import { dispatch, connect } from '../../store';
+import { dispatch, connect } from "../../store";
 
 import "firebase/storage";
 import "firebase/firestore";
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -77,7 +77,8 @@ class AccountEdit extends Component {
             : firstName +
               " " +
               (this.state.lastName ? this.state.lastName : lastName)
-        }).catch(error => {
+        })
+        .catch(error => {
           reject();
         })
         .then(() => {
@@ -91,7 +92,8 @@ class AccountEdit extends Component {
                 (this.state.lastName ? this.state.lastName : lastName),
             email: this.state.email ? this.state.email : email
           });
-        }).catch(error => {
+        })
+        .catch(error => {
           reject();
         })
         .then(() => {
@@ -193,102 +195,103 @@ class AccountEdit extends Component {
     return (
       <DismissKeyboard>
         <View style={styles.container}>
-          <View style={styles.dragHandler} {...dragHandler}>
-            <View style={styles.slideContainer}>
-              <View
-                style={{
-                  flex: 1,
-                  alignSelf: "center",
-                  alignContent: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Button
-                  title="back"
-                  type="clear"
-                  onPress={() => {
-                    this.props.goBack();
-                  }}
-                  titleStyle={{ fontWeight: "600", fontSize: 20 }}
-                  style={{ alignSelf: "center" }}
-                />
-              </View>
-              <View
-                style={{
-                  flex: 2,
-                  alignSelf: "center",
-                  alignContent: "center",
-                  justifyContent: "center"
-                }}
-              >
+          <View style={styles.dragHandler}>
+            <View
+              style={{
+                backgroundColor: "#F5F5F5",
+                width: viewportWidth,
+                height: 64,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                flexDirection: "row"
+              }}
+            >
+              <View style={{ flex: 1 }}>
                 <Text
                   style={{
-                    fontWeight: "600",
-                    fontSize: 20,
+                    fontWeight: "700",
+                    fontSize: 35,
+                    left: 20,
+                    top: 40,
                     color: theme.colors.gray,
-                    textAlign: "center"
+                    textAlign: "left"
                   }}
                 >
                   Account
                 </Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  alignSelf: "center",
-                  alignContent: "center",
-                  justifyContent: "center"
-                }}
-              >
+
                 <Button
-                  title="done"
+                  title="cancel"
                   type="clear"
                   onPress={() => {
-                    this.props.action();
+                    this.props.goBack();
                   }}
-                  titleStyle={{ fontWeight: "600", fontSize: 20 }}
-                  style={{ alignSelf: "center" }}
+                  titleStyle={{ fontWeight: "600", fontSize: 16 }}
+                  buttonStyle={{ borderRadius: 20 }}
+                  style={{
+                    right: 20,
+                    alignSelf: "flex-end",
+                    alignContent: "flex-end",
+                    justifyContent: "flex-end"
+                  }}
                 />
+                {/* </View> */}
               </View>
             </View>
           </View>
+
           <ActivityIndicator
             animating={this.state.uploading}
             color="#bc2b78"
             size="large"
             style={styles.activityIndicator}
           />
-          <TouchableOpacity
+          <View
             style={{
-              flex: 0.5,
-              marginVertical: 15,
-              alignContent: "center",
-              justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
+              alignSelf: "flex-start",
+              left: 20,
+              flexDirection: "row",
+              marginTop: 25,
+              height: 100
+              // flex: 1,
             }}
-            onPress={this.onChooseImagePress}
           >
-            <Avatar
-              rounded
-              avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-              size="large"
-              title={icon}
-              showEditButton
-              source={{
-                uri:
-                  this.state.photoURL !== ""
-                    ? this.state.photoURL
-                    : image === ""
-                    ? null
-                    : image
+            <TouchableOpacity
+              style={{
+                // flex: 0.5,
+
+                // left:20,
+                alignContent: "flex-start",
+                justifyContent: "flex-start",
+                alignItems: "flex-start"
               }}
-            />
-          </TouchableOpacity>
+              onPress={this.onChooseImagePress}
+            >
+              <Avatar
+                rounded
+                avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
+                size="large"
+                title={icon}
+                showEditButton
+                source={{
+                  uri:
+                    this.state.photoURL !== ""
+                      ? this.state.photoURL
+                      : image === ""
+                      ? null
+                      : image
+                }}
+              />
+            </TouchableOpacity>
 
-          <View style={styles.nameHeader}>
-            <Text style={styles.name}>{firstName + " " + lastName}</Text>
+            <View style={styles.nameHeader}>
+              <Text style={styles.name}>{firstName + " " + lastName}</Text>
 
-            <Text style={styles.email}>{email}</Text>
+              <Text style={styles.email}>{email}</Text>
+            </View>
           </View>
 
           <View style={{ top: 10 }}>
@@ -340,18 +343,26 @@ class AccountEdit extends Component {
           />
           <View
             style={{
-              flex: 2,
-              alignContent: "flex-end",
-              justifyContent: "flex-end",
-              alignItems: "flex-end"
+              // flex: 1,
+              marginTop: 40,
+              // backgroundColor: 'blue',
+              alignContent: "center",
+              justifyContent: "center",
+              paddingBottom: 20,
+              alignItems: "center"
             }}
           >
             <Button
+              titleStyle={{ fontWeight: "600", fontSize: 12 }}
+              buttonStyle={{
+                borderRadius: 12,
+                width: viewportWidth - 40,
+                backgroundColor: theme.scheme.crusta
+              }}
               onPress={() => {
                 this.saveProfile(firstName, lastName, email).then(() => {
                   this.props.saved();
-                }
-                );
+                });
                 // this.props.saved();
               }}
               title="save"
@@ -370,9 +381,13 @@ export default connect(mapStateToProps)(AccountEdit);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // height: viewportHeight - 140,
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f6f5f7"
+    justifyContent: "flex-start",
+    backgroundColor: "#f6f5f7",
+
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13
   },
   dragHandler: {
     alignSelf: "stretch",
@@ -401,37 +416,45 @@ const styles = StyleSheet.create({
     elevation: 0
   },
   nameHeader: {
+    // backgroundColor: 'blue',
     flexDirection: "column",
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
-    textAlign: "center"
+    justifyContent: "space-between",
+    alignContent: "flex-start",
+    alignItems: "flex-start",
+    textAlign: "left",
+    left: 20,
+    flex: 0.8,
+    marginTop: 20
   },
   name: {
-    fontSize: 20,
-    color: theme.colors.gray
+    fontSize: 27,
+    color: theme.colors.gray,
+    fontWeight: "700",
+    flex: 1
   },
   email: {
     fontSize: 16,
-    color: theme.colors.inactive
+    color: theme.colors.inactive,
+    flex: 1
   },
   input: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: theme.colors.white,
-    borderBottomWidth: 0,
+    color: theme.colors.gray,
+
     width: viewportWidth - 40,
-    paddingLeft: 10,
+    paddingLeft: 0,
     height: 40,
-    borderRadius: 6,
+
     margin: 10,
     marginHorizontal: 30,
-    shadowOffset: { width: 0, height: 0 },
-    shadowColor: "#6b6b6b",
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 1
+    borderBottomWidth: 1,
+
+    borderColor: "#778ca280",
+
+    margin: 10,
+    marginHorizontal: 15
   },
   activityIndicator: {
     position: "absolute",

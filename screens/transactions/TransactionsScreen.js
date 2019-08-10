@@ -26,6 +26,7 @@ import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
 import { Paragraph } from "rn-placeholder";
 import { dispatch } from "../../store";
+import TransactionModal from "../../components/transactions/TransactionModal";
 
 import * as Animatable from "react-native-animatable";
 import {
@@ -55,6 +56,7 @@ const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 const safetyZone = HEADER_MAX_HEIGHT;
 class TransactionsScreen extends Component {
+  transactionModal = React.createRef();
   mounted = false;
   startHeaderHeight;
   constructor(props) {
@@ -191,7 +193,8 @@ class TransactionsScreen extends Component {
             <TouchableOpacity
               key={i}
               onPress={() => {
-                this.props.navigation.navigate("TransactionView2");
+                // this.props.navigation.navigate("TransactionView2");
+                this.transactionModal.openModal();
                 dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
               }}
             >
@@ -203,7 +206,8 @@ class TransactionsScreen extends Component {
               <TouchableOpacity
                 key={i}
                 onPress={() => {
-                  this.props.navigation.navigate("TransactionView2");
+                  // this.props.navigation.navigate("TransactionView2");
+                  this.transactionModal.openModal();
                   dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
                 }}
               >
@@ -275,11 +279,15 @@ class TransactionsScreen extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+                <TransactionModal
+          onRef={ref => (this.transactionModal = ref)}
+          navigation={this.props.navigation}
+        />
         <Animated.ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal
           style={{
-            top: TOP_SAFE_AREA + 10,
+            top: Platform.OS=="android"? TOP_SAFE_AREA:TOP_SAFE_AREA + 10,
             position: "absolute",
             zIndex: 9999,
             width: viewportWidth,
@@ -334,9 +342,9 @@ class TransactionsScreen extends Component {
                     return "$" + val.toFixed(2);
                   }}
                 />
-                <Text style={styles.subtitle}>
+                {/* <Text style={styles.subtitle}>
                   {this.state.category} spending
-                </Text>
+                </Text> */}
               </Animated.View>
               <View style={styles.inOut}>
                 <View style={styles.inOutColumn}>
@@ -513,7 +521,7 @@ const styles = StyleSheet.create({
   titleContain: {
     alignContent: "center",
     alignSelf: "center",
-    marginTop: TOP_SAFE_AREA + 50,
+    marginTop: Platform.OS == "android"? TOP_SAFE_AREA+ 30:TOP_SAFE_AREA + 50,
 
     flex: 1,
     textAlign: "center",
@@ -547,7 +555,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     opacity: 0.8,
     flex: 0.4,
-    marginBottom: TOP_SAFE_AREA
+    marginBottom: Platform.OS == "android"?TOP_SAFE_AREA-20 :TOP_SAFE_AREA
   },
   inOutColumn: {
     flexDirection: "column",

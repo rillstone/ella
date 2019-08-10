@@ -1,3 +1,5 @@
+
+
 const colors = {
   black: "#000",
   white: "#FFF",
@@ -7,10 +9,22 @@ const colors = {
   caption: "#BCCCD4",
   active: "#007BFA",
   warn: "#D4455C",
-  back: "#f6f5f7"
+  back: "#f6f5f7",
+  header: "#3F4F5A"
 };
 
-
+const colorsDark = {
+  black: "#FFF",
+  white: "#000",
+  gray: "#FFF",
+  inactive: "#B2B2B2",
+  lightGray: "#E4E4E4",
+  caption: "#BCCCD4",
+  active: "#007BFA",
+  warn: "#D4455C",
+  back: "#0f0f0f",
+  header: "#000"
+};
 const scheme = {
   cerise: '#eb3b5a',
   carnation: '#fc5c65',
@@ -49,4 +63,4 @@ const sizes = {
   radius: 12
 };
 
-export { colors, sizes, scheme };
+export { colors,colorsDark, sizes, scheme };

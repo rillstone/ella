@@ -1,5 +1,6 @@
 import createStore from "react-recontext";
-
+import {StyleSheet} from 'react-native';
+import * as theme from "./theme";
 // initial state
 const initialState = {
     personData: {},
@@ -7,6 +8,7 @@ const initialState = {
     transactions: [],
     goals: [],
     activeTransaction: {},
+    colors: (theme.colors)
 };
 
 // create app actions
@@ -25,6 +27,9 @@ const actionsCreators = {
     }),
     setActiveTransaction: (state, {transaction}) => ({
         activeTransaction: transaction
+    }),
+    setColors: (state, colorType) => ({
+        colors: colorType==="dark"? (theme.colorsDark) : (theme.colors)
     }),
 };
 

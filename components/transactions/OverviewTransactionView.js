@@ -62,11 +62,17 @@ export default class OverviewTransactionView extends Component {
           <OverviewTransaction
             navigation={this.props.navigation}
             data={tr}
+            openProp={this.open}
+            // modal={this.props.modal}
             key={tr._id}
             index={i}
           />
         )
       );
+  }
+
+  open = () =>{
+    this.props.openTransactionModal()
   }
 
   render() {

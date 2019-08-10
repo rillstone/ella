@@ -24,10 +24,13 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { getInset } from "react-native-safe-area-view";
 import AccountEdit from "../../components/account/AccountEdit";
-import { dispatch, connect } from '../../store';
-
+import { NavigationActions } from "react-navigation";
+import { dispatch, connect } from "../../store";
+import Modalize from "react-native-modalize";
+import AccountModal from "../../components/account/AccountModal";
+import TransactionModal from "../../components/transactions/TransactionModal";
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -41,6 +44,9 @@ const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class Overview extends Component {
   mounted = false;
   db = firebase.firestore();
+  modal = React.createRef();
+  modal2 = React.createRef();
+  transactionModal = React.createRef();
   constructor(props) {
     super();
     this.state = {
@@ -61,6 +67,36 @@ class Overview extends Component {
     var items = [];
   }
 
+  onClosed = () => {
+    // const setParamsAction = NavigationActions.setParams({
+    //   params: { showTabBar: true }, key: this.props.navigation.state.key,
+    // });
+    // this.props.navigation.dispatch(setParamsAction);
+    const { onClosed } = this.props;
+    if (onClosed) {
+      onClosed();
+    }
+  };
+
+  openModal = () => {
+    if (this.modal.current) {
+      this.modal.current.open();
+      // const setParamsAction = NavigationActions.setParams({
+      //   params: { showTabBar: false }, key: this.props.navigation.state.key,
+      // });
+      // this.props.navigation.dispatch(setParamsAction);
+    }
+  };
+
+  closeModal = () => {
+    if (this.modal.current) {
+      // const setParamsAction = NavigationActions.setParams({
+      //   params: { showTabBar: true }, key: this.props.navigation.state.key,
+      // });
+      // this.props.navigation.dispatch(setParamsAction);
+      this.modal.current.close();
+    }
+  };
   componentDidMount() {
     this.getGoals();
     this._componentFocused();
@@ -85,13 +121,13 @@ class Overview extends Component {
       .get()
       .then(querySnapshot => {
         const items = [];
-        querySnapshot.forEach(function (doc) {
+        querySnapshot.forEach(function(doc) {
           items.push(doc.data());
         });
         let sortedGoals = items.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
-        this.setState({ items:sortedGoals, refreshing: false });
+        this.setState({ items: sortedGoals, refreshing: false });
       });
   }
 
@@ -124,7 +160,6 @@ class Overview extends Component {
       uid: user.uid,
       photoURL: user.photoURL ? user.photoURL : ""
     });
-
   }
   signoutPress = async () => {
     await AsyncStorage.clear();
@@ -134,7 +169,7 @@ class Overview extends Component {
   childHandler() {
     this.updateUser();
     this.setState({ edit: false });
-    this._panel.hide();
+    this.closeModal();
   }
   goBack() {
     this.updateUser();
@@ -153,11 +188,22 @@ class Overview extends Component {
     if (Platform.OS == "android") {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
+    // NavigationActions.setParams({
+    //   params: { showTabBar: false }, key: this.props.navigation.state.key,
+    // });
+    // const setParamsAction = NavigationActions.setParams({
+    //   params: { showTabBar: true }, key: this.props.navigation.state.key,
+    // });
+    // this.props.navigation.dispatch(setParamsAction);
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.getGoals();
   };
+  openTransaction = () => {
+    this.transactionModal.openModal();
+    // console.log('overview')
+  }
 
   _draggedValue = new Animated.Value(180);
   render() {
@@ -179,69 +225,30 @@ class Overview extends Component {
     });
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
-        <StatusBar barStyle="dark-content" translucent/>
-        <SlidingUpPanel
-          // onDragStart={() => console.log("start")}
-          // onDragEnd={() => console.log("end")}
-          containerStyle={{
-            zIndex: 9999,
-            elevation: 2,
-            backgroundColor: "#fff",
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15,
-            overflow: "hidden"
-          }}
-          allowDragging
-          height={viewportHeight - 140}
-          backdropOpacity={0.4}
-          draggableRange={{ top: viewportHeight - 140, bottom: 0 }}
-          ref={c => (this._panel = c)}
-        >
-          {dragHandler =>
-            !this.state.edit ? (
-              <AccountSlider
-                data={{
-                  dragHandler: dragHandler,
-                  firstName: this.state.firstname,
-                  lastName: this.state.lastname,
-                  email: this.state.email,
-                  icon:
-                    this.state.lastname && this.state.firstname
-                      ? this.state.firstname[0] + this.state.lastname[0]
-                      : "XX",
-                  image: this.state.photoURL
-                }}
-                action={this.childHandler}
-                signOut={this.signoutPress}
-                editProfile={this.editProfile}
-              />
-            ) : (
-                <AccountEdit
-                  data={{
-                    dragHandler: dragHandler,
-                    firstName: this.state.firstname,
-                    lastName: this.state.lastname,
-                    email: this.state.email,
-                    icon:
-                      this.state.lastname && this.state.firstname
-                        ? this.state.firstname[0] + this.state.lastname[0]
-                        : "XX",
-                    image: this.state.photoURL
-                  }}
-                  action={this.childHandler}
-                  goBack={this.goBack}
-                  editProfile={this.editProfile}
-                  saved={this.updateUser}
-                />
-              )
-          }
-        </SlidingUpPanel>
+        <StatusBar barStyle="dark-content" translucent />
+        {/* <Modalize
+            ref={this.modal}
+            onClosed={this.onClosed}
+            handlePosition={"inside"}
+            adjustToContentHeight
+            modalStyle={{borderRadius:12, backgroundColor: theme.colors.back,zIndex: 99999,}}
+          >
+            {this.renderContent()}
+          </Modalize> */}
+        <AccountModal
+          onRef={ref => (this.modal2 = ref)}
+          navigation={this.props.navigation}
+        />
+        <TransactionModal
+          onRef={ref => (this.transactionModal = ref)}
+          navigation={this.props.navigation}
+        />
         <View
           style={[
             styles.avatar,
             {
               borderRadius: 36,
-              zIndex: 9998,
+              zIndex: 999,
               right: 20,
               backgroundColor: "transparent",
               top: TOP_SAFE_AREA + 25,
@@ -253,7 +260,8 @@ class Overview extends Component {
             rounded
             size="medium"
             avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
-            onPress={() => this._panel.show()}
+            // onPress={() => this._panel.show()}
+            onPress={() => this.modal2.openModal()}
             title={
               this.state.lastname && this.state.firstname
                 ? this.state.firstname[0] + this.state.lastname[0]
@@ -274,9 +282,7 @@ class Overview extends Component {
           <Animated.View
             style={[styles.titleContain, { opacity: titleOpacity }]}
           >
-            <Text style={styles.title}>
-              Hi, {this.state.firstname}
-            </Text>
+            <Text style={styles.title}>Hi, {this.state.firstname}</Text>
           </Animated.View>
         </Animated.View>
 
@@ -297,7 +303,7 @@ class Overview extends Component {
           >
             <View
               style={{
-                marginTop: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
+                marginTop: Platform.OS=="ios" ?  TOP_SAFE_AREA + 70: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
                 marginLeft: 20,
                 alignContent: "center",
                 justifyContent: "center"
@@ -381,11 +387,13 @@ class Overview extends Component {
                 data={{
                   position: "center",
                   // image: require("../assets/images/entertainment_back.jpg"),
+
                   image: ["#388acf", theme.scheme.crusta],
                   data: [51, 52, 45, 51, 52, 53, 54],
                   color: theme.scheme.sunshade,
                   title: "Bad Spending"
                 }}
+                openTransactionModal={this.openTransaction}
                 navigation={this.props.navigation}
               />
             </View>

@@ -10,6 +10,7 @@ import {
 import * as theme from "../../theme";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
+import TransactionModal from "./TransactionModal";
 import { dispatch } from "../../store";
 const colors = [
   theme.scheme.crusta,
@@ -22,9 +23,10 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 export default class OverviewTransaction extends Component {
+  // transactionModal = React.createRef();
   static propTypes = {
     data: PropTypes.object.isRequired,
-    index: PropTypes.number
+    index: PropTypes.number,
   };
 
   render() {
@@ -38,7 +40,9 @@ export default class OverviewTransaction extends Component {
       <View style={{ flex: 1 }}>
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate("TransactionView")
+            // this.props.navigation.navigate("TransactionView")
+            // this.props.myRef.openModal();
+            this.props.openProp();
             dispatch("SET_ACTIVE_TRANSACTION", { transaction: this.props.data})
           }
           }
