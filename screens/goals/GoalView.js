@@ -160,7 +160,6 @@ class GoalView extends Component {
             borderRadius={10}
             style={{
               overflow: "hidden",
-              elevation: 1,
               position: "relative",
               borderRadius: 10,
               backgroundColor: "transparent"

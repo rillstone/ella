@@ -303,7 +303,7 @@ class Overview extends Component {
           >
             <View
               style={{
-                marginTop: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
+                marginTop: Platform.OS=="ios" ?  TOP_SAFE_AREA + 70: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
                 marginLeft: 20,
                 alignContent: "center",
                 justifyContent: "center"

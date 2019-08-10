@@ -2,7 +2,8 @@ import React from "react";
 import {
   createBottomTabNavigator,
   createStackNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
+  Header
 } from "react-navigation";
 
 import TransactionScreen from "../screens/transactions/TransactionScreen";
@@ -28,6 +29,11 @@ import Transactions from "../screens/transactions/Transactions";
 import TransactionsScreen from "../screens/transactions/TransactionsScreen";
 import TransactionsCategoryView from "../screens/transactions/TransactionCategoryView";
 import Settings from "../screens/Settings";
+import LinkedAccountsScreen from "../screens/settings/LinkedAccountsScreen";
+import BudgetScreen from "../screens/settings/BudgetScreen";
+import AuthenticationScreen from "../screens/settings/AuthenticationScreen";
+import AboutScreen from "../screens/settings/AboutScreen";
+import ContactScreen from "../screens/settings/ContactScreen";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 import * as theme from "../theme";
 
@@ -36,9 +42,13 @@ import {
   AsyncStorage,
   StatusBar,
   StyleSheet,
-  View
+  View,
+  Platform
 } from "react-native";
 
+const headerProps = {
+  headerTintColor: "#fff"
+};
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -172,8 +182,7 @@ const TransactionsStack = createStackNavigator(
   },
   {
     mode: "modal",
-    headerMode: "none",
-    transparentCard: true
+    headerMode: "none"
   }
 );
 
@@ -200,20 +209,93 @@ TransactionsStack.navigationOptions = ({ navigation }) => {
 
 const SettingsStack = createStackNavigator(
   {
-    SettingsScreen: Settings
+    SettingsScreen: {
+      screen: Settings,
+      navigationOptions: ({ navigation }) => ({
+        header: null
+      })
+    },
+    LinkedAccounts: {
+      screen: LinkedAccountsScreen,
+      navigationOptions: ({ navigation }) =>
+        Platform.OS == "android"
+          ? {
+              headerStyle: {
+                backgroundColor: theme.scheme.royal_blue
+              },
+              headerTitle: "Accounts",
+              headerTintColor: "#fff"
+            }
+          : { header: null }
+    },
+    BudgetScreen: {
+      screen: BudgetScreen,
+      navigationOptions: ({ navigation }) =>
+        Platform.OS == "android"
+          ? {
+              headerStyle: {
+                backgroundColor: theme.scheme.fuchsia_blue
+              },
+              headerTitle: "Budget",
+              headerTintColor: "#fff"
+            }
+          : { header: null }
+    },
+    Authentication: {
+      screen: AuthenticationScreen,
+      navigationOptions: ({ navigation }) =>
+        Platform.OS == "android"
+          ? {
+              headerStyle: {
+                backgroundColor: theme.scheme.green
+              },
+              headerTitle: "Authentication",
+              headerTintColor: "#fff"
+            }
+          : { header: null }
+    },
+    About: {
+      screen: AboutScreen,
+      navigationOptions: ({ navigation }) =>
+        Platform.OS == "android"
+          ? {
+              headerStyle: {
+                backgroundColor: theme.scheme.cerise
+              },
+              headerTitle: "About",
+              headerTintColor: "#fff"
+            }
+          : { header: null }
+    },
+    Contact: {
+      screen: ContactScreen,
+      navigationOptions: ({ navigation }) =>
+        Platform.OS == "android"
+          ? {
+              headerStyle: {
+                backgroundColor: theme.scheme.supernova
+              },
+              headerTitle: "Contact",
+              headerTintColor: "#fff"
+            }
+          : { header: null }
+    }
   },
-  { mode: "modal", headerMode: "none" }
+  { mode: "card", headerMode: "screen" }
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
-  tabBarIcon: ({ focused }) => (
-    <Icon
-      name="ios-settings"
-      size={26}
-      color={focused ? theme.colors.gray : inactiveColor}
-    />
-  )
+SettingsStack.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarLabel: "Settings",
+
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="ios-settings"
+        size={26}
+        color={focused ? theme.colors.gray : inactiveColor}
+      />
+    )
+  };
 };
 
 const TabNavigator = createBottomTabNavigator(

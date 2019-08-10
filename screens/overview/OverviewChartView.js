@@ -199,12 +199,12 @@ class OverviewChartView extends Component {
               svg={{ fill: colors[1] }}
             />
         </View>
-        <View style={styles.scrollOver}>
+        <View style={styles.scrollOver }>
           <ScrollView
             borderRadius={10}
             style={{
               overflow: "hidden",
-              elevation: 1,
+
               position: "relative",
               borderRadius: 10,
               backgroundColor: "transparent"

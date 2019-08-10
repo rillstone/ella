@@ -42,43 +42,50 @@ const list = [
     title: "Linked Accounts",
     icon: "account-balance-wallet",
     color: theme.scheme.royal_blue,
-    toggle: false
+    toggle: false,
+    screen: "LinkedAccounts"
   },
   {
     title: "Budget",
     icon: "attach-money",
     color: theme.scheme.fuchsia_blue,
-    toggle: false
+    toggle: false,
+    screen: "BudgetScreen"
   },
   {
     title: "Authentication",
     icon: "lock",
     color: theme.scheme.green,
-    toggle: false
+    toggle: false,
+    screen: "Authentication"
   },
   {
     title: "Dark Mode",
     icon: "invert-colors",
     color: theme.scheme.dark_grey,
-    toggle: true
+    toggle: true,
+    screen: "LinkedAccounts"
   },
   {
     title: "About",
     icon: "info",
     color: theme.scheme.cerise,
-    toggle: false
+    toggle: false,
+    screen: "About"
   },
   {
     title: "Contact",
     icon: "mail",
     color: theme.scheme.supernova,
-    toggle: false
+    toggle: false,
+    screen: "Contact"
   },
   {
     title: "Sign Out",
     icon: "exit-to-app",
     color: theme.scheme.crusta,
-    toggle: false
+    toggle: false,
+    screen: ""
   }
 ];
 class Settings extends Component {
@@ -137,8 +144,9 @@ class Settings extends Component {
             // marginTop: 40
           }}
           onPress={() => {
-            // this.props.action();
-            // this.props.signOut();
+            if (!item.toggle || item.screen !== "") {
+              this.props.navigation.navigate(item.screen);
+            }
           }}
         >
           <View
@@ -151,9 +159,9 @@ class Settings extends Component {
           >
             <Avatar
               rounded
-              icon={{ name: item.icon, color: "white" }}
+              icon={{ name: item.icon, color: "#fff", }}
               size="medium"
-              avatarStyle={{ backgroundColor: item.color }}
+              avatarStyle={{ backgroundColor: item.color,}}
             />
           </View>
           <View style={{ flex: 5, flexDirection: "column", marginLeft: 10 }}>
@@ -231,7 +239,9 @@ class Settings extends Component {
               alignItems: "center",
               margin: 20,
               marginLeft: 30,
-              marginTop: 0
+              marginTop: Platform.OS == "android"? 20: 0,
+              
+              // backgroundColor: 'blue'
             }}
             onPress={() => {this.modal2.openModal()}}
           >
