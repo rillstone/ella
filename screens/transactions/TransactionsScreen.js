@@ -24,6 +24,8 @@ import * as scale from "d3-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
+import { LinearGradient } from 'expo-linear-gradient';
+
 import { Paragraph } from "rn-placeholder";
 import { dispatch } from "../../store";
 import TransactionModal from "../../components/transactions/TransactionModal";
@@ -31,7 +33,6 @@ import TransactionModal from "../../components/transactions/TransactionModal";
 import * as Animatable from "react-native-animatable";
 import {
   Defs,
-  LinearGradient,
   Stop,
   Circle,
   G,
@@ -279,6 +280,13 @@ class TransactionsScreen extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+        {/* <LinearGradient
+          colors={[theme.scheme.crusta, theme.scheme.sunshade]}
+          start={[0,0]}
+          end={[1,1]}
+          style={{ position: 'absolute', height: viewportHeight, width: viewportWidth, zIndex: 0}}>
+
+          </LinearGradient> */}
                 <TransactionModal
           onRef={ref => (this.transactionModal = ref)}
           navigation={this.props.navigation}

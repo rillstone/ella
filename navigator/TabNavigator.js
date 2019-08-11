@@ -49,6 +49,7 @@ import {
 const headerProps = {
   headerTintColor: "#fff"
 };
+
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -65,6 +66,27 @@ class AuthLoadingScreen extends React.Component {
   };
 
   // Render any loading content that you like here
+  render() {
+    return (
+      <View>
+        <ActivityIndicator />
+        <StatusBar barStyle="default" />
+      </View>
+    );
+  }
+}
+
+class PlannerUserDataScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this._bootstrapAsync();
+  }
+
+  _bootstrapAsync = async () => {
+    const plannerUserDataScreen = await AsyncStorage.getItem("plannerIntro");
+    this.props.navigation.navigate(plannerUserDataScreen==="Planner" ? "Planner" : "PlannerIntro");
+  };
+
   render() {
     return (
       <View>
@@ -128,12 +150,50 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
 const PlannerStack = createStackNavigator(
   {
-    PlannerScreen: PlannerIntro,
     Planner: Planner,
+    MealView: MealView,
+
+  },
+  {
+    headerMode: "none",
+    mode: "modal",
+    defaultNavigationOptions: {
+      gesturesEnabled: false
+    },
+  }
+);
+
+PlannerStack.navigationOptions = ({ navigation }) => {
+  var tabBarVisible = true;
+  const routeName = navigation.state.routes[navigation.state.index].routeName;
+  
+  if (
+    routeName === "MealView"
+  ) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarLabel: "Planner",
+    tabBarVisible,
+
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="ios-heart"
+        size={26}
+        color={focused ? theme.scheme.green : inactiveColor}
+      />
+    )
+  };
+};
+
+
+const PlannerIntroStack = createStackNavigator(
+  {
+    PlannerScreen: PlannerIntro,
+
     PlannerInitQuestions: PlannerInitQuestions,
     MealSizeCount: MealSizeCount,
     DietaryReq: DietaryReq,
-    MealView: MealView,
     MealServicesList: MealServicesList,
     MealServicePlans: MealServicePlans
   },
@@ -142,16 +202,17 @@ const PlannerStack = createStackNavigator(
     mode: "modal",
     defaultNavigationOptions: {
       gesturesEnabled: false
-    }
+    },
+
   }
 );
 
-PlannerStack.navigationOptions = ({ navigation }) => {
+PlannerIntroStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
-
+  
   if (
-    routeName === "MealView" ||
+
     routeName === "PlannerInitQuestions" ||
     routeName === "MealSizeCount" ||
     routeName === "DietaryReq" ||
@@ -174,6 +235,44 @@ PlannerStack.navigationOptions = ({ navigation }) => {
   };
 };
 
+const PlannerSwitchNavigator = createSwitchNavigator(
+  {
+    PlannerUser: PlannerUserDataScreen,
+    Planner: PlannerStack,
+    PlannerIntro: PlannerIntroStack
+  },
+  {
+    initialRouteName: "PlannerUser"
+  }
+);
+
+PlannerSwitchNavigator.navigationOptions = ({navigation}) => {
+  var tabBarVisible = true;
+  const routeName = navigation.state.routes[navigation.state.index].routeName;
+  
+  if (
+    routeName === "MealView" ||
+    routeName === "PlannerInitQuestions" ||
+    routeName === "MealSizeCount" ||
+    routeName === "DietaryReq" ||
+    routeName === "MealServicesList" ||
+    routeName === "MealServicePlans"
+  ) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarLabel: "Planner",
+    tabBarVisible,
+
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="ios-heart"
+        size={26}
+        color={focused ? theme.scheme.green : inactiveColor}
+      />
+    )
+  };
+}
 const TransactionsStack = createStackNavigator(
   {
     TransactionsScreen: TransactionsScreen,
@@ -301,7 +400,8 @@ SettingsStack.navigationOptions = ({ navigation }) => {
 const TabNavigator = createBottomTabNavigator(
   {
     HomeStack,
-    PlannerStack,
+    // PlannerStack,
+    PlannerSwitchNavigator,
     TransactionsStack,
     SettingsStack
   },

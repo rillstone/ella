@@ -8,25 +8,32 @@ import {
   Platform,
   StatusBar,
   Dimensions,
-  ScrollView
+  ScrollView,
+  Animated
 } from "react-native";
 import * as theme from "../../theme";
 import Carousel from "react-native-snap-carousel";
 import SliderEntry, { sliderWidth, itemWidth } from "./SliderEntry";
+
+import { LinearGradient } from 'expo-linear-gradient';
 import SliderEntryUpcoming, {
   sliderWidthSmall,
   itemWidthSmall
 } from "./SliderEntryUpcoming";
 import { getInset } from "react-native-safe-area-view";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
+import { Defs, Stop } from "react-native-svg";
 import { Paragraph, Box } from "rn-placeholder";
 import mfb from "../../assets/mfb.json";
 import moment from "moment";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
+const IS_IOS = Platform.OS === "ios";
 const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
-
+const HEADER_MAX_HEIGHT = 150;
+const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
+const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
+const safetyZone = HEADER_MAX_HEIGHT;
 class Planner extends Component {
   mounted = false;
   constructor(props) {
@@ -35,6 +42,7 @@ class Planner extends Component {
       errors: [],
       loading: false,
       loaded: false,
+      scrollY: new Animated.Value(0),
       data: [],
       colors: ["url(#gradient)", "#CBCCCF"],
       keys: ["current", "average"]
@@ -74,11 +82,21 @@ class Planner extends Component {
 
   render() {
     const thisWeek = mfb.deliveryDays[0];
+    const headerTranslate = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE * 2],
+      outputRange: [0, -(HEADER_SCROLL_DISTANCE * 3)],
+      extrapolate: "clamp"
+    });
+    const inputTranslate = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_SCROLL_DISTANCE * 5],
+      outputRange: [0, -(HEADER_SCROLL_DISTANCE * 6 + 5)],
+      extrapolate: "clamp"
+    });
     // console.log(mfb.deliveryDays[0].orders[0].recipes);
     const weekCarousels = (
       <View
         key={thisWeek.date}
-        style={[styles.carouselItem, { marginTop: viewportHeight / 4 - 20 }]}
+        style={[styles.carouselItem, {  }]}
       >
         {console.log()}
         <Text style={styles.subtitle_two}>This Week</Text>
@@ -138,28 +156,44 @@ class Planner extends Component {
       ));
     return (
       <SafeAreaView style={styles.outContainer}>
+        {/* <LinearGradient
+          colors={[theme.scheme.green, theme.scheme.sunglow]}
+          start={[0.2,0.3]}
+          end={[1,1]}
+          style={{ position: 'absolute', height: viewportHeight, width: viewportWidth, zIndex: 0}}>
+
+          </LinearGradient> */}
         <ImageBackground
           resizeMode="stretch"
           source={this.state.loaded? require("../../assets/images/tran_screen_back_green.png") : require("../../assets/images/plan_screen_back_grey.png")}
-          style={styles.header}
+          style={[styles.header]}
           onLoad={this._onLoad}
         >
-          <View style={styles.titleContain}>
+          <Animated.View style={[styles.titleContain, {transform: [{ translateY: inputTranslate }]}]}>
             <Text style={styles.title}>Planner</Text>
             <Text style={styles.subtitle}>Meal suggestions</Text>
-          </View>
+          </Animated.View>
         </ImageBackground>
-        <ScrollView
+        <Animated.ScrollView
           style={styles.carousel}
           contentContainerStyle={styles.scroll}
           showsVerticalScrollIndicator={false}
+          scrollEventThrottle={1}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
+            { useNativeDriver: true }
+          )}
         >
+          <View     style={{   backgroundColor: theme.colors.back,    borderTopLeftRadius: 12,
+              borderTopRightRadius: 12, top: viewportHeight / 4 - TOP_SAFE_AREA,}}>
+
 
             {weekCarousels}
          
             {upcomingCarousels}
-
-        </ScrollView>
+            <View style={{paddingBottom:100}} />
+          </View>
+        </Animated.ScrollView>
       </SafeAreaView>
     );
   }
@@ -183,7 +217,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     // flex:0.5,
     // alignSelf: 'center',
-    zIndex: 9999,
+    zIndex: 0,
     alignItems: "center",
     justifyContent: "flex-start",
     top: 0,
@@ -199,12 +233,31 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 0.5,
     // borderColor: "#00000020"
   },
+  fill: {
+    flex: 1,
+    // top:0,
+    bottom: 0,
+    backgroundColor: "transparent",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: "hidden",
+    height: viewportHeight
+    // marginTop: HEADER_MAX_HEIGHT
+  },
   outContainer: {
     flex: 1,
     backgroundColor: theme.colors.back
   },
   carousel: {
-    flex: 1
+    flex: 1,
+    bottom: 0,
+
+    // top: viewportHeight / 5.5,
+    backgroundColor: 'transparent',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: "hidden",
+    height: viewportHeight
   },
   carouselItem: {
     paddingTop: 20
