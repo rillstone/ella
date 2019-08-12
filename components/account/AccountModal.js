@@ -72,6 +72,7 @@ class AccountModal extends Component {
           action={this.childHandler}
           signOut={this.signoutPress}
           editProfile={this.editProfile}
+          navigation={this.props.navigation}
         />
       ) : (
           <AccountEdit

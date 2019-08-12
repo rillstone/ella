@@ -4,7 +4,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  AsyncStorage
 } from "react-native";
 import PropTypes from "prop-types";
 import * as theme from "../../theme";
@@ -29,6 +30,11 @@ class AccountSlider extends Component {
 
     this.props = props;
   }
+
+  signoutPress = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate("Auth");
+  };
 
   render() {
     const {
@@ -159,7 +165,7 @@ class AccountSlider extends Component {
           }}
           onPress={() => {
             this.props.action();
-            this.props.signOut();
+            this.signoutPress();
           }}
         >
           <View

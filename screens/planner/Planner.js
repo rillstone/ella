@@ -23,6 +23,7 @@ import SliderEntryUpcoming, {
 import { getInset } from "react-native-safe-area-view";
 import { Defs, Stop } from "react-native-svg";
 import { Paragraph, Box } from "rn-placeholder";
+import { dispatch, connect, Provider } from "../../store";
 import mfb from "../../assets/mfb.json";
 import moment from "moment";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -34,6 +35,12 @@ const HEADER_MAX_HEIGHT = 150;
 const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 const safetyZone = HEADER_MAX_HEIGHT;
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+  // put the stuff here you want to access from the global store
+  // then instead of calling it from "this.state.<var>" call it from "this.props.<var>"
+});
 class Planner extends Component {
   mounted = false;
   constructor(props) {
@@ -99,7 +106,7 @@ class Planner extends Component {
         style={[styles.carouselItem, {  }]}
       >
         {console.log()}
-        <Text style={styles.subtitle_two}>This Week</Text>
+        <Text style={[styles.subtitle_two, {color: this.props.colors.gray}]}>This Week</Text>
         <Carousel
           ref={c => {
             this._carousel = c;
@@ -127,7 +134,7 @@ class Planner extends Component {
       upComingMeals.map(week => (
         <View key={week.date} style={styles.carouselItem}>
           {console.log()}
-          <Text style={styles.subtitle_two}>
+          <Text style={[styles.subtitle_two, {color: this.props.colors.gray}]}>
             {moment(week.date.substring(1), " YYYY-MM-DD").format("Do MMMM")}
           </Text>
           <Carousel
@@ -155,7 +162,8 @@ class Planner extends Component {
         </View>
       ));
     return (
-      <SafeAreaView style={styles.outContainer}>
+      <SafeAreaView style={{    flex: 1,
+        backgroundColor: this.props.colors.back}}>
         {/* <LinearGradient
           colors={[theme.scheme.green, theme.scheme.sunglow]}
           start={[0.2,0.3]}
@@ -184,7 +192,7 @@ class Planner extends Component {
             { useNativeDriver: true }
           )}
         >
-          <View     style={{   backgroundColor: theme.colors.back,    borderTopLeftRadius: 12,
+          <View     style={{   backgroundColor: this.props.colors.back,    borderTopLeftRadius: 12,
               borderTopRightRadius: 12, top: viewportHeight / 4 - TOP_SAFE_AREA,}}>
 
 
@@ -198,7 +206,7 @@ class Planner extends Component {
     );
   }
 }
-export default Planner;
+export default connect(mapStateToProps)(Planner);
 
 const styles = StyleSheet.create({
   container: {
@@ -244,10 +252,7 @@ const styles = StyleSheet.create({
     height: viewportHeight
     // marginTop: HEADER_MAX_HEIGHT
   },
-  outContainer: {
-    flex: 1,
-    backgroundColor: theme.colors.back
-  },
+
   carousel: {
     flex: 1,
     bottom: 0,

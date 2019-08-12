@@ -1,5 +1,5 @@
 import React from "react";
-import { YellowBox, AsyncStorage } from "react-native";
+import { YellowBox, AsyncStorage, StatusBar } from "react-native";
 import { mapping, light as lightTheme } from "@eva-design/eva";
 import { ApplicationProvider } from "react-native-ui-kitten";
 import AppNavigator from "./navigator/AppNavigator";
@@ -33,7 +33,8 @@ class App extends React.Component {
       isLoadingComplete: false,
       isAuthenticationReady: false,
       isAuthenticated: false,
-      user: null
+      user: null,
+      dark: false,
     };
     firebase.initializeApp(ApiKeys.FirebaseConfig);
     if (!firebase.apps.length) {
@@ -42,13 +43,22 @@ class App extends React.Component {
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
     db = firebase.firestore();
     storage = firebase.storage();
+    
   }
   componentDidMount() {
     this.mounted = true;
   }
 
+  getTheme = async () => {
+    const currentTheme = await AsyncStorage.getItem("currentTheme");
+    currentTheme && dispatch("SET_COLORS", currentTheme);
+    this.setState({dark: currentTheme==='dark'})
+  };
+
   updateMeals() {
+
     if(firebase.auth().currentUser) {
+
     var docRef = db.collection("users").doc(firebase.auth().currentUser.uid);
     docRef
       .get()
@@ -95,6 +105,7 @@ class App extends React.Component {
   // }
 
   onAuthStateChanged = user => {
+    this.getTheme();
     this.setState({
       isAuthenticationReady: true,
       isAuthenticated: !!user,
@@ -112,6 +123,7 @@ class App extends React.Component {
         <MenuProvider>
           <ApplicationProvider mapping={mapping} theme={lightTheme}>
             <Provider>
+            <StatusBar barStyle={this.state.dark? 'dark-content' : 'light-content'} translucent />
               <AppNavigator />
             </Provider>
           </ApplicationProvider>
