@@ -11,7 +11,7 @@ import * as theme from "../../theme";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 import TransactionModal from "./TransactionModal";
-import { dispatch } from "../../store";
+import { connect,dispatch } from "../../store";
 const colors = [
   theme.scheme.crusta,
   theme.scheme.royal_blue2,
@@ -22,7 +22,11 @@ const colors = [
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-export default class OverviewTransaction extends Component {
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
+class OverviewTransaction extends Component {
   // transactionModal = React.createRef();
   static propTypes = {
     data: PropTypes.object.isRequired,
@@ -46,7 +50,7 @@ export default class OverviewTransaction extends Component {
             dispatch("SET_ACTIVE_TRANSACTION", { transaction: this.props.data})
           }
           }
-          style={styles.transactionContainer}
+          style={[styles.transactionContainer, {backgroundColor: this.props.colors.white}]}
         >
           <View style={styles.iconContainer}>
             <Image style={styles.icon} source={{ uri: logo }} />
@@ -59,7 +63,7 @@ export default class OverviewTransaction extends Component {
                 fontWeight: "700",
                 justifyContent: "center",
                 fontSize: 12,
-                color: theme.colors.gray
+                color: this.props.colors.gray
               }}
             >
               {name}
@@ -72,7 +76,7 @@ export default class OverviewTransaction extends Component {
                 alignItems: "center",
                 paddingRight: 5,
                 fontSize: 11,
-                color: theme.colors.gray
+                color: this.props.colors.gray
               }}
             >
               {amount.toString().startsWith("-")
@@ -85,6 +89,7 @@ export default class OverviewTransaction extends Component {
     );
   }
 }
+export default connect(mapStateToProps)(OverviewTransaction);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   transactionContainer: {
     borderRadius: 12,
     marginHorizontal: 10,
-    backgroundColor: "white",
+    // backgroundColor: "white",
     alignItems: "flex-start",
     justifyContent: "flex-start",
     alignContent: "flex-start",
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
     width: viewportWidth / 3.6,
     height: viewportWidth / 3.6,
     // overflow: "hidden",
-    shadowColor: "#6b6b6b",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 0

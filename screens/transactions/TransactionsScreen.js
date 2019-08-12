@@ -25,9 +25,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { dispatch, connect } from "../../store";
 import { Paragraph } from "rn-placeholder";
-import { dispatch } from "../../store";
+
 import TransactionModal from "../../components/transactions/TransactionModal";
 
 import * as Animatable from "react-native-animatable";
@@ -49,6 +49,10 @@ const xAxisHeight = 30;
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const IS_IOS = Platform.OS === "ios";
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
 const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
@@ -183,7 +187,7 @@ class TransactionsScreen extends Component {
             <Text
               style={{
                 fontSize: 17,
-                color: theme.colors.gray,
+                color: this.props.colors.gray,
                 fontWeight: "800"
               }}
             >
@@ -279,7 +283,7 @@ class TransactionsScreen extends Component {
     );
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: this.props.colors.back }}>
         {/* <LinearGradient
           colors={[theme.scheme.crusta, theme.scheme.sunshade]}
           start={[0,0]}
@@ -400,7 +404,7 @@ class TransactionsScreen extends Component {
         >
           <View style={{ paddingTop: TOP_SAFE_AREA }} />
           <Paragraph
-            style={{ top: safetyZone, paddingTop: 20, backgroundColor: theme.colors.back,    borderTopLeftRadius: 12,
+            style={{ top: safetyZone, paddingTop: 20, backgroundColor: this.props.colors.back,    borderTopLeftRadius: 12,
               borderTopRightRadius: 12, }}
             animation="fade"
             lineNumber={3}
@@ -450,7 +454,7 @@ class TransactionsScreen extends Component {
             </View>
           </Paragraph>
           <View
-            style={{ width: viewportWidth, backgroundColor: theme.colors.back }}
+            style={{ width: viewportWidth, backgroundColor: this.props.colors.back }}
           >
             <View
               style={{
@@ -504,7 +508,7 @@ class TransactionsScreen extends Component {
     );
   }
 }
-export default TransactionsScreen;
+export default connect(mapStateToProps)(TransactionsScreen);
 
 const styles = StyleSheet.create({
   container: {

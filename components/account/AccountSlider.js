@@ -10,11 +10,16 @@ import PropTypes from "prop-types";
 import * as theme from "../../theme";
 import { Button, Avatar, Divider } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
+import { dispatch, connect } from "../../store";
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-export default class AccountSlider extends Component {
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
+class AccountSlider extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
   };
@@ -30,11 +35,11 @@ export default class AccountSlider extends Component {
       data: { dragHandler, firstName, lastName, email, icon, image }
     } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: this.props.colors.back}]}>
         <View style={styles.dragHandler}>
           <View
             style={{
-              backgroundColor: "#F5F5F5",
+              backgroundColor: this.props.colors.back,
               width: viewportWidth,
               height: 64,
               borderTopRightRadius: 10,
@@ -51,7 +56,7 @@ export default class AccountSlider extends Component {
                   fontSize:35,
                   left: 20,
                   top: 40,
-                  color: theme.colors.gray,
+                  color: this.props.colors.gray,
                   textAlign: "left"
                 }}
               >
@@ -106,7 +111,7 @@ export default class AccountSlider extends Component {
               style={{
                 fontSize: 16,
                 fontWeight: "500",
-                color: theme.colors.gray
+                color: this.props.colors.gray
               }}
             >
               {/* {this.state.firstname + ' ' + this.state.lastname} */}
@@ -138,7 +143,7 @@ export default class AccountSlider extends Component {
           style={{
             height: 1,
             width: viewportWidth - 50,
-            backgroundColor: "#F5F5F5"
+            backgroundColor: 'transparent'
           }}
         />
         <TouchableOpacity
@@ -221,6 +226,7 @@ export default class AccountSlider extends Component {
     );
   }
 }
+export default connect(mapStateToProps)(AccountSlider);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -228,7 +234,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     justifyContent: "center",
-    backgroundColor: "#f6f5f7",
+    // backgroundColor: "#f6f5f7",
 
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13

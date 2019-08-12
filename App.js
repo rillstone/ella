@@ -48,6 +48,7 @@ class App extends React.Component {
   }
 
   updateMeals() {
+    if(firebase.auth().currentUser) {
     var docRef = db.collection("users").doc(firebase.auth().currentUser.uid);
     docRef
       .get()
@@ -72,6 +73,7 @@ class App extends React.Component {
       .catch(function(error) {
         console.log("Error getting user meal plan document:", error);
       });
+    }
   }
 
   mealPlanSelected = async () => {

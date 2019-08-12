@@ -34,6 +34,7 @@ import BudgetScreen from "../screens/settings/BudgetScreen";
 import AuthenticationScreen from "../screens/settings/AuthenticationScreen";
 import AboutScreen from "../screens/settings/AboutScreen";
 import ContactScreen from "../screens/settings/ContactScreen";
+import CustomTabNav from "./CustomTabNav";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 import * as theme from "../theme";
 
@@ -405,6 +406,7 @@ const TabNavigator = createBottomTabNavigator(
     TransactionsStack,
     SettingsStack
   },
+  {tabBarComponent: CustomTabNav},
   {
     tabBarOptions: {
       showLabel: false,
@@ -412,7 +414,7 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: activeColor,
       style: {
         borderTopColor: "transparent",
-        backgroundColor: theme.colors.back,
+        // backgroundColor: theme.colors.back,
         shadowOffset: { width: 0, height: 1 },
         shadowColor: "#6b6b6b",
         shadowOpacity: 0.0,
