@@ -1,5 +1,5 @@
 import React from "react";
-import { YellowBox,AsyncStorage } from "react-native";
+import { YellowBox, AsyncStorage } from "react-native";
 import { mapping, light as lightTheme } from "@eva-design/eva";
 import { ApplicationProvider } from "react-native-ui-kitten";
 import AppNavigator from "./navigator/AppNavigator";
@@ -8,6 +8,8 @@ import * as firebase from "firebase";
 import { dispatch, connect, Provider } from "./store";
 import { MenuProvider } from 'react-native-popup-menu';
 import _ from 'lodash';
+import transactions from './assets/payments.json';
+import moment from 'moment';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -29,6 +31,7 @@ class App extends React.Component {
   mounted = false;
   constructor() {
     super();
+    this.generateNewTrans();
     this.state = {
       isLoadingComplete: false,
       isAuthenticationReady: false,
@@ -85,5 +88,27 @@ class App extends React.Component {
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
+
+  generateNewTrans = () => {
+    var x = transactions;
+    var y = [x.Transport, x.Leisure, x.Food, x.Bills];
+    // console.log(y);
+    // console.log("---BREAK---");
+    y.forEach(e => {
+      var now = moment();
+      var then = moment(e[0].date);
+      var diff = now.diff(then, 'days');
+      for (i = 1; i < diff; i++) {
+        var newTrans = _.cloneDeep(e[Math.floor(Math.random() * e.length)]);
+        var newAmount = Math.round((newTrans.amount * ((Math.floor(Math.random() * 10) + 5) / 10)) * 100) / 100;
+        newTrans.amount = newAmount;
+        newTrans.date = then.add(1, 'days').clone();
+        e.unshift(newTrans);
+      }
+    });
+    // console.log(y);
+    // updated is what you'd return (overwrites x)
+    var updated = { Transport: y[0], Leisure: y[1], Food: y[2], Bills: y[3] };
+  }
 }
 export default connect(mapStateToProps)(App);
