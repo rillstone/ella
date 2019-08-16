@@ -21,7 +21,8 @@ export default class TransactionGraphSelection extends Component {
     super();
     this.state = {
       selected: false,
-      value: null
+      value: null,
+      backgroundColor: '#fed33060'
     };
     this.props = props;
   }
@@ -56,11 +57,15 @@ export default class TransactionGraphSelection extends Component {
               key={item.day}
               style={[
                 styles.section,
-                value === item.day && { backgroundColor: "#fed33060" }
+                value === item.day && { backgroundColor: this.state.backgroundColor }
               ]}
               onPress={() => {
                 // console.log("pressed " + item.day + ' ' + item.value + ' ' + graphHeight + ' ' + item.value/3.0375652174);
-                this.setState({ value: item.day });
+                if (value==item.day) {
+                  this.setState({ value: item.day, backgroundColor:  "transparent"});
+                } else {
+                  this.setState({ value: item.day,backgroundColor:  "#fed33060"});
+                }
                 this.props.callBack(item.day);
               }}
             />
