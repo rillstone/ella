@@ -86,7 +86,7 @@ export default class GoalProgressBar extends Component {
       <View>
         <View>
           <View pointerEvents={"none"} style={{ zIndex: 999 }}>
-            <Text style={styles.amountStyle}>{progress}%</Text>
+            <Text style={styles.amountStyle}>{progress.toFixed(0)}%</Text>
           </View>
           <Slider
             value={progress}
@@ -120,10 +120,10 @@ export default class GoalProgressBar extends Component {
           />
         </View>
         <View>
-          <Text>
+          {/* <Text>
             ${sum.toFixed(2)} of ${value.toFixed(2)} spent
           </Text>
-          <Text>{max-daysGone} days to go!</Text>
+          <Text>{max-daysGone} days to go!</Text> */}
         </View>
       </View>
     );

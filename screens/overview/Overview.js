@@ -30,7 +30,8 @@ import Modalize from "react-native-modalize";
 import AccountModal from "../../components/account/AccountModal";
 import TransactionModal from "../../components/transactions/TransactionModal";
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  colors: state.colors
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -224,7 +225,7 @@ class Overview extends Component {
       extrapolate: "clamp"
     });
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: this.props.colors.back }}>
         <StatusBar barStyle="dark-content" translucent />
         {/* <Modalize
             ref={this.modal}
@@ -270,7 +271,7 @@ class Overview extends Component {
             source={{
               uri: this.state.photoURL === "" ? null : this.state.photoURL
             }}
-          />
+          /> 
         </View>
         <StatusBar barStyle="dark-content" />
         <Animated.View
@@ -282,7 +283,7 @@ class Overview extends Component {
           <Animated.View
             style={[styles.titleContain, { opacity: titleOpacity }]}
           >
-            <Text style={styles.title}>Hi, {this.state.firstname}</Text>
+            <Text style={[styles.title, {color: this.props.colors.gray}]}>Hi, {this.state.firstname}</Text>
           </Animated.View>
         </Animated.View>
 
@@ -312,13 +313,13 @@ class Overview extends Component {
               }}
             >
               <Text
-                style={{ fontWeight: "700", fontSize: 30, color: "#3F4F5A" }}
+                style={{ fontWeight: "700", fontSize: 30, color: this.props.colors.gray }}
               >
                 You're saving
                 <Text style={{ color: theme.scheme.crusta }}> $24.89 </Text>
               </Text>
               <Text
-                style={{ fontWeight: "300", fontSize: 28, color: "#3F4F5A" }}
+                style={{ fontWeight: "300", fontSize: 28, color: this.props.colors.gray }}
               >
                 per week on average{" "}
               </Text>
@@ -374,7 +375,7 @@ class Overview extends Component {
                 }}
               >
                 <View style={{}}>
-                  <Text style={styles.title2}>Transactions</Text>
+                  <Text style={[styles.title2,  {color: this.props.colors.gray}]}>Transactions</Text>
                 </View>
                 <View
                   style={{
@@ -406,7 +407,7 @@ class Overview extends Component {
                 }}
               >
                 <View style={{}}>
-                  <Text style={styles.title2}>Goals</Text>
+                  <Text style={[styles.title2, {color: this.props.colors.gray}]}>Goals</Text>
                 </View>
                 <View
                   style={{
@@ -423,7 +424,7 @@ class Overview extends Component {
                   >
                     <Icon
                       name={"ios-add"}
-                      color={theme.colors.gray}
+                      color={this.props.colors.gray}
                       size={35}
                     />
                   </TouchableOpacity>
@@ -472,13 +473,13 @@ const styles = StyleSheet.create({
     fontSize: theme.sizes.title,
     backgroundColor: "transparent",
     fontWeight: "800",
-    color: theme.colors.gray
+    // color: theme.colors.gray
   },
   title2: {
     fontSize: 20,
     backgroundColor: "transparent",
     fontWeight: "800",
-    color: theme.colors.gray
+    // color: theme.colors.gray
   },
 
   microtitle: {

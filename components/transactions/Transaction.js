@@ -6,12 +6,16 @@ import {
   Image,
 } from "react-native";
 import * as theme from "../../theme";
+import { dispatch, connect } from "../../store";
 import PropTypes from 'prop-types';
 import TransitionView from '../TransitionView';
 import ProgressiveImage from '../ProgressiveImage';
-
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
-export default class Transaction extends Component {
+class Transaction extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -72,7 +76,7 @@ export default class Transaction extends Component {
                     fontWeight: "700",
                     justifyContent: "center",
                     fontSize: 18,
-                    color: theme.colors.gray
+                    color: this.props.colors.gray
                   }}
                 >
                   {name}
@@ -81,7 +85,7 @@ export default class Transaction extends Component {
                   h4
                   bold
                   style={{ fontWeight: "400", justifyContent: "center",
-                  color: theme.colors.gray }}
+                  color: this.props.colors.gray }}
                 >
                   {new Date(date)
                     .toLocaleDateString("en-NZ", DATE_OPTIONS)
@@ -96,7 +100,7 @@ export default class Transaction extends Component {
                     justifyContent: "center",
                     alignItems: "center",
                     paddingRight: 5,
-                    color: theme.colors.gray
+                    color: this.props.colors.gray
                   }}
                 >
                   {amount.toString().startsWith("-")
@@ -109,6 +113,8 @@ export default class Transaction extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps)(Transaction);
 const styles = StyleSheet.create({
     balance2: {
         borderRadius: theme.sizes.radius,
