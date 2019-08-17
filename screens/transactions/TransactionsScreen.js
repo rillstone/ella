@@ -40,6 +40,7 @@ import {
 } from "react-native-svg";
 import { Button } from "react-native-elements";
 import TimeAgo from "react-native-timeago";
+import moment from "moment";
 const axesSvg = {
   fontSize: 10,
   fill: "white",
@@ -140,16 +141,25 @@ class TransactionsScreen extends Component {
     }
   }
   graphSectionPress = dataFromSection => {
+    console.log(dataFromSection)
+    // console.log(this.state.transactions);
+    // console.log(this.dayOfWeek.indexOf(dataFromSection));
+    // console.log(moment(new Date(this.state.transactions[0].date)));
     this.setState({
       graphSection: this.state.graphSection ===dataFromSection ? null : dataFromSection,
       toolTip: this.state.toolTip === this.dayOfWeek.indexOf(dataFromSection) ? 0 : this.dayOfWeek.indexOf(dataFromSection),
-      toolTipColor: this.state.graphSection ===dataFromSection ? 'transparent' : "white"
+      toolTipColor: this.state.graphSection ===dataFromSection ? 'transparent' : "white",
+      transactions: this.transactionData(this.state.category)
+      // transactions: this.state.transactions.filter(o => moment(o.date).day() === this.dayOfWeek.indexOf(dataFromSection)),
     });
   };
   transactionData(transaction_cat) {
     let sortedTransactions = payments[transaction_cat].sort(
       (a, b) => new Date(b.date) - new Date(a.date)
     );
+    // console.log(sortedTransactions)
+    sortedTransactions = sortedTransactions.filter(o => moment(o.date).day() === this.dayOfWeek.indexOf(this.state.graphSection));
+    // console.log(sortedTransactions)
     let days = 0;
     var greater = true;
     var ourDate = new Date();
@@ -183,7 +193,8 @@ class TransactionsScreen extends Component {
       }
       var x =
         i == 0 || tr.date != currentDate ? (
-          <View key={tr._id}>
+
+          <View key={tr._id + 'test'} >
             <Text
               style={{
                 fontSize: 17,
@@ -221,6 +232,7 @@ class TransactionsScreen extends Component {
             </View>
           );
       currentDate = tr.date;
+      console.log(x)
       return x;
     });
   }

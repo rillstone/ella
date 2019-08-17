@@ -39,7 +39,7 @@ class CustomTabNav extends Component {
   }
 
   render() {
-    console.log(this.props.navigation.state);
+    // console.log(this.props.navigation.state);
     return (
       // <TabBarBottom
       // {...this.props}
