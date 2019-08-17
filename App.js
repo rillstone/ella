@@ -169,7 +169,7 @@ class App extends React.Component {
   render() {
     if (this.state.isLoadingComplete) {
       return (
-        <MenuProvider>
+        <MenuProvider >
           <ApplicationProvider mapping={mapping} theme={lightTheme}>
             <Provider>
             <StatusBar barStyle={this.state.dark? 'dark-content' : 'light-content'} translucent />

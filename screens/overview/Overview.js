@@ -438,6 +438,7 @@ class Overview extends Component {
                       navigation={this.props.navigation}
                       data={{
                         title: doc.name,
+                        id: doc.id,
                         date: doc.date,
                         category: doc.category,
                         value: doc.value,

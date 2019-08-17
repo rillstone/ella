@@ -86,7 +86,10 @@ export default class GoalProgressBar extends Component {
       <View>
         <View>
           <View pointerEvents={"none"} style={{ zIndex: 999 }}>
-            <Text style={styles.amountStyle}>{progress.toFixed(0)}%</Text>
+            <Text style={styles.amountStyle}>
+              ${sum >= value ? value.toFixed(2) : sum.toFixed(2)} of $
+              {value.toFixed(2)}
+            </Text>
           </View>
           <Slider
             value={progress}
@@ -103,6 +106,11 @@ export default class GoalProgressBar extends Component {
             animationType={"spring"}
             thumbStyle={styles.thumbStyle}
           />
+          <View pointerEvents={"none"} style={{ zIndex: 999 }}>
+            <Text style={[styles.amountStyle, {top:27}]}>
+              {(daysRemain > 0 ? 0 : Math.abs(daysRemain))} days left
+            </Text>
+          </View>
           <Slider
             value={daysGone}
             maximumValue={max}
@@ -137,46 +145,46 @@ const styles = StyleSheet.create({
   sliderStyle2: {
     width: viewportWidth - 50,
     left: 0,
-    height: 20,
-    top: 10
+    height: 40,
+    top: 20
   },
   trackStyle: {
     backgroundColor: theme.colors.lightGray,
     height: 70,
-    // borderRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
+    borderRadius: 10
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10
   },
   trackStyle2: {
     backgroundColor: theme.colors.lightGray,
-    height: 20,
-    // borderRadius: 5
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10
+    height: 40,
+    borderRadius: 10
+    // borderTopLeftRadius: 0,
+    // borderTopRightRadius: 0,
+    // borderBottomLeftRadius: 10,
+    // borderBottomRightRadius: 10
   },
   thumbStyle: {
     height: 70,
     width: 30,
     // borderRadius: 10,
+    // // borderTopLeftRadius: 10,
     // borderTopLeftRadius: 10,
-    borderTopLeftRadius: 10,
 
-    borderBottomLeftRadius: 0,
+    // borderBottomLeftRadius: 0,
     borderTopRightRadius: 10,
-    borderBottomRightRadius: 0
+    borderBottomRightRadius: 10
   },
   thumbStyle2: {
-    height: 20,
+    height: 40,
     width: 30,
-    top: 20,
+    top: 40,
     // borderRadius: 10
     // borderBottomLeftRadius: 10,
 
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-    borderTopRightRadius: 0,
+    // borderTopLeftRadius: 0,
+    // borderBottomLeftRadius: 0,
+    borderTopRightRadius: 10,
     borderBottomRightRadius: 10
   },
   amountStyle: {
