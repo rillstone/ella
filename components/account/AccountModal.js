@@ -20,6 +20,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
 );
 const mapStateToProps = state => ({
     user: state.user,
+    colors: state.colors
   });
 class AccountModal extends Component {
     modal = React.createRef();
@@ -71,6 +72,7 @@ class AccountModal extends Component {
           action={this.childHandler}
           signOut={this.signoutPress}
           editProfile={this.editProfile}
+          navigation={this.props.navigation}
         />
       ) : (
           <AccountEdit
@@ -173,7 +175,7 @@ class AccountModal extends Component {
         onClosed={this.onClosed}
         handlePosition={"inside"}
         adjustToContentHeight
-        modalStyle={{borderRadius:12, backgroundColor: theme.colors.back,zIndex: 99999,}}
+        modalStyle={{borderRadius:12, backgroundColor: this.props.colors.back,zIndex: 99999,}}
       >
         {this.renderContent()}
       </Modalize>

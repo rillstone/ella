@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  AsyncStorage,
   TextInput,
   Platform,
   StatusBar,
@@ -102,6 +103,7 @@ class Settings extends Component {
 
     this.array = [];
     this.props = props;
+    this.getTheme();
   }
 
   toggleSwitch1 = value => {
@@ -109,11 +111,24 @@ class Settings extends Component {
 
     if (value) {
       dispatch("SET_COLORS", "dark");
+      this.setTheme("dark");
       console.log("dark");
     } else {
       dispatch("SET_COLORS", "light");
+      this.setTheme("light");
     }
   };
+
+  getTheme = async () => {
+    const currentTheme = await AsyncStorage.getItem("currentTheme");
+    this.setState({
+      switch1Value: currentTheme==='dark'
+    })
+  }
+  setTheme = async (theme) => {
+    await AsyncStorage.setItem("currentTheme", theme);
+    
+  }
 
   componentWillMount() {
     this.mounted = true;

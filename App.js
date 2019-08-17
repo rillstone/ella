@@ -1,31 +1,31 @@
 import React from "react";
-import { YellowBox,AsyncStorage } from "react-native";
+import { YellowBox, AsyncStorage, StatusBar } from "react-native";
 import { mapping, light as lightTheme } from "@eva-design/eva";
 import { ApplicationProvider } from "react-native-ui-kitten";
 import AppNavigator from "./navigator/AppNavigator";
 import ApiKeys from "./constants/ApiKeys";
 import * as firebase from "firebase";
+import "firebase/storage";
+import "firebase/firestore";
 import { dispatch, connect, Provider } from "./store";
-import { MenuProvider } from 'react-native-popup-menu';
-import _ from 'lodash';
+import { MenuProvider } from "react-native-popup-menu";
+import _ from "lodash";
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
   // put the stuff here you want to access from the global store
   // then instead of calling it from "this.state.<var>" call it from "this.props.<var>"
-
 });
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
+  if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
 };
 
 class App extends React.Component {
-
   mounted = false;
   constructor() {
     super();
@@ -33,25 +33,86 @@ class App extends React.Component {
       isLoadingComplete: false,
       isAuthenticationReady: false,
       isAuthenticated: false,
-      user: null
+      user: null,
+      dark: false,
     };
     firebase.initializeApp(ApiKeys.FirebaseConfig);
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
-
+    db = firebase.firestore();
+    storage = firebase.storage();
+    
   }
   componentDidMount() {
     this.mounted = true;
   }
-  onAuthStateChanged = (user) => {
+
+  getTheme = async () => {
+    const currentTheme = await AsyncStorage.getItem("currentTheme");
+    currentTheme && dispatch("SET_COLORS", currentTheme);
+    this.setState({dark: currentTheme==='dark'})
+  };
+
+  updateMeals() {
+
+    if(firebase.auth().currentUser) {
+
+    var docRef = db.collection("users").doc(firebase.auth().currentUser.uid);
+    docRef
+      .get()
+      .then(doc => {
+        if (doc.exists && doc.data().mealCompany) {
+          if (
+            doc.data().mealCompany === "My Food Bag" ||
+            doc.data().mealCompany === "Hello Fresh"
+          ) {
+            this.mealPlanSelected();
+            // this.updateMFB(doc.data());
+          } else {
+            this.mealPlanNotSelected();
+          }
+          // else if (doc.data().mealCompany === "Hello Fresh") {
+          //   this.updateHelloFresh(doc.data());
+          // }
+        } else {
+          this.mealPlanNotSelected();
+        }
+      })
+      .catch(function(error) {
+        console.log("Error getting user meal plan document:", error);
+      });
+    }
+  }
+
+  mealPlanSelected = async () => {
+    await AsyncStorage.setItem("plannerIntro", "Planner");
+  };
+
+  mealPlanNotSelected = async () => {
+    await AsyncStorage.setItem("plannerIntro", "PlannerIntro");
+  };
+
+  /*----------------------------------------------*/
+  /* This will be used to fetch latest menu items */
+  /*----------------------------------------------*/
+  // updateMFB() {
+  //   console.log("my food bag");
+  // }
+  // updateHelloFresh() {
+  //   console.log("hello fresh");
+  // }
+
+  onAuthStateChanged = user => {
+    this.getTheme();
     this.setState({
       isAuthenticationReady: true,
       isAuthenticated: !!user,
       isLoadingComplete: true,
       user: firebase.auth().currentUser
     });
+    this.updateMeals();
     // sent to the global store here
     dispatch("SET_USER", { user: firebase.auth().currentUser });
   };
@@ -62,18 +123,16 @@ class App extends React.Component {
         <MenuProvider>
           <ApplicationProvider mapping={mapping} theme={lightTheme}>
             <Provider>
+            <StatusBar barStyle={this.state.dark? 'dark-content' : 'light-content'} translucent />
               <AppNavigator />
             </Provider>
           </ApplicationProvider>
         </MenuProvider>
       );
     } else return null;
-
   }
   _loadResourcesAsync = async () => {
-    return Promise.all([
-
-    ]);
+    return Promise.all([]);
   };
 
   _handleLoadingError = error => {
