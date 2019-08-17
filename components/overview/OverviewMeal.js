@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
     height: slideHeight,
     marginHorizontal: itemHorizontalMargin,
     paddingBottom: itemHorizontalMargin,
-    shadowColor: "#6b6b6b",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     borderRadius: entryBorderRadius,
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     justifyContent: "flex-end"
   },

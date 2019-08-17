@@ -107,6 +107,7 @@ class AccountModal extends Component {
 
   }
   onClosed = () => {
+    dispatch("SET_HIDE", false);
     // const setParamsAction = NavigationActions.setParams({
     //   params: { showTabBar: true }, key: this.props.navigation.state.key, 
     // });
@@ -118,6 +119,7 @@ class AccountModal extends Component {
   };
 
   openModal = () => {
+    dispatch("SET_HIDE", true);
     if (this.modal.current) {
       this.modal.current.open();
       // const setParamsAction = NavigationActions.setParams({
@@ -128,6 +130,7 @@ class AccountModal extends Component {
   };
 
   closeModal = () => {
+    dispatch("SET_HIDE", false);
     if (this.modal.current) {
       // const setParamsAction = NavigationActions.setParams({
       //   params: { showTabBar: true }, key: this.props.navigation.state.key, 

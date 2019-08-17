@@ -65,7 +65,7 @@ export default class Goal extends Component {
               id: id,
           })
         }
-        style={[styles.card, {shadowOpacity: expired? 0.1: 0.4}]}
+        style={[styles.card, {shadowOpacity: expired? 0.1: 0.4, shadowColor: expired? '#6b6b6b' : theme.scheme.sunshade}]}
       >
         <View
           style={[styles.card, {shadowOpacity: expired? 0.1: 0.4,backgroundColor: expired? theme.colors.lightGray:theme.scheme.sunshade}]}

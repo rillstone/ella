@@ -121,6 +121,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
   if (
     routeName === "ViewGoal" ||
+    routeName === "Goal" ||
     routeName === "OverviewChart" ||
     routeName === "TransactionView"
   ) {

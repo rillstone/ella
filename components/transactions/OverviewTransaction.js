@@ -20,6 +20,13 @@ const colors = [
   require("../../assets/images/categoryBG/leisureBG.jpg"),
   require("../../assets/images/categoryBG/transportBG.jpg")
 ];
+const shadow = [
+    theme.scheme.crusta,
+    theme.scheme.royal_blue2,
+    theme.scheme.cerise,
+    theme.scheme.green,
+    theme.scheme.fuchsia_blue
+]
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -39,6 +46,17 @@ class OverviewTransaction extends Component {
       data: { logo, name, date, amount, category },
       index
     } = this.props;
+    const shadowColor = shadow[category === "transport"
+    ? 0
+    : category === "food"
+    ? 1
+    : category === "bills"
+    ? 2
+    : category === "leisure"
+    ? 3
+    : category === "clothing"
+    ? 4
+    : 4]
     // const background = colors[Math.floor(Math.random() * colors.length)];
     const background =
       colors[
@@ -65,7 +83,7 @@ class OverviewTransaction extends Component {
               transaction: this.props.data
             });
           }}
-          style={[styles.transactionContainer]}
+          style={[styles.transactionContainer, {shadowColor: shadowColor,}]}
         >
           <ImageBackground
             source={ background }
@@ -92,7 +110,7 @@ class OverviewTransaction extends Component {
                   fontWeight: "700",
                   justifyContent: "center",
                   fontSize: 12,
-                  color: this.props.colors.white
+                  color: theme.colors.white
                 }}
               >
                 {name}
@@ -105,7 +123,7 @@ class OverviewTransaction extends Component {
                   alignItems: "center",
                   paddingRight: 5,
                   fontSize: 11,
-                  color: this.props.colors.white
+                  color: theme.colors.white
                 }}
               >
                 {amount.toString().startsWith("-")
@@ -178,7 +196,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 0
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 1
   }

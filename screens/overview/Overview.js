@@ -34,7 +34,8 @@ import moment from "moment";
 import TransactionModal from "../../components/transactions/TransactionModal";
 const mapStateToProps = state => ({
   user: state.user,
-  colors: state.colors
+  colors: state.colors,
+  hide: state.hide
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -134,6 +135,7 @@ class Overview extends Component {
         this.setState({ items: sortedGoals, refreshing: false });
       });
   }
+  
 
   getUser() {
     var user = this.props.user;

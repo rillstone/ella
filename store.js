@@ -8,7 +8,8 @@ const initialState = {
     transactions: [],
     goals: [],
     activeTransaction: {},
-    colors: (theme.colors)
+    colors: (theme.colors),
+    hide: false,
 };
 
 // create app actions
@@ -30,6 +31,9 @@ const actionsCreators = {
     }),
     setColors: (state, colorType) => ({
         colors: colorType==="dark"? (theme.colorsDark) : (theme.colors)
+    }),
+    setHide: (state, hidden) => ({
+        hide: hidden
     }),
 };
 
