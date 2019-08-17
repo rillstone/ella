@@ -141,9 +141,9 @@ class TransactionsScreen extends Component {
   }
   graphSectionPress = dataFromSection => {
     this.setState({
-      graphSection: dataFromSection,
-      toolTip: this.dayOfWeek.indexOf(dataFromSection),
-      toolTipColor: "white"
+      graphSection: this.state.graphSection ===dataFromSection ? null : dataFromSection,
+      toolTip: this.state.toolTip === this.dayOfWeek.indexOf(dataFromSection) ? 0 : this.dayOfWeek.indexOf(dataFromSection),
+      toolTipColor: this.state.graphSection ===dataFromSection ? 'transparent' : "white"
     });
   };
   transactionData(transaction_cat) {
@@ -276,7 +276,7 @@ class TransactionsScreen extends Component {
             }
             textAnchor="middle"
           >
-            {"$" + this.weekTrans[this.state.toolTip].value}
+            {"$" + this.weekTrans[this.state.toolTip].value.toFixed(2)}
           </SvgText>
         </G>
       </G>
@@ -431,7 +431,7 @@ class TransactionsScreen extends Component {
                   stroke: "white"
                 }}
               >
-                <Tooltip />
+                <Tooltip style={{zIndex: 999999}} />
               </LineChart>
               <XAxis
                 style={{ marginHorizontal: -10, height: xAxisHeight }}

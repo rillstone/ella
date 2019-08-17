@@ -27,9 +27,10 @@ import {
   MenuOption,
   MenuTrigger,
   renderers
-} from 'react-native-popup-menu';
+} from "react-native-popup-menu";
 
 import * as categoryTypes from "../../components/goals/CategoryTypes";
+import GoalProgressBar from "../../components/goals/GoalProgressBar";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -38,7 +39,14 @@ function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
   return Math.round(value);
 }
-const backdrop = [require("../../assets/images/general_back.png"), require("../../assets/images/leisure_back.png"),require("../../assets/images/personal_back.png"),require("../../assets/images/save_back.png"),require("../../assets/images/wellbeing_back.png"), require("../../assets/images/goal_back.png")];
+const backdrop = [
+  require("../../assets/images/general_back.png"),
+  require("../../assets/images/leisure_back.png"),
+  require("../../assets/images/personal_back.png"),
+  require("../../assets/images/save_back.png"),
+  require("../../assets/images/wellbeing_back.png"),
+  require("../../assets/images/goal_back.png")
+];
 const slideHeight = viewportHeight * 0.15;
 const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
 const BOTTOM_SAFE_AREA = Platform.OS === "ios" ? getInset("bottom") : 40;
@@ -57,14 +65,22 @@ class GoalView extends Component {
     this.state = {
       scrollY: new Animated.Value(0),
       scrollOp: 1,
-      period: "month"
+      period: "month",
+      daysRemain: 0,
+      spent: 0,
     };
     this.props = props;
   }
   periodOnPress(event, buttonId) {
-    console.log(this.state.period);
+    // console.log(this.state.period);
     this.setState({ period: buttonId });
   }
+
+  goalProgressValue = progress => {
+    if (this.mounted) {
+      this.setState({ daysRemain: progress[0], spent: progress[1] });
+    }
+  };
 
   _renderScrollViewContent() {
     const data = Array.from({ length: 30 });
@@ -91,7 +107,7 @@ class GoalView extends Component {
   render() {
     const { navigation } = this.props;
     // const { navigation } = this.props;
-    const back = backdrop[Math.floor(Math.random()*backdrop.length)]
+    const back = backdrop[Math.floor(Math.random() * backdrop.length)];
     const title = navigation.getParam("title", "Goal");
     const date = navigation.getParam("date", "");
     const type = navigation.getParam("type", "");
@@ -104,7 +120,7 @@ class GoalView extends Component {
       <View style={styles.fill}>
         <StatusBar hidden={true} />
         <Menu ref={c => (this._menu = c)} renderer={renderers.SlideInMenu}>
-        <MenuTrigger />
+          <MenuTrigger />
           <MenuOptions>
             <MenuOption text="Save" />
             <MenuOption>
@@ -112,7 +128,7 @@ class GoalView extends Component {
             </MenuOption>
           </MenuOptions>
         </Menu>
-        
+
         <TouchableOpacity
           onPress={() => {
             this.setState({ scrollOp: 0 });
@@ -129,7 +145,7 @@ class GoalView extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            this._menu.open()
+            this._menu.open();
           }}
           style={{
             position: "absolute",
@@ -170,7 +186,8 @@ class GoalView extends Component {
               style={{
                 flexDirection: "row",
                 marginTop: 30,
-                left: 30,
+                marginLeft: 30,
+                // flex: 1,
                 alignItems: "center"
               }}
             >
@@ -183,7 +200,9 @@ class GoalView extends Component {
                     : "#FAA3c6"
                 }
               />
-              <View style={{ flexDirection: "column", left: 15 }}>
+              <View
+                style={{ flexDirection: "column", marginLeft: 15, flex: 1 }}
+              >
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.date}>
                   {" "}
@@ -218,6 +237,32 @@ class GoalView extends Component {
                   : "General goal"}
               </Text>
             </View>
+            {category != null ? (
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 30,
+                  // marginLeft: 30,
+                  // flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <GoalProgressBar
+                  onSlide={this.sliderValue}
+                  data={{category: category, value: value, period: period, date: date}}
+                  color={
+                    category != null
+                      ? categoryTypes.categoryColors[category]
+                      : "#FAA3c6"
+                  }
+                  goalProgress={this.goalProgressValue}
+                />
+              </View>
+            
+            ) : null}
+
           </ScrollView>
         </View>
       </View>
@@ -306,6 +351,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.gray,
+    flexShrink: 1,
+    flexWrap: "wrap",
     fontSize: 30,
     fontWeight: "500",
     alignContent: "flex-start",
@@ -330,7 +377,7 @@ const styles = StyleSheet.create({
     // textAlignVertical: 'center',
     left: 1
   },
-  menu:{
+  menu: {
     bottom: BOTTOM_SAFE_AREA
   },
 

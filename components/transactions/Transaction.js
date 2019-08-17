@@ -104,8 +104,8 @@ class Transaction extends Component {
                   }}
                 >
                   {amount.toString().startsWith("-")
-                    ? "-" + amount.toString().replace("-", "$")
-                    : "$" + amount}
+                    ? "-" + amount.toFixed(2).toString().replace("-", "$")
+                    : "$" + amount.toFixed(2)}
                 </Text>
               </View>
             </View>
