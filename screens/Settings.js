@@ -139,7 +139,7 @@ class Settings extends Component {
     for (var i = 1; i <= 75; i++) {
       this.array.push(i);
     }
-    console.log(this.props.user.photoURL);
+    // console.log(this.props.user.photoURL);
   }
 
   render() {

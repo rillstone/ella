@@ -76,6 +76,7 @@ class NewGoal extends Component {
 
   saveGoal() {
     var date = new Date();
+    var id= Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     this.setState({ saving: true });
     var user = firebase.auth().currentUser;
     console.log(user.uid);
@@ -83,9 +84,10 @@ class NewGoal extends Component {
       .collection("users")
       .doc(user.uid)
       .collection("goals")
-      .doc()
+      .doc(id)
       .set({
         name: this.state.title,
+        id: id,
         type: this.state.selected,
         category:
           this.state.selected === "category" ? this.state.selectedCat : null,

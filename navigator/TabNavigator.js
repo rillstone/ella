@@ -112,7 +112,6 @@ const HomeStack = createStackNavigator(
   {
     mode: "modal",
     headerMode: "none",
-    transparentCard: true
   }
 );
 HomeStack.TranitionConfig;
