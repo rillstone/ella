@@ -51,7 +51,7 @@ const mapStateToProps = state => ({
 });
 const IS_IOS = Platform.OS === "ios";
 const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
-const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
+const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 50;
 const HEADER_MAX_HEIGHT = 150;
 const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     opacity: 0.8,
     flex: 0.4,
-    marginBottom: Platform.OS == "android" ? TOP_SAFE_AREA - 20 : TOP_SAFE_AREA
+    marginBottom: Platform.OS == "android" ? TOP_SAFE_AREA - 30 : TOP_SAFE_AREA
   },
   inOutColumn: {
     flexDirection: "column",

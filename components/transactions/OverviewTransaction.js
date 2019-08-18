@@ -102,6 +102,7 @@ class OverviewTransaction extends Component {
               width: viewportWidth / 3.6,
               height: viewportWidth / 3.6,
               borderRadius: 12,
+              overflow:'hidden',
               
               backgroundColor: this.state.loaded
                 ? "transparent"

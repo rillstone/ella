@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     width: viewportWidth - 50,
     left: 0,
     height: 40,
-    top: 20
+    marginTop: 20
   },
   trackStyle: {
     backgroundColor: theme.colors.lightGray,
