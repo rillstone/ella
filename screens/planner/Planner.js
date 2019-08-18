@@ -199,7 +199,7 @@ class Planner extends Component {
             {weekCarousels}
          
             {upcomingCarousels}
-            <View style={{paddingBottom:100}} />
+            <View style={{paddingBottom:160}} />
           </View>
         </Animated.ScrollView>
       </SafeAreaView>
@@ -256,7 +256,9 @@ const styles = StyleSheet.create({
   carousel: {
     flex: 1,
     bottom: 0,
-
+    top:0,
+    paddingTop: Platform.OS =='android'? 50:0,
+    // top: Platform.OS =='android'? 50:0,
     // top: viewportHeight / 5.5,
     backgroundColor: 'transparent',
     borderTopLeftRadius: 12,
@@ -268,7 +270,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   titleContain: {
-    marginTop: TOP_SAFE_AREA + 40,
+    paddingTop: Platform.OS=='android'? viewportHeight / 18 : TOP_SAFE_AREA + viewportHeight / 20,
     alignItems: "flex-start",
     width: viewportWidth * 0.9
   },

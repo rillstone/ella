@@ -260,7 +260,7 @@ class Overview extends Component {
               zIndex: 999,
               right: 20,
               backgroundColor: "transparent",
-              top: TOP_SAFE_AREA + 35,
+              top: Platform.OS=='android' ? TOP_SAFE_AREA + 45:TOP_SAFE_AREA + 35,
               position: "absolute"
             }
           ]}
@@ -305,7 +305,7 @@ class Overview extends Component {
                 ? "Good Evening,"
                 : "Hello,"}
             </Text>
-            <Text style={[styles.title, { color: this.props.colors.gray }]}>
+            <Text style={[styles.title, { color: this.props.colors.gray}]}>
               {this.state.firstname}
             </Text>
           </Animated.View>
@@ -362,7 +362,7 @@ class Overview extends Component {
 
             <View
               style={{
-                marginTop: 20,
+                marginTop: Platform.OS=='android' ? 40:20,
                 flexDirection: "column",
                 marginHorizontal: 15
               }}
@@ -533,7 +533,8 @@ const styles = StyleSheet.create({
   titleContain: {
     paddingLeft: 20,
     backgroundColor: "transparent",
-    paddingTop: 30
+    paddingTop: 30,
+    paddingBottom: Platform.OS=='android' ? 50:0
     // flex: 6
   },
   title: {

@@ -21,12 +21,12 @@ const colors = [
   require("../../assets/images/categoryBG/transportBG.jpg")
 ];
 const shadow = [
-    theme.scheme.crusta,
-    theme.scheme.royal_blue2,
-    theme.scheme.cerise,
-    theme.scheme.green,
-    theme.scheme.fuchsia_blue
-]
+  theme.scheme.crusta,
+  theme.scheme.royal_blue2,
+  theme.scheme.cerise,
+  theme.scheme.green,
+  theme.scheme.fuchsia_blue
+];
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -35,28 +35,39 @@ const mapStateToProps = state => ({
   colors: state.colors
 });
 class OverviewTransaction extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      loaded: false
+    };
+  }
   // transactionModal = React.createRef();
   static propTypes = {
     data: PropTypes.object.isRequired,
     index: PropTypes.number
   };
-
+  _onLoad = () => {
+    this.setState(() => ({ loaded: true }));
+  };
   render() {
     const {
       data: { logo, name, date, amount, category },
       index
     } = this.props;
-    const shadowColor = shadow[category === "transport"
-    ? 0
-    : category === "food"
-    ? 1
-    : category === "bills"
-    ? 2
-    : category === "leisure"
-    ? 3
-    : category === "clothing"
-    ? 4
-    : 4]
+    const shadowColor =
+      shadow[
+        category === "transport"
+          ? 0
+          : category === "food"
+          ? 1
+          : category === "bills"
+          ? 2
+          : category === "leisure"
+          ? 3
+          : category === "clothing"
+          ? 4
+          : 4
+      ];
     // const background = colors[Math.floor(Math.random() * colors.length)];
     const background =
       colors[
@@ -83,19 +94,31 @@ class OverviewTransaction extends Component {
               transaction: this.props.data
             });
           }}
-          style={[styles.transactionContainer, {shadowColor: shadowColor,}]}
+          style={[styles.transactionContainer, { shadowColor: shadowColor, shadowOpacity: this.state.loaded ? 0.5 : 0, }]}
         >
           <ImageBackground
-            source={ background }
-            style={{ width: viewportWidth / 3.6, height: viewportWidth / 3.6,  borderRadius: 12,}}
-            imageStyle={{ resizeMode: 'center',borderRadius: 12, }}
+            source={background}
+            style={{
+              width: viewportWidth / 3.6,
+              height: viewportWidth / 3.6,
+              borderRadius: 12,
+              overflow:'hidden',
+              
+              backgroundColor: this.state.loaded
+                ? "transparent"
+                : theme.colors.lightGray
+            }}
+            imageStyle={{ resizeMode: "center", borderRadius: 12 }}
+            onLoad={this._onLoad}
           >
             <View style={styles.iconContainer}>
-              <Image style={styles.icon} source={{ uri: logo }} />
+              <Image style={[styles.icon, {backgroundColor: this.state.loaded
+                ? "transparent"
+                : theme.colors.inactive}]} source={{ uri: logo }} />
             </View>
 
             <View
-              style={[styles.categoryTag, { backgroundColor: 'transparent' }]}
+              style={[styles.categoryTag, { backgroundColor: "transparent" }]}
             />
             <View
               style={{
@@ -134,7 +157,7 @@ class OverviewTransaction extends Component {
                   : "$" + amount.toFixed(2)}
               </Text>
             </View>
-</ImageBackground>
+          </ImageBackground>
         </TouchableOpacity>
       </View>
     );

@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: "center",
     textAlign: 'center',
-    paddingTop: 20 - entryBorderRadius,
+    paddingTop: 9,
     // height: 100,
     paddingBottom: 10,
     paddingHorizontal: 7,
