@@ -37,11 +37,10 @@ class App extends React.Component {
       isAuthenticated: false,
       user: null
     };
-    // firebase.initializeApp(ApiKeys.FirebaseConfig);
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
+      firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
     }
-    firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
     this.generateNewNew();
 
   }
@@ -110,7 +109,7 @@ class App extends React.Component {
     // updated is what you'd return (overwrites x)
     var updated = { Transport: y[0], Leisure: y[1], Food: y[2], Bills: y[3] };
   }
-  
+
   generateNewNew = () => {
     var db = firebase.firestore();
     var x = ['Bills', 'Food', 'Leisure', 'Transport'];
@@ -119,23 +118,26 @@ class App extends React.Component {
       var generated = [];
       db.collection("transactions").doc(e).collection('data').get().then(querySnapshot => {
         querySnapshot.forEach((doc) => {
-          console.log(doc.data());
-          y.push(doc.data());
+          var z = doc.data();
+          // console.log(z);
+          y.push(z);
+          console.log(y.length);
         })
       });
-      var now = moment();
-      var then = moment(y[0].date); // assumes that the most recent trans is at the start, could be better to order by in future
-      var diff = now.diff(then, 'days');
-      for (i = 1; i < diff; i++) {
-        var newTrans = _.cloneDeep(y[Math.floor(Math.random() * y.length)]);
-        var newAmount = Math.round((newTrans.amount * ((Math.floor(Math.random() * 10) + 5) / 10)) * 100) / 100;
-        newTrans.amount = newAmount;
-        newTrans.date = then.add(1, 'days').clone();
-        generated.unshift(newTrans);
-      }
-      // push back to firebase here
-
-    })
+      console.log(y[0]);
+      console.log('end ' + e);
+      // var now = moment();
+      // var then = moment(y[0].date); // assumes that the most recent trans is at the start, could be better to order by in future
+      // var diff = now.diff(then, 'days');
+      // for (i = 1; i < diff; i++) {
+      //   var newTrans = _.cloneDeep(y[Math.floor(Math.random() * y.length)]);
+      //   var newAmount = Math.round((newTrans.amount * ((Math.floor(Math.random() * 10) + 5) / 10)) * 100) / 100;
+      //   newTrans.amount = newAmount;
+      //   newTrans.date = then.add(1, 'days').clone();
+      //   generated.unshift(newTrans);
+      // }
+      // // push back to firebase here
+    });
   }
 }
 export default connect(mapStateToProps)(App);

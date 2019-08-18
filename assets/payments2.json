@@ -1,0 +1,917 @@
+{
+    "more_transactions_in_range": true,
+    "transactions": [
+        {
+            "_id": "trans_cjz8gsfuf000m06mjyxnd5vl2",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -5.02,
+            "name": "Ola",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz8gsfuf000l06mjofhlvi01",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/mobil_logo_cjjxlm04g00085jojr0h8mvtz.jpg",
+            "location": false,
+            "amount": -40.89,
+            "name": "Mobil",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Mobil Quay S",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz8gsfug000o06mjm4pbvg5n",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -3.86,
+            "name": "Ola",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz8gsfuf000n06mj52h0nyio",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -5,
+            "name": "Ola",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz8gsfup000p06mjfukl24tm",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
+            "location": false,
+            "amount": -2.34,
+            "name": "AliExpress",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Aliexpress.C",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz8gsfv8000w06mjby1kbt74",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/dominos_logo_cjijm5tmb000nrjzy5r2819cr.jpg",
+            "location": false,
+            "amount": -30.99,
+            "name": "Domino's",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Dominos Pizz",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz8gsfup000q06mjm0ow4fzp",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/apple_logo_cjjxnte25003g720hqr1ori9s.jpg",
+            "location": "apple.com",
+            "amount": -1.69,
+            "name": "Apple",
+            "created_at": "2019-08-12T14:00:32.209Z",
+            "date": "2019-08-12T11:16:58Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Apple Nz Gcs",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz46gxy4000207mqzb182iqt",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -6.75,
+            "name": "Ola",
+            "created_at": "2019-08-09T14:00:32.762Z",
+            "date": "2019-08-09T11:16:16Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz1bl7pm000g07me5hbvq12n",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -6.34,
+            "name": "Ola",
+            "created_at": "2019-08-07T14:00:31.538Z",
+            "date": "2019-08-07T11:14:13Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz1bl7pk000f07mex3mjb1ev",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
+            "location": false,
+            "amount": -49.12,
+            "name": "AliExpress",
+            "created_at": "2019-08-07T14:00:31.538Z",
+            "date": "2019-08-07T11:14:13Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Aliexpress.C",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjz1bl7pm000h07me9i9549av",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -4.35,
+            "name": "Ola",
+            "created_at": "2019-08-07T14:00:31.538Z",
+            "date": "2019-08-07T11:14:13Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyzw5bj7001507ibs5keecnk",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aliexpress_logo_cjj89doyv000d6lzy8lpj73ip.jpg",
+            "location": false,
+            "amount": -13,
+            "name": "AliExpress",
+            "created_at": "2019-08-06T14:00:29.603Z",
+            "date": "2019-08-06T11:12:24Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Aliexpress.C",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyygph42002x07jtjkcflyst",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/dominos_logo_cjijm5tmb000nrjzy5r2819cr.jpg",
+            "location": false,
+            "amount": -29.99,
+            "name": "Domino's",
+            "created_at": "2019-08-05T14:00:29.93Z",
+            "date": "2019-08-05T11:21:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Dominos Pizz",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyygph4b002y07jtidgwu0qb",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/paypal_logo_cjsfliebb02ysgjzy8nzkebd5.jpg",
+            "location": false,
+            "amount": -1,
+            "name": "PayPal",
+            "created_at": "2019-08-05T14:00:29.93Z",
+            "date": "2019-08-05T11:21:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Paypal *Hell",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyygph42002v07jtzsh7n1lb",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/gilmours_logo_cjsjqac6600dyj00h9p8s3m5d.jpg",
+            "location": false,
+            "amount": -228.78,
+            "name": "Gilmours",
+            "created_at": "2019-08-05T14:00:29.929Z",
+            "date": "2019-08-05T11:21:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Gilmours Mt",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyygph42002w07jtt3dtmcp6",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/paypal_logo_cjsfliebb02ysgjzy8nzkebd5.jpg",
+            "location": false,
+            "amount": -30.59,
+            "name": "PayPal",
+            "created_at": "2019-08-05T14:00:29.929Z",
+            "date": "2019-08-05T11:21:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Paypal *Uber",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyygph3z002p07jt1fuyhmz2",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -3.86,
+            "name": "Ola",
+            "created_at": "2019-08-05T14:00:29.929Z",
+            "date": "2019-08-05T11:21:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyu6dxlb000n07jtrx26kocc",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/countdown_logo_cjjxao60h00025joj45xst381.jpg",
+            "location": false,
+            "amount": -17.09,
+            "name": "Countdown",
+            "created_at": "2019-08-02T14:00:30.559Z",
+            "date": "2019-08-02T11:16:16Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Countdown Ak",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyu6dxla000m07jtv841p6ht",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": -38.99,
+            "name": "Beach Rd Liqour",
+            "created_at": "2019-08-02T14:00:30.559Z",
+            "date": "2019-08-02T03:20:17Z",
+            "status": "POSTED",
+            "type": "eftpos",
+            "raw": {
+                "name": "Beach Rd Liqour",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjysqy1c3001n07l711soeg9i",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -6.28,
+            "name": "Ola",
+            "created_at": "2019-08-01T14:00:28.558Z",
+            "date": "2019-08-01T11:17:09Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjysqy1c4001o07l7ttofke8r",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -6,
+            "name": "Ola",
+            "created_at": "2019-08-01T14:00:28.558Z",
+            "date": "2019-08-01T11:17:09Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjysqy1c4001p07l7jyny6esf",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/munchymart_logo_cji9naepc0001eems7ja0o8wo.jpg",
+            "location": "Kate Edgar, Auckland University",
+            "amount": -3,
+            "name": "Munchy Mart",
+            "created_at": "2019-08-01T14:00:28.558Z",
+            "date": "2019-08-01T11:17:09Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Munchy Mart",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyrbi7dr001p07mcn1x2v2zh",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -4.6,
+            "name": "Ola",
+            "created_at": "2019-07-31T14:00:29.44Z",
+            "date": "2019-07-31T11:12:54Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjypw2e1f002907jpkpivjj66",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/ubereats_logo_cjtqf5hrl0004hm0hh3330xg2.jpg",
+            "location": "ubereats.com",
+            "amount": -26.99,
+            "name": "Uber Eats",
+            "created_at": "2019-07-30T14:00:31.094Z",
+            "date": "2019-07-30T11:11:56Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Uber Eats He",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjypw2e1g002a07jpxxg1buji",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/munchymart_logo_cji9naepc0001eems7ja0o8wo.jpg",
+            "location": "Kate Edgar, Auckland University",
+            "amount": -3,
+            "name": "Munchy Mart",
+            "created_at": "2019-07-30T14:00:31.094Z",
+            "date": "2019-07-30T11:11:56Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Munchy Mart",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjypw2e1d001z07jpwb12vr12",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/myfood bag_logo_cjjwldlxe003mguzyabmnu017.jpg",
+            "location": false,
+            "amount": -109.99,
+            "name": "My Food Bag",
+            "created_at": "2019-07-30T14:00:31.094Z",
+            "date": "2019-07-30T11:11:56Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "My Food Bag",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjypw2e1d002007jpwkh0kmqr",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": -5.99,
+            "name": "University B",
+            "created_at": "2019-07-30T14:00:31.094Z",
+            "date": "2019-07-30T11:11:56Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "University B",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyogmihh001307kw8bpg6pf5",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/mcdonalds_profile_cjiurp3e100004n0h5zqhh5pc.jpg",
+            "location": false,
+            "amount": -18,
+            "name": "McDonald's",
+            "created_at": "2019-07-29T14:00:30.084Z",
+            "date": "2019-07-29T11:17:27Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Mcdonalds Qu",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyogmihh001407kwxe4k7zvj",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -4,
+            "name": "Ola",
+            "created_at": "2019-07-29T14:00:30.084Z",
+            "date": "2019-07-29T11:17:27Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyogmiht001d07kw28gdd4uw",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/countdown_logo_cjjxao60h00025joj45xst381.jpg",
+            "location": false,
+            "amount": -6,
+            "name": "Countdown",
+            "created_at": "2019-07-29T14:00:30.084Z",
+            "date": "2019-07-29T11:17:27Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Countdown Ak",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyogmihh001507kwrws20222",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/mcdonalds_profile_cjiurp3e100004n0h5zqhh5pc.jpg",
+            "location": false,
+            "amount": -1.5,
+            "name": "McDonald's",
+            "created_at": "2019-07-29T14:00:30.084Z",
+            "date": "2019-07-29T11:17:27Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Mcdonalds Qu",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyogmihi001607kw6opz6hj0",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": -1.3,
+            "name": "Campus Pharm",
+            "created_at": "2019-07-29T14:00:30.084Z",
+            "date": "2019-07-29T11:17:27Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Campus Pharm",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyoirnmt000p07meayve371n",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": 55,
+            "name": "Lindstrom,fri",
+            "created_at": "2019-07-29T15:00:29.24Z",
+            "date": "2019-07-28T16:14:55Z",
+            "status": "POSTED",
+            "type": "credit",
+            "raw": {
+                "name": "Lindstrom,Fri",
+                "type": "credit"
+            }
+        },
+        {
+            "_id": "trans_cjyoirnnc000u07mednt51dh9",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": -77.98,
+            "name": "Beach Rd Liqour",
+            "created_at": "2019-07-29T15:00:29.24Z",
+            "date": "2019-07-27T01:33:50Z",
+            "status": "POSTED",
+            "type": "eftpos",
+            "raw": {
+                "name": "Beach Rd Liqour",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyk6b1ah000s07jsz0z6umlk",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -5.88,
+            "name": "Ola",
+            "created_at": "2019-07-26T14:00:33.48Z",
+            "date": "2019-07-26T11:12:20Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyiqv33m001i07l3tjexpffu",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/aucklandtransport_logo_cji7ysow40007jnms3on5y0cc.jpg",
+            "location": false,
+            "amount": -4,
+            "name": "Auckland Transport",
+            "created_at": "2019-07-25T14:00:29.014Z",
+            "date": "2019-07-25T11:13:08Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Auckland Tra",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyfvzfzk002r07jwwz0dxzen",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/munchymart_logo_cji9naepc0001eems7ja0o8wo.jpg",
+            "location": "Kate Edgar, Auckland University",
+            "amount": -6.8,
+            "name": "Munchy Mart",
+            "created_at": "2019-07-23T14:00:31.817Z",
+            "date": "2019-07-23T11:15:00Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Munchy Mart",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyfvzfzg002f07jw2p695x8k",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/munchymart_logo_cji9naepc0001eems7ja0o8wo.jpg",
+            "location": "Kate Edgar, Auckland University",
+            "amount": -2,
+            "name": "Munchy Mart",
+            "created_at": "2019-07-23T14:00:31.816Z",
+            "date": "2019-07-23T11:15:00Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Munchy Mart",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyfvzfzg002e07jwa4jsc2ap",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/myfood bag_logo_cjjwldlxe003mguzyabmnu017.jpg",
+            "location": false,
+            "amount": -109.99,
+            "name": "My Food Bag",
+            "created_at": "2019-07-23T14:00:31.816Z",
+            "date": "2019-07-23T11:15:00Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "My Food Bag",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji8s001207modtdi62ao",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/stufffibre_logo_cjk0hd9x4000kh3zyk6k6py3g.jpg",
+            "location": false,
+            "amount": -84.95,
+            "name": "Stuff Fibre",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Stuff Fibre",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji8v001a07moaib25icy",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": 3.69,
+            "name": "Ola",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "visa refund",
+            "raw": {
+                "name": "Olacabs Temp",
+                "type": "credit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji9d001d07moedxwdrcs",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/paypal_logo_cjsfliebb02ysgjzy8nzkebd5.jpg",
+            "location": false,
+            "amount": -18.54,
+            "name": "PayPal",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Paypal *Uber",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji9d001e07mosgltmlqv",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/stpierre's sushi_logo_cjjxnevqj000k720hclw2ll3t.jpg",
+            "location": false,
+            "amount": -12,
+            "name": "St Pierre's Sushi",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "St Pierre'S",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji8t001307moploteodf",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": -15,
+            "name": "Campus Pharm",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Campus Pharm",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji8t001407moicj00inu",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -4.77,
+            "name": "Ola",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji8t001507mopb6h5th3",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -3.69,
+            "name": "Ola",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-22T11:20:39Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyegji8u001607moac5fbkw8",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/theuniversity of auckland_logo_cjijm9339000qrjzyyeij01p6.jpg",
+            "location": "www.auckland.ac.nz",
+            "amount": -6581.85,
+            "name": "The University of Auckland",
+            "created_at": "2019-07-22T14:00:29.906Z",
+            "date": "2019-07-21T23:16:55Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Universityofauckla",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjyeiosco001i07ml4oww68wg",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/connections/anz.jpg",
+            "location": false,
+            "amount": 200,
+            "name": "Rillstone Cha",
+            "created_at": "2019-07-22T15:00:33.435Z",
+            "date": "2019-07-21T16:17:23Z",
+            "status": "POSTED",
+            "type": "credit",
+            "raw": {
+                "name": "Rillstone Cha",
+                "type": "credit"
+            }
+        },
+        {
+            "_id": "trans_cjya67xku001j07mo89gl2u2j",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -5.31,
+            "name": "Ola",
+            "created_at": "2019-07-19T14:00:29.082Z",
+            "date": "2019-07-19T11:15:22Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjya67xky001k07mo32mdi5cx",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -4.75,
+            "name": "Ola",
+            "created_at": "2019-07-19T14:00:29.082Z",
+            "date": "2019-07-19T11:15:22Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjy8qs3gq000507l7478ve468",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -10.04,
+            "name": "Ola",
+            "created_at": "2019-07-18T14:00:27.861Z",
+            "date": "2019-07-18T11:13:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjy8qs3gq000607l74x52qbd0",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/ola_logo_cjrwg5ziu00v9jlojwpbvk3p2.jpg",
+            "location": false,
+            "amount": -7.43,
+            "name": "Ola",
+            "created_at": "2019-07-18T14:00:27.861Z",
+            "date": "2019-07-18T11:13:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Olacabs Ride",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjy8qs3gp000407l77poxska2",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/countdown_logo_cjjxao60h00025joj45xst381.jpg",
+            "location": false,
+            "amount": -58.3,
+            "name": "Countdown",
+            "created_at": "2019-07-18T14:00:27.861Z",
+            "date": "2019-07-18T11:13:03Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Countdown Ak",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjy7dhf7b000007jzgsxlglgz",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/transfer.png",
+            "location": false,
+            "amount": 200,
+            "name": "Transfer",
+            "created_at": "2019-07-17T15:00:28.829Z",
+            "date": "2019-07-16T22:47:17Z",
+            "status": "POSTED",
+            "type": "transfer",
+            "raw": {
+                "name": "From: 06-0821-0880666-00",
+                "type": "credit"
+            }
+        },
+        {
+            "_id": "trans_cjy5vwekl000007jk8trccf4o",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/myfood bag_logo_cjjwldlxe003mguzyabmnu017.jpg",
+            "location": false,
+            "amount": -109.99,
+            "name": "My Food Bag",
+            "created_at": "2019-07-16T14:00:30.635Z",
+            "date": "2019-07-16T11:12:30Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "My Food Bag",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjy4ggifu000407l414yhs04l",
+            "_account": "acc_cju1oxtae000101l6m6zgiyef",
+            "logo": "https://static.jude.io/merchants/apple_logo_cjjxnte25003g720hqr1ori9s.jpg",
+            "location": "apple.com",
+            "amount": -4.99,
+            "name": "Apple",
+            "created_at": "2019-07-15T14:00:28.596Z",
+            "date": "2019-07-15T11:16:46Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Apple Nz Gcs",
+                "type": "debit"
+            }
+        },
+        {
+            "_id": "trans_cjy4ggifw000807l4x6vmld9z",
+            "_account": "acc_cju1oxtae000001l6dj98vsq2",
+            "logo": "https://static.jude.io/merchants/countdown_logo_cjjxao60h00025joj45xst381.jpg",
+            "location": false,
+            "amount": -46.36,
+            "name": "Countdown",
+            "created_at": "2019-07-15T14:00:28.596Z",
+            "date": "2019-07-15T11:16:46Z",
+            "status": "POSTED",
+            "type": "payment",
+            "raw": {
+                "name": "Countdown Ak",
+                "type": "debit"
+            }
+        }
+    ]
+}
