@@ -35,7 +35,11 @@ class Transaction extends Component {
 
         return (
             <TransitionView style={[styles.balance2]} index={index} >
-            <View style={{ flex: 1.3 }}>
+            <View style={{ flex: 1.3,            shadowColor: "#6b6b6b",
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.2,
+            elevation: 1,
+            shadowRadius: 4, }}>
             <Image
           source={{ uri: logo }}
           style={{ width: 50,
@@ -43,7 +47,8 @@ class Transaction extends Component {
             alignSelf: "flex-start",
             justifyContent: "center",
             position: "absolute",
-            borderRadius: 25 ,
+            borderRadius: 12 ,
+
             backgroundColor: this.state.loaded
             ? "transparent"
             : theme.colors.lightGray
@@ -118,7 +123,7 @@ export default connect(mapStateToProps)(Transaction);
 const styles = StyleSheet.create({
     balance2: {
         borderRadius: theme.sizes.radius,
-        paddingHorizontal: 15,
+        paddingHorizontal: 0,
         paddingVertical: 10,
         flexDirection: "row",
         height: 70

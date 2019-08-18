@@ -24,20 +24,15 @@ import * as scale from "d3-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimateNumber from "react-native-countup";
 import { getInset } from "react-native-safe-area-view";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { dispatch, connect } from "../../store";
 import { Paragraph } from "rn-placeholder";
-
+import sort from "fast-sort";
+import _ from "lodash";
 import TransactionModal from "../../components/transactions/TransactionModal";
 
 import * as Animatable from "react-native-animatable";
-import {
-  Defs,
-  Stop,
-  Circle,
-  G,
-  Text as SvgText
-} from "react-native-svg";
+import { Defs, Stop, Circle, G, Text as SvgText } from "react-native-svg";
 import { Button } from "react-native-elements";
 import TimeAgo from "react-native-timeago";
 import moment from "moment";
@@ -61,6 +56,7 @@ const HEADER_MAX_HEIGHT = 150;
 const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 120 : 120;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 const safetyZone = HEADER_MAX_HEIGHT;
+
 class TransactionsScreen extends Component {
   transactionModal = React.createRef();
   mounted = false;
@@ -88,19 +84,51 @@ class TransactionsScreen extends Component {
     this.sum = 0;
     this.transactionList = [];
     this.transactionState("Leisure");
-
-    this.weekTrans = [
-      { value: 0, day: "Sun" },
-      { value: 0, day: "Mon" },
-      { value: 0, day: "Tue" },
-      { value: 0, day: "Wed" },
-      { value: 0, day: "Thu" },
-      { value: 0, day: "Fri" },
-      { value: 0, day: "Sat" }
-    ];
     this.dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   }
+
+  sortTransactions() {
+    var transactions = {};
+    var weekTransactions = {};
+    var weekTotals = {};
+    var minusWeek = moment()
+      .startOf("day")
+      .subtract(1, "week");
+    var yesterdayEnd = moment()
+      .endOf("day")
+      .subtract(1, "day");
+    Object.keys(payments).map(tr => {
+      transactions[tr] = sort(payments[tr]).desc(t => moment(t.date));
+    });
+
+    Object.keys(transactions).map(tr => {
+      weekTransactions[tr] = _.filter(transactions[tr], function(t) {
+        return moment(t.date).isBetween(minusWeek, yesterdayEnd);
+      });
+    });
+    Object.keys(weekTransactions).map(tr => {
+      weekTotals[tr] = [
+        { value: 0, day: "Sun" },
+        { value: 0, day: "Mon" },
+        { value: 0, day: "Tue" },
+        { value: 0, day: "Wed" },
+        { value: 0, day: "Thu" },
+        { value: 0, day: "Fri" },
+        { value: 0, day: "Sat" }
+      ];
+      weekTransactions[tr].map(t => {
+        weekTotals[tr][moment(t.date).day()].value += Math.abs(t.amount);
+      });
+    });
+
+    this.setState({
+      transactions1: transactions,
+      weekTransactions: weekTransactions,
+      weekTotals: weekTotals
+    });
+  }
   componentWillMount() {
+    this.sortTransactions();
     this.mounted = true;
     this.startHeaderHeight = 80;
     if (Platform.OS == "android") {
@@ -109,20 +137,10 @@ class TransactionsScreen extends Component {
   }
   _onLoad = () => {
     this.setState(() => ({ loaded: true }));
-
   };
-  onScrollTop = ({ layoutMeasurement, contentOffset, contentSize }) => {
-    // console.log(contentOffset.y);
-    // console.log(viewportHeight - 150);
-    // if (contentOffset.y == 103) {
-    //   this.setState({
-    //     scroll: true
-    //   });
-    // }
-  };
+  onScrollTop = ({ layoutMeasurement, contentOffset, contentSize }) => {};
   componentDidMount() {
     this.transactionState(this.state.category);
-    // setTimeout(() => this.setState({ loading: true }), 500);
     this.setState({ loading: true });
   }
 
@@ -136,65 +154,31 @@ class TransactionsScreen extends Component {
   transactionState(transaction_cat) {
     if (this.mounted) {
       this.setState({
-        transactions: this.transactionData(transaction_cat)
+        transactions: this.getTransactions(transaction_cat)
       });
     }
   }
-  graphSectionPress = dataFromSection => {
-    console.log(dataFromSection)
-    // console.log(this.state.transactions);
-    // console.log(this.dayOfWeek.indexOf(dataFromSection));
-    // console.log(moment(new Date(this.state.transactions[0].date)));
-    this.setState({
-      graphSection: this.state.graphSection ===dataFromSection ? null : dataFromSection,
-      toolTip: this.state.toolTip === this.dayOfWeek.indexOf(dataFromSection) ? 0 : this.dayOfWeek.indexOf(dataFromSection),
-      toolTipColor: this.state.graphSection ===dataFromSection ? 'transparent' : "white",
-      transactions: this.transactionData(this.state.category)
-      // transactions: this.state.transactions.filter(o => moment(o.date).day() === this.dayOfWeek.indexOf(dataFromSection)),
-    });
-  };
-  transactionData(transaction_cat) {
-    let sortedTransactions = payments[transaction_cat].sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
-    );
-    // console.log(sortedTransactions)
-    sortedTransactions = sortedTransactions.filter(o => moment(o.date).day() === this.dayOfWeek.indexOf(this.state.graphSection));
-    // console.log(sortedTransactions)
-    let days = 0;
-    var greater = true;
-    var ourDate = new Date();
-    var weekAgo = ourDate.getDate() - 7;
-    this.weekTrans.forEach(function (element) {
-      element.value = 0;
-    });
-    let currentDate = sortedTransactions[0] ? sortedTransactions[0].date : null;
+
+  getTransactions(category) {
+    let selectedTransactions = this.state.graphSection
+      ? this.state.weekTransactions[category].filter(
+          t =>
+            moment(t.date).day() ===
+            this.dayOfWeek.indexOf(this.state.graphSection)
+        )
+      : this.state.transactions1[category];
+
+    let currentDate = selectedTransactions[0]
+      ? selectedTransactions[0].date
+      : null;
     this.sum = 0;
-    this.transactionList = [];
-    return sortedTransactions.map((tr, i) => {
+
+    return selectedTransactions.map((tr, i) => {
       this.sum += tr.amount <= 0 ? Math.abs(tr.amount) : 0;
-      tr.amount <= 0 ? this.transactionList.push(Math.abs(tr.amount)) : null;
-      if (greater && Date.parse(tr.date) >= weekAgo) {
-        let date = new Date(tr.date);
-        let dayof = date.getDay();
-        if (i == 0) {
-          this.weekTrans[dayof].value = Math.abs(tr.amount);
-        } else if (
-          tr.date != currentDate &&
-          i != 0 &&
-          this.weekTrans[dayof].value == 0
-        ) {
-          this.weekTrans[dayof].value = Math.abs(tr.amount);
-        } else if (tr.date == currentDate) {
-          this.weekTrans[dayof].value =
-            Math.abs(this.weekTrans[dayof].value) + Math.abs(tr.amount);
-        }
-      } else {
-        greater = false;
-      }
+
       var x =
         i == 0 || tr.date != currentDate ? (
-
-          <View key={tr._id + 'test'} >
+          <View key={tr._id}>
             <Text
               style={{
                 fontSize: 17,
@@ -209,7 +193,6 @@ class TransactionsScreen extends Component {
             <TouchableOpacity
               key={i}
               onPress={() => {
-                // this.props.navigation.navigate("TransactionView2");
                 this.transactionModal.openModal();
                 dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
               }}
@@ -218,24 +201,40 @@ class TransactionsScreen extends Component {
             </TouchableOpacity>
           </View>
         ) : (
-            <View key={tr._id}>
-              <TouchableOpacity
-                key={i}
-                onPress={() => {
-                  // this.props.navigation.navigate("TransactionView2");
-                  this.transactionModal.openModal();
-                  dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
-                }}
-              >
-                <Transaction data={tr} key={tr._id} index={i} />
-              </TouchableOpacity>
-            </View>
-          );
+          <View key={tr._id}>
+            <TouchableOpacity
+              key={i}
+              onPress={() => {
+                this.transactionModal.openModal();
+                dispatch("SET_ACTIVE_TRANSACTION", { transaction: tr });
+              }}
+            >
+              <Transaction data={tr} key={tr._id} index={i} />
+            </TouchableOpacity>
+          </View>
+        );
       currentDate = tr.date;
-      console.log(x)
       return x;
     });
   }
+
+  graphSectionPress = dataFromSection => {
+    this.setState(
+      {
+        graphSection:
+          this.state.graphSection === dataFromSection ? null : dataFromSection,
+        toolTip:
+          this.state.toolTip === this.dayOfWeek.indexOf(dataFromSection)
+            ? 0
+            : this.dayOfWeek.indexOf(dataFromSection),
+        toolTipColor:
+          this.state.graphSection === dataFromSection ? "transparent" : "white"
+      },
+      () => {
+        this.transactionState(this.state.category);
+      }
+    );
+  };
 
   render() {
     const headerTranslate = this.state.scrollY.interpolate({
@@ -264,7 +263,10 @@ class TransactionsScreen extends Component {
       <G x={x(this.state.toolTip) - 75 / 2}>
         <G x={75 / 2}>
           <Circle
-            cy={y(this.weekTrans[this.state.toolTip].value)}
+            cy={y(
+              this.state.weekTotals[this.state.category][this.state.toolTip]
+                .value
+            )}
             r={3}
             stroke={this.state.toolTipColor}
             strokeWidth={2}
@@ -274,36 +276,51 @@ class TransactionsScreen extends Component {
             strokeWidth={2}
             fill={
               this.state.toolTipColor !== "transparent"
-                ? 'black'
+                ? "black"
                 : "transparent"
             }
             stroke={"transparent"}
             fontSize="13"
             fontWeight="500"
-            x={this.state.toolTip == 0 ? x(this.state.toolTip) + 30 : this.state.toolTip == 6 ? (75 / 2) - 60 : 75 / 2}
+            x={
+              this.state.toolTip == 0
+                ? x(this.state.toolTip) + 30
+                : this.state.toolTip == 6
+                ? 75 / 2 - 60
+                : 75 / 2
+            }
             y={
-              y(this.weekTrans[this.state.toolTip].value) < 25
-                ? y(this.weekTrans[this.state.toolTip].value) + 20
-                : y(this.weekTrans[this.state.toolTip].value) - 15
+              y(
+                this.state.weekTotals[this.state.category][this.state.toolTip]
+                  .value
+              ) < 25
+                ? y(
+                    this.state.weekTotals[this.state.category][
+                      this.state.toolTip
+                    ].value
+                  ) + 20
+                : y(
+                    this.state.weekTotals[this.state.category][
+                      this.state.toolTip
+                    ].value
+                  ) - 15
             }
             textAnchor="middle"
           >
-            {"$" + this.weekTrans[this.state.toolTip].value.toFixed(2)}
+            {"$" +
+              this.state.weekTotals[this.state.category][
+                this.state.toolTip
+              ].value.toFixed(2)}
           </SvgText>
         </G>
       </G>
     );
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: this.props.colors.back }}>
-        {/* <LinearGradient
-          colors={[theme.scheme.crusta, theme.scheme.sunshade]}
-          start={[0,0]}
-          end={[1,1]}
-          style={{ position: 'absolute', height: viewportHeight, width: viewportWidth, zIndex: 0}}>
-
-          </LinearGradient> */}
-                <TransactionModal
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: this.props.colors.back }}
+      >
+        <TransactionModal
           onRef={ref => (this.transactionModal = ref)}
           navigation={this.props.navigation}
         />
@@ -311,7 +328,7 @@ class TransactionsScreen extends Component {
           showsHorizontalScrollIndicator={false}
           horizontal
           style={{
-            top: Platform.OS=="android"? TOP_SAFE_AREA:TOP_SAFE_AREA + 10,
+            top: Platform.OS == "android" ? TOP_SAFE_AREA : TOP_SAFE_AREA + 10,
             position: "absolute",
             zIndex: 9999,
             width: viewportWidth,
@@ -347,8 +364,12 @@ class TransactionsScreen extends Component {
         </Animated.ScrollView>
         <ImageBackground
           imageStyle={{ resizeMode: "stretch" }}
-          source={require("../../assets/images/tran_screen_back_small.png")}
-          source={this.state.loaded? require("../../assets/images/tran_screen_back_small.png") : require("../../assets/images/tran_screen_back_grey.png")}
+          // source={require("../../assets/images/tran_screen_back_small.png")}
+          source={
+            this.state.loaded
+              ? require("../../assets/images/tran_screen_back_small.png")
+              : require("../../assets/images/tran_screen_back_grey.png")
+          }
           style={[styles.header]}
           onLoad={this._onLoad}
         >
@@ -416,8 +437,13 @@ class TransactionsScreen extends Component {
         >
           <View style={{ paddingTop: TOP_SAFE_AREA }} />
           <Paragraph
-            style={{ top: safetyZone, paddingTop: 20, backgroundColor: this.props.colors.back,    borderTopLeftRadius: 12,
-              borderTopRightRadius: 12, }}
+            style={{
+              top: safetyZone,
+              paddingTop: 20,
+              backgroundColor: this.props.colors.back,
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12
+            }}
             animation="fade"
             lineNumber={3}
             textSize={16}
@@ -430,7 +456,7 @@ class TransactionsScreen extends Component {
             <View style={styles.chartContainer}>
               <LineChart
                 style={{ height: viewportWidth / 3.6 }}
-                data={this.weekTrans}
+                data={this.state.weekTotals[this.state.category]}
                 yAccessor={({ item }) => item.value}
                 // xAccessor={({ item }) => item.day}
                 xScale={scale.scaleTime}
@@ -443,11 +469,11 @@ class TransactionsScreen extends Component {
                   stroke: "white"
                 }}
               >
-                <Tooltip style={{zIndex: 999999}} />
+                <Tooltip style={{ zIndex: 999999 }} />
               </LineChart>
               <XAxis
                 style={{ marginHorizontal: -10, height: xAxisHeight }}
-                data={this.weekTrans}
+                data={this.state.weekTotals[this.state.category]}
                 // xAccessor={({ item }) => item}
                 formatLabel={value => this.dayOfWeek[value]}
                 contentInset={{ left: 30, right: 30 }}
@@ -460,13 +486,16 @@ class TransactionsScreen extends Component {
                 numberOfTicks={7}
               />
               <TransactionGraphSection
-                options={this.weekTrans}
+                options={this.state.weekTotals[this.state.category]}
                 callBack={this.graphSectionPress}
               />
             </View>
           </Paragraph>
           <View
-            style={{ width: viewportWidth, backgroundColor: this.props.colors.back }}
+            style={{
+              width: viewportWidth,
+              backgroundColor: this.props.colors.back
+            }}
           >
             <View
               style={{
@@ -545,7 +574,8 @@ const styles = StyleSheet.create({
   titleContain: {
     alignContent: "center",
     alignSelf: "center",
-    marginTop: Platform.OS == "android"? TOP_SAFE_AREA+ 30:TOP_SAFE_AREA + 50,
+    marginTop:
+      Platform.OS == "android" ? TOP_SAFE_AREA + 30 : TOP_SAFE_AREA + 50,
 
     flex: 1,
     textAlign: "center",
@@ -579,7 +609,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     opacity: 0.8,
     flex: 0.4,
-    marginBottom: Platform.OS == "android"?TOP_SAFE_AREA-20 :TOP_SAFE_AREA
+    marginBottom: Platform.OS == "android" ? TOP_SAFE_AREA - 20 : TOP_SAFE_AREA
   },
   inOutColumn: {
     flexDirection: "column",
