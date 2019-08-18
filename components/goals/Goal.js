@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import * as theme from "../../theme";
 import * as categoryTypes from "./CategoryTypes";
 import TimeAgo from "react-native-timeago";
+import moment from "moment";
 import { LinearGradient } from "expo-linear-gradient";
 
 const icons = [
@@ -32,11 +33,26 @@ export default class Goal extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
   };
-
+  getDaysRemaining(period, date) {
+    var days =
+      period === "one week"
+        ? 7
+        : period === "two weeks"
+        ? 14
+        : period === "one month"
+        ? 31
+        : 7;
+    var now = moment();
+    var then = moment(date);
+    var complete = moment(then.add(days, "days").format());
+    var diff = now.diff(complete, "days");
+    return diff;
+  }
   render() {
     const {
-      data: { title, date, type, category, value, period }
+      data: { title, date, type, category, value, period,id }
     } = this.props;
+    const expired = this.getDaysRemaining(period,date) > 0
     return (
       <TouchableOpacity
         onPress={() =>
@@ -45,16 +61,17 @@ export default class Goal extends Component {
               date: date,
               category: category,
               value: value,
-              period: period
+              period: period,
+              id: id,
           })
         }
-        style={styles.card}
+        style={[styles.card, {shadowOpacity: expired? 0.1: 0.4, shadowColor: expired? '#6b6b6b' : theme.scheme.sunshade}]}
       >
-        <LinearGradient
-          style={styles.card}
-          colors={[theme.scheme.sunshade, theme.scheme.sunshade]}
-          start={[0.3, 0]}
-          end={[0.8, 0]}
+        <View
+          style={[styles.card, {shadowOpacity: expired? 0.1: 0.4,backgroundColor: expired? theme.colors.lightGray:theme.scheme.sunshade}]}
+          // colors={[theme.scheme.sunshade, theme.scheme.sunshade]}
+          // start={[0.3, 0]}
+          // end={[0.8, 0]}
         >
           <View style={styles.icon}>
             <Icon
@@ -76,7 +93,7 @@ export default class Goal extends Component {
           <View style={styles.iconArrow}>
             <Icon name="ios-arrow-forward" color={"#FFF"} size={26} />
           </View>
-        </LinearGradient>
+        </View>
       </TouchableOpacity>
     );
   }

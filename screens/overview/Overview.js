@@ -18,6 +18,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Avatar } from "react-native-elements";
 import AccountSlider from "../../components/account/AccountSlider";
 import OverviewChart from "../../components/OverviewChart";
+import OverviewMeal from "../../components/overview/OverviewMeal";
 import OverviewTransactionView from "../../components/transactions/OverviewTransactionView";
 import Goal from "../../components/goals/Goal";
 import * as firebase from "firebase";
@@ -26,12 +27,15 @@ import { getInset } from "react-native-safe-area-view";
 import AccountEdit from "../../components/account/AccountEdit";
 import { NavigationActions } from "react-navigation";
 import { dispatch, connect } from "../../store";
+import mfb from "../../assets/mfb.json";
 import Modalize from "react-native-modalize";
 import AccountModal from "../../components/account/AccountModal";
+import moment from "moment";
 import TransactionModal from "../../components/transactions/TransactionModal";
 const mapStateToProps = state => ({
   user: state.user,
-  colors: state.colors
+  colors: state.colors,
+  hide: state.hide
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -131,6 +135,7 @@ class Overview extends Component {
         this.setState({ items: sortedGoals, refreshing: false });
       });
   }
+  
 
   getUser() {
     var user = this.props.user;
@@ -204,10 +209,11 @@ class Overview extends Component {
   openTransaction = () => {
     this.transactionModal.openModal();
     // console.log('overview')
-  }
+  };
 
   _draggedValue = new Animated.Value(180);
   render() {
+    const thisWeek = mfb.deliveryDays[0];
     const data = [50, 10, 40, 30, 20, 85, 91, 35, 53];
     const headerTranslate = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -225,7 +231,9 @@ class Overview extends Component {
       extrapolate: "clamp"
     });
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: this.props.colors.back }}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: this.props.colors.back }}
+      >
         <StatusBar barStyle="dark-content" translucent />
         {/* <Modalize
             ref={this.modal}
@@ -252,15 +260,16 @@ class Overview extends Component {
               zIndex: 999,
               right: 20,
               backgroundColor: "transparent",
-              top: TOP_SAFE_AREA + 25,
+              top: TOP_SAFE_AREA + 35,
               position: "absolute"
             }
           ]}
         >
           <Avatar
-            rounded
+            rounded={false}
             size="medium"
             avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
+            containerStyle={{borderRadius: 12, overflow: 'hidden'}}
             // onPress={() => this._panel.show()}
             onPress={() => this.modal2.openModal()}
             title={
@@ -268,10 +277,11 @@ class Overview extends Component {
                 ? this.state.firstname[0] + this.state.lastname[0]
                 : "XX"
             }
+
             source={{
               uri: this.state.photoURL === "" ? null : this.state.photoURL
             }}
-          /> 
+          />
         </View>
         <StatusBar barStyle="dark-content" />
         <Animated.View
@@ -281,9 +291,23 @@ class Overview extends Component {
           ]}
         >
           <Animated.View
-            style={[styles.titleContain, { opacity: titleOpacity }]}
+            style={[
+              styles.titleContain,
+              { opacity: titleOpacity, flexDirection: "column" }
+            ]}
           >
-            <Text style={[styles.title, {color: this.props.colors.gray}]}>Hi, {this.state.firstname}</Text>
+            <Text style={{ color: theme.colors.inactive }}>
+              {moment().hour() >= 0 && moment().hour() < 12
+                ? "Good Morning,"
+                : moment().hour() >= 12 && moment().hour() < 16
+                ? "Good Afternoon,"
+                : moment().hour() >= 16 && moment().hour() < 24
+                ? "Good Evening,"
+                : "Hello,"}
+            </Text>
+            <Text style={[styles.title, { color: this.props.colors.gray }]}>
+              {this.state.firstname}
+            </Text>
           </Animated.View>
         </Animated.View>
 
@@ -304,7 +328,10 @@ class Overview extends Component {
           >
             <View
               style={{
-                marginTop: Platform.OS=="ios" ?  TOP_SAFE_AREA + 70: HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
+                marginTop:
+                  Platform.OS == "ios"
+                    ? TOP_SAFE_AREA + 70
+                    : HEADER_MAX_HEIGHT - TOP_SAFE_AREA,
                 marginLeft: 20,
                 alignContent: "center",
                 justifyContent: "center"
@@ -312,27 +339,54 @@ class Overview extends Component {
                 // flex: 1
               }}
             >
-              <Text
-                style={{ fontWeight: "700", fontSize: 30, color: this.props.colors.gray }}
+              {/* <Text
+                style={{
+                  fontWeight: "700",
+                  fontSize: 30,
+                  color: this.props.colors.gray
+                }}
               >
                 You're saving
                 <Text style={{ color: theme.scheme.crusta }}> $24.89 </Text>
               </Text>
               <Text
-                style={{ fontWeight: "300", fontSize: 28, color: this.props.colors.gray }}
+                style={{
+                  fontWeight: "300",
+                  fontSize: 28,
+                  color: this.props.colors.gray
+                }}
               >
                 per week on average{" "}
-              </Text>
+              </Text> */}
             </View>
 
             <View
               style={{
                 marginTop: 20,
-                flexDirection: "row",
+                flexDirection: "column",
                 marginHorizontal: 15
               }}
             >
-              <OverviewChart
+              <View style={{}}>
+                <Text
+                  style={[
+                    styles.title2,
+                    {
+                      color: this.props.colors.gray,
+                      marginLeft: 5,
+                      marginBottom: 20
+                    }
+                  ]}
+                >
+                  Upcoming Meals
+                </Text>
+              </View>
+              <OverviewMeal
+                navigation={this.props.navigation}
+                data={thisWeek.orders[0]}
+              />
+
+              {/* <OverviewChart
                 data={{
                   position: "center",
                   // image: require("../assets/images/entertainment_back.jpg"),
@@ -364,7 +418,7 @@ class Overview extends Component {
                   title: "Avg Saving"
                 }}
                 navigation={this.props.navigation}
-              />
+              /> */}
             </View>
             <View style={styles.goals}>
               <View
@@ -375,7 +429,11 @@ class Overview extends Component {
                 }}
               >
                 <View style={{}}>
-                  <Text style={[styles.title2,  {color: this.props.colors.gray}]}>Transactions</Text>
+                  <Text
+                    style={[styles.title2, { color: this.props.colors.gray }]}
+                  >
+                    Transactions
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -403,15 +461,23 @@ class Overview extends Component {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  marginBottom: 10
+                  marginBottom: 0
                 }}
               >
                 <View style={{}}>
-                  <Text style={[styles.title2, {color: this.props.colors.gray}]}>Goals</Text>
+                  <Text
+                    style={[
+                      styles.title2,
+                      { color: this.props.colors.gray, top: 10 }
+                    ]}
+                  >
+                    Goals
+                  </Text>
                 </View>
                 <View
                   style={{
-                    alignSelf: "center",
+                    alignSelf: "flex-start",
+                    marginBottom: 10,
                     right: 10
                   }}
                 >
@@ -438,6 +504,7 @@ class Overview extends Component {
                       navigation={this.props.navigation}
                       data={{
                         title: doc.name,
+                        id: doc.id,
                         date: doc.date,
                         category: doc.category,
                         value: doc.value,
@@ -472,13 +539,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: theme.sizes.title,
     backgroundColor: "transparent",
-    fontWeight: "800",
+    fontWeight: "800"
     // color: theme.colors.gray
   },
   title2: {
     fontSize: 20,
     backgroundColor: "transparent",
-    fontWeight: "800",
+    fontWeight: "800"
     // color: theme.colors.gray
   },
 

@@ -12,15 +12,21 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  Animated
+  Animated,
+  Alert
 } from "react-native";
 import TransitionView from "../../components/TransitionView";
 import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getInset } from "react-native-safe-area-view";
 import { NavigationActions } from "react-navigation";
+import { Button } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import * as goalTypes from "../../components/goals/GoalTypes";
+import * as firebase from "firebase";
+import { dispatch, connect } from "../../store";
+
+import "firebase/firestore";
 import {
   Menu,
   MenuOptions,
@@ -34,6 +40,10 @@ import GoalProgressBar from "../../components/goals/GoalProgressBar";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const IS_IOS = Platform.OS === "ios";
 function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
@@ -60,6 +70,7 @@ export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 class GoalView extends Component {
   mounted = false;
+  db = firebase.firestore();
   constructor(props) {
     super();
     this.state = {
@@ -67,7 +78,7 @@ class GoalView extends Component {
       scrollOp: 1,
       period: "month",
       daysRemain: 0,
-      spent: 0,
+      spent: 0
     };
     this.props = props;
   }
@@ -103,12 +114,47 @@ class GoalView extends Component {
       this.startHeaderHeight = 100 + StatusBar.currentHeight;
     }
   }
+  handleDelete(id) {
+    Alert.alert(
+      "Goal Delete",
+      "Are you sure you want to delete this goal?",
+      [
+        {
+          text: "Delete",
+          onPress: () => {
+            console.log("delete");
+            this.db
+              .collection("users")
+              .doc(this.props.user.uid)
+              .collection("goals")
+              .doc(id)
+              .delete()
+              .then(() => {
+                this._menu.close();
+                this.props.navigation.dispatch(NavigationActions.back());
+              })
+              .catch(e => console.log("failed to delete " + e));
+          }
+        },
+        {
+          text: "Cancel",
+          onPress: () => {
+            console.log("Cancel Pressed");
+            this._menu.close();
+          },
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  }
 
   render() {
     const { navigation } = this.props;
     // const { navigation } = this.props;
     const back = backdrop[Math.floor(Math.random() * backdrop.length)];
     const title = navigation.getParam("title", "Goal");
+    const id = navigation.getParam("id", "");
     const date = navigation.getParam("date", "");
     const type = navigation.getParam("type", "");
     const category = navigation.getParam("category", "Goal");
@@ -121,10 +167,47 @@ class GoalView extends Component {
         <StatusBar hidden={true} />
         <Menu ref={c => (this._menu = c)} renderer={renderers.SlideInMenu}>
           <MenuTrigger />
-          <MenuOptions>
-            <MenuOption text="Save" />
+          <MenuOptions
+            style={{ height: viewportHeight / 8 }}
+            optionsContainerStyle={{
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+              // overflow: "hidden",
+              backgroundColor: theme.colors.white,
+              shadowColor: "black",
+              shadowOpacity: 0.2,
+              shadowOffset: { width: 0, height: 0 },
+              shadowRadius: 5,
+              elevation: 1
+            }}
+          >
             <MenuOption>
-              <Text style={{ color: "red" }}>Delete</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  top: viewportHeight / 35,
+                  // paddingBottom: 20,
+                  alignItems: "center",
+                  alignSelf: "center"
+                }}
+              >
+                <Button
+                  titleStyle={{ fontWeight: "600", fontSize: 12 }}
+                  buttonStyle={{
+                    borderRadius: 12,
+                    width: viewportWidth - 40,
+                    height: viewportHeight / 16,
+                    backgroundColor:
+                      category != null
+                        ? categoryTypes.categoryColors[category]
+                        : "#FAA3c6"
+                  }}
+                  title="delete"
+                  onPress={() => this.handleDelete(id)}
+                />
+              </View>
             </MenuOption>
           </MenuOptions>
         </Menu>
@@ -238,7 +321,6 @@ class GoalView extends Component {
               </Text>
             </View>
             {category != null ? (
-
               <View
                 style={{
                   flexDirection: "row",
@@ -251,7 +333,12 @@ class GoalView extends Component {
               >
                 <GoalProgressBar
                   onSlide={this.sliderValue}
-                  data={{category: category, value: value, period: period, date: date}}
+                  data={{
+                    category: category,
+                    value: value,
+                    period: period,
+                    date: date
+                  }}
                   color={
                     category != null
                       ? categoryTypes.categoryColors[category]
@@ -260,16 +347,14 @@ class GoalView extends Component {
                   goalProgress={this.goalProgressValue}
                 />
               </View>
-            
             ) : null}
-
           </ScrollView>
         </View>
       </View>
     );
   }
 }
-export default GoalView;
+export default connect(mapStateToProps)(GoalView);
 
 const styles = StyleSheet.create({
   fill: {

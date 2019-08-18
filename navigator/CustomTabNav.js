@@ -24,7 +24,8 @@ const inactiveColor = "#B2B2B2";
 const TAB_HEIGHT = getInset("bottom") + 55;
 const mapStateToProps = state => ({
   user: state.user,
-  colors: state.colors
+  colors: state.colors,
+  hide: state.hide
   // put the stuff here you want to access from the global store
   // then instead of calling it from "this.state.<var>" call it from "this.props.<var>"
 });
@@ -53,6 +54,7 @@ class CustomTabNav extends Component {
           width: viewportWidth,
           backgroundColor: this.props.colors.back,
           flexDirection: "row",
+          // display: this.props.hide? 'none': 'flex',
           alignSelf: 'center',
           justifyContent: "space-between",
           paddingHorizontal: 30,

@@ -112,7 +112,6 @@ const HomeStack = createStackNavigator(
   {
     mode: "modal",
     headerMode: "none",
-    transparentCard: true
   }
 );
 HomeStack.TranitionConfig;
@@ -122,6 +121,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
   if (
     routeName === "ViewGoal" ||
+    routeName === "Goal" ||
     routeName === "OverviewChart" ||
     routeName === "TransactionView"
   ) {
