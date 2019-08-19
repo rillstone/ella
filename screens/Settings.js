@@ -122,13 +122,12 @@ class Settings extends Component {
   getTheme = async () => {
     const currentTheme = await AsyncStorage.getItem("currentTheme");
     this.setState({
-      switch1Value: currentTheme==='dark'
-    })
-  }
-  setTheme = async (theme) => {
+      switch1Value: currentTheme === "dark"
+    });
+  };
+  setTheme = async theme => {
     await AsyncStorage.setItem("currentTheme", theme);
-    
-  }
+  };
 
   componentWillMount() {
     this.mounted = true;
@@ -173,10 +172,11 @@ class Settings extends Component {
             }}
           >
             <Avatar
-              rounded
-              icon={{ name: item.icon, color: "#fff", }}
+              rounded={false}
+              containerStyle={{ borderRadius: 12, overflow: "hidden" }}
+              icon={{ name: item.icon, color: "#fff" }}
               size="medium"
-              avatarStyle={{ backgroundColor: item.color,}}
+              avatarStyle={{ backgroundColor: item.color }}
             />
           </View>
           <View style={{ flex: 5, flexDirection: "column", marginLeft: 10 }}>
@@ -229,8 +229,8 @@ class Settings extends Component {
         <AccountModal
           onRef={ref => (this.modal2 = ref)}
           // data={{
-            // modal: this.modal,
-            // image: require("../assets/images/bill_back.jpg"),
+          // modal: this.modal,
+          // image: require("../assets/images/bill_back.jpg"),
           //   image: [theme.scheme.crusta, theme.scheme.supernova],
           //   data: [50, 52, 51, 51, 48, 53, 47],
           //   color: theme.scheme.sunglow,
@@ -254,11 +254,13 @@ class Settings extends Component {
               alignItems: "center",
               margin: 20,
               marginLeft: 30,
-              marginTop: Platform.OS == "android"? 20: 0,
-              
+              marginTop: Platform.OS == "android" ? 20 : 0
+
               // backgroundColor: 'blue'
             }}
-            onPress={() => {this.modal2.openModal()}}
+            onPress={() => {
+              this.modal2.openModal();
+            }}
           >
             <View
               style={{
@@ -269,7 +271,8 @@ class Settings extends Component {
               }}
             >
               <Avatar
-                rounded
+                rounded={false}
+                containerStyle={{ borderRadius: 12, overflow: "hidden" }}
                 avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
                 size="large"
                 title={"CR"}

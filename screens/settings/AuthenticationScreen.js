@@ -39,24 +39,24 @@ const TOP_SAFE_AREA = Platform.OS === "ios" ? getInset("top") : 40;
 const HEADER_MIN_HEIGHT = 100;
 const HEADER_MAX_HEIGHT = 150;
 const list = [
-    {
-        title: "Change Password",
-        icon: "account-balance-wallet",
-        color: theme.scheme.royal_blue,
-        toggle: false
-      },
-      {
-        title: "Enable 2FA",
-        color: theme.scheme.fuchsia_blue,
-        icon: "restaurant",
-        toggle: false
-      },
-      {
-        title: "Delete Account",
-        icon: "restaurant",
-        color: theme.scheme.green,
-        toggle: false
-      },
+  {
+    title: "Change Password",
+    icon: "account-balance-wallet",
+    color: theme.scheme.royal_blue,
+    toggle: false
+  },
+  {
+    title: "Enable 2FA",
+    color: theme.scheme.fuchsia_blue,
+    icon: "restaurant",
+    toggle: false
+  },
+  {
+    title: "Delete Account",
+    icon: "restaurant",
+    color: theme.scheme.green,
+    toggle: false
+  }
 ];
 class AuthenticationScreen extends Component {
   mounted = false;
@@ -140,7 +140,8 @@ class AuthenticationScreen extends Component {
             }}
           >
             <Avatar
-              rounded
+              rounded={false}
+              containerStyle={{ borderRadius: 12, overflow: "hidden" }}
               icon={{ name: item.icon, color: "white" }}
               size="medium"
               avatarStyle={{ backgroundColor: item.color }}
@@ -204,28 +205,28 @@ class AuthenticationScreen extends Component {
               { height: headerHeight, backgroundColor: theme.scheme.green }
             ]}
           >
-            <Animated.View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Animated.View
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ scrollOp: 0 });
                   this.props.navigation.dispatch(NavigationActions.back());
                 }}
                 style={{
-                //   position: "absolute",
-                  marginLeft: 25,
-                //   top: TOP_SAFE_AREA,
-                //   zIndex: 999,
-
+                  //   position: "absolute",
+                  marginLeft: 25
+                  //   top: TOP_SAFE_AREA,
+                  //   zIndex: 999,
                 }}
               >
-                <Icon
-                  name="md-arrow-back"
-                  size={36}
-                  color={'#fff'}
-                />
+                <Icon name="md-arrow-back" size={36} color={"#fff"} />
               </TouchableOpacity>
               <Animated.Text
-                style={[styles.headerText, { fontSize: fontSize, marginLeft: 10, }]}
+                style={[
+                  styles.headerText,
+                  { fontSize: fontSize, marginLeft: 10 }
+                ]}
               >
                 Authentication
               </Animated.Text>

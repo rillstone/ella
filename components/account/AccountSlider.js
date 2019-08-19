@@ -41,7 +41,9 @@ class AccountSlider extends Component {
       data: { dragHandler, firstName, lastName, email, icon, image }
     } = this.props;
     return (
-      <View style={[styles.container, {backgroundColor: this.props.colors.back}]}>
+      <View
+        style={[styles.container, { backgroundColor: this.props.colors.back }]}
+      >
         <View style={styles.dragHandler}>
           <View
             style={{
@@ -52,23 +54,21 @@ class AccountSlider extends Component {
               borderTopLeftRadius: 10,
               alignItems: "flex-start",
               justifyContent: "flex-start",
-              flexDirection: "row",
-
+              flexDirection: "row"
             }}
           >
-                <Text
-                style={{
-                  fontWeight: "700",
-                  fontSize:35,
-                  left: 20,
-                  top: 40,
-                  color: this.props.colors.gray,
-                  textAlign: "left"
-                }}
-              >
-                Account
-              </Text>
-
+            <Text
+              style={{
+                fontWeight: "700",
+                fontSize: 35,
+                left: 20,
+                top: 40,
+                color: this.props.colors.gray,
+                textAlign: "left"
+              }}
+            >
+              Account
+            </Text>
           </View>
         </View>
         <TouchableOpacity
@@ -93,7 +93,8 @@ class AccountSlider extends Component {
             }}
           >
             <Avatar
-              rounded
+              rounded={false}
+              containerStyle={{ borderRadius: 12, overflow: "hidden" }}
               avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
               size="medium"
               title={icon}
@@ -149,7 +150,7 @@ class AccountSlider extends Component {
           style={{
             height: 1,
             width: viewportWidth - 50,
-            backgroundColor: 'transparent'
+            backgroundColor: "transparent"
           }}
         />
         <TouchableOpacity
@@ -160,7 +161,7 @@ class AccountSlider extends Component {
             alignItems: "center",
             marginLeft: 20,
             marginRight: 20,
-            paddingBottom: 20,
+            paddingBottom: 20
             // marginTop: 40
           }}
           onPress={() => {
@@ -177,12 +178,12 @@ class AccountSlider extends Component {
             }}
           >
             <Avatar
-              rounded
-              icon={{  name:'exit-to-app', color: 'white'}}
+              rounded={false}
+              containerStyle={{ borderRadius: 12, overflow: "hidden" }}
+              icon={{ name: "exit-to-app", color: "white" }}
               size="medium"
-              avatarStyle={{backgroundColor: theme.scheme.crusta}}
+              avatarStyle={{ backgroundColor: theme.scheme.crusta }}
             />
-
           </View>
           <View style={{ flex: 5, flexDirection: "column", marginLeft: 10 }}>
             <Text
@@ -225,7 +226,7 @@ class AccountSlider extends Component {
             }}
             title="Sign Out"
           /> */}
-          {/* <Text onPress={() => {this.panel.hide(); this.signoutPress();}}>Sign Out</Text> */}
+        {/* <Text onPress={() => {this.panel.hide(); this.signoutPress();}}>Sign Out</Text> */}
         {/* </View> */}
         <View style={{ flex: 0.1 }} />
       </View>
@@ -236,7 +237,7 @@ export default connect(mapStateToProps)(AccountSlider);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
     alignItems: "center",
 
     justifyContent: "center",

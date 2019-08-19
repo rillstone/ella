@@ -271,7 +271,8 @@ class AccountEdit extends Component {
               onPress={this.onChooseImagePress}
             >
               <Avatar
-                rounded
+                rounded={false}
+                containerStyle={{ borderRadius: 12, overflow: "hidden" }}
                 avatarStyle={{ backgroundColor: theme.scheme.cadet_blue }}
                 size="large"
                 title={icon}

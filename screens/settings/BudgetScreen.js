@@ -56,8 +56,7 @@ const list = [
     icon: "restaurant",
     color: theme.scheme.green,
     toggle: false
-  },
-
+  }
 ];
 class BudgetScreen extends Component {
   mounted = false;
@@ -141,7 +140,8 @@ class BudgetScreen extends Component {
             }}
           >
             <Avatar
-              rounded
+              rounded={false}
+              containerStyle={{ borderRadius: 12, overflow: "hidden" }}
               icon={{ name: item.icon, color: "white" }}
               size="medium"
               avatarStyle={{ backgroundColor: item.color }}
@@ -202,31 +202,34 @@ class BudgetScreen extends Component {
           <Animated.View
             style={[
               styles.animatedHeaderContainer,
-              { height: headerHeight, backgroundColor: theme.scheme.fuchsia_blue }
+              {
+                height: headerHeight,
+                backgroundColor: theme.scheme.fuchsia_blue
+              }
             ]}
           >
-            <Animated.View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Animated.View
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ scrollOp: 0 });
                   this.props.navigation.dispatch(NavigationActions.back());
                 }}
                 style={{
-                //   position: "absolute",
-                  marginLeft: 25,
-                //   top: TOP_SAFE_AREA,
-                //   zIndex: 999,
-
+                  //   position: "absolute",
+                  marginLeft: 25
+                  //   top: TOP_SAFE_AREA,
+                  //   zIndex: 999,
                 }}
               >
-                <Icon
-                  name="md-arrow-back"
-                  size={36}
-                  color={'#fff'}
-                />
+                <Icon name="md-arrow-back" size={36} color={"#fff"} />
               </TouchableOpacity>
               <Animated.Text
-                style={[styles.headerText, { fontSize: fontSize, marginLeft: 10, }]}
+                style={[
+                  styles.headerText,
+                  { fontSize: fontSize, marginLeft: 10 }
+                ]}
               >
                 Budget
               </Animated.Text>
