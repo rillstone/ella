@@ -27,8 +27,6 @@ import {
     renderers
 } from 'react-native-popup-menu';
 
-import * as categoryTypes from "../../components/goals/CategoryTypes";
-import { Transition } from "react-navigation-fluid-transitions";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
     "window"
 );
@@ -55,7 +53,8 @@ class MealView extends Component {
         this.state = {
             scrollY: new Animated.Value(0),
             scrollOp: 1,
-            period: "month"
+            period: "month",
+            meal: props.navigation.getParam("data", {}),
         };
         this.props = props;
     }
@@ -66,12 +65,16 @@ class MealView extends Component {
         if (Platform.OS == "android") {
             this.startHeaderHeight = 100 + StatusBar.currentHeight;
         }
+        this.setState({
+            text: this.state.meal.ingredients,
+            choice: "Ingredients",
+            ingredientsStyle: styles.active,
+            recipeStyle: styles.inactive
+        });
     }
 
     render() {
-        const { navigation } = this.props;
-        const meal = navigation.getParam("data", {});
-        console.log(this.props.title);
+        const { meal, ingredientsStyle, recipeStyle } = this.state
         return (
             <View style={styles.fill}>
                 <StatusBar hidden={true} />
@@ -143,19 +146,48 @@ class MealView extends Component {
                             style={{
                                 flexDirection: "row",
                                 marginTop: 30,
+                                justifyContent: "space-around"
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({
+                                        choice: "Ingredients",
+                                        text: meal.ingredients,
+                                        recipeStyle: styles.inactive,
+                                        ingredientsStyle: styles.active,
+                                    });
+                                    console.log(recipeStyle);
+                                    console.log(ingredientsStyle);
+                                }}
+                                style={ingredientsStyle}
+                            >
+                                <Text>Ingredients</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({
+                                        choice: "Recipe",
+                                        text: meal.recipe,
+                                        recipeStyle: styles.active,
+                                        ingredientsStyle: styles.inactive
+                                    })
+                                }}
+                                style={recipeStyle}
+                            >
+                                <Text>Recipe</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                marginTop: 30,
                                 left: 30,
                                 alignItems: "center"
                             }}
                         >
-                            <Icon
-                                name={
-                                    "ios-rocket"
-                                }
-                                size={30}
-                                color={theme.colors.inactive}
-                            />
-                            <Text style={[styles.date, { left: 15, top: 5 }]}>
-                                Category Placeholder
+                            <Text style={styles.recipe}>
+                                {this.state.choice}: {this.state.text}
                             </Text>
                         </View>
                     </ScrollView>
@@ -196,6 +228,26 @@ const styles = StyleSheet.create({
     date: {
         color: theme.colors.gray,
         fontSize: 18,
-        left: 0
+        left: 0,
     },
+    recipe: {
+        color: theme.colors.gray,
+        width: "90%"
+    },
+    active: {
+        backgroundColor: theme.colors.white,
+        padding: 10,
+        fontSize: 30,
+        borderRadius: 5,
+        borderWidth: 5,
+        borderColor: theme.scheme.ufo_green,
+    },
+    inactive: {
+        backgroundColor: theme.scheme.ufo_green,
+        padding: 10,
+        fontSize: 10,
+        borderRadius: 5,
+        borderWidth: 5,
+        borderColor: theme.scheme.ufo_green
+    }
 });
