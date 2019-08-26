@@ -69,12 +69,13 @@ class MealView extends Component {
             text: this.state.meal.ingredients,
             choice: "Ingredients",
             ingredientsStyle: styles.active,
-            recipeStyle: styles.inactive
+            recipeStyle: styles.inactive,
+            nutritionStyle: styles.inactive,
         });
     }
 
     render() {
-        const { meal, ingredientsStyle, recipeStyle } = this.state
+        const { meal, ingredientsStyle, recipeStyle, nutritionStyle } = this.state
         return (
             <View style={styles.fill}>
                 <StatusBar hidden={true} />
@@ -156,9 +157,8 @@ class MealView extends Component {
                                         text: meal.ingredients,
                                         recipeStyle: styles.inactive,
                                         ingredientsStyle: styles.active,
+                                        nutritionStyle: styles.inactive,
                                     });
-                                    console.log(recipeStyle);
-                                    console.log(ingredientsStyle);
                                 }}
                                 style={ingredientsStyle}
                             >
@@ -170,12 +170,27 @@ class MealView extends Component {
                                         choice: "Recipe",
                                         text: meal.recipe,
                                         recipeStyle: styles.active,
-                                        ingredientsStyle: styles.inactive
+                                        ingredientsStyle: styles.inactive,
+                                        nutritionStyle: styles.inactive,
                                     })
                                 }}
                                 style={recipeStyle}
                             >
                                 <Text>Recipe</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({
+                                        choice: "Nutrition",
+                                        text: meal.nutrition,
+                                        recipeStyle: styles.inactive,
+                                        ingredientsStyle: styles.inactive,
+                                        nutritionStyle: styles.active,
+                                    })
+                                }}
+                                style={nutritionStyle}
+                            >
+                                <Text>Nutrition</Text>
                             </TouchableOpacity>
                         </View>
                         <View
@@ -187,7 +202,7 @@ class MealView extends Component {
                             }}
                         >
                             <Text style={styles.recipe}>
-                                {this.state.choice}: {this.state.text}
+                                {this.state.text}
                             </Text>
                         </View>
                     </ScrollView>
