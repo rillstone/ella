@@ -85,7 +85,9 @@ class PlannerUserDataScreen extends React.Component {
 
   _bootstrapAsync = async () => {
     const plannerUserDataScreen = await AsyncStorage.getItem("plannerIntro");
-    this.props.navigation.navigate(plannerUserDataScreen==="Planner" ? "Planner" : "PlannerIntro");
+    this.props.navigation.navigate(
+      plannerUserDataScreen === "Planner" ? "Planner" : "PlannerIntro"
+    );
   };
 
   render() {
@@ -111,7 +113,7 @@ const HomeStack = createStackNavigator(
   },
   {
     mode: "modal",
-    headerMode: "none",
+    headerMode: "none"
   }
 );
 HomeStack.TranitionConfig;
@@ -152,25 +154,22 @@ HomeStack.navigationOptions = ({ navigation }) => {
 const PlannerStack = createStackNavigator(
   {
     Planner: Planner,
-    MealView: MealView,
-
+    MealView: MealView
   },
   {
     headerMode: "none",
     mode: "modal",
     defaultNavigationOptions: {
       gesturesEnabled: false
-    },
+    }
   }
 );
 
 PlannerStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
-  
-  if (
-    routeName === "MealView"
-  ) {
+
+  if (routeName === "MealView") {
     tabBarVisible = false;
   }
   return {
@@ -187,7 +186,6 @@ PlannerStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-
 const PlannerIntroStack = createStackNavigator(
   {
     PlannerScreen: PlannerIntro,
@@ -203,17 +201,15 @@ const PlannerIntroStack = createStackNavigator(
     mode: "modal",
     defaultNavigationOptions: {
       gesturesEnabled: false
-    },
-
+    }
   }
 );
 
 PlannerIntroStack.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
-  
-  if (
 
+  if (
     routeName === "PlannerInitQuestions" ||
     routeName === "MealSizeCount" ||
     routeName === "DietaryReq" ||
@@ -247,10 +243,25 @@ const PlannerSwitchNavigator = createSwitchNavigator(
   }
 );
 
-PlannerSwitchNavigator.navigationOptions = ({navigation}) => {
+PlannerSwitchNavigator.navigationOptions = ({ navigation }) => {
   var tabBarVisible = true;
   const routeName = navigation.state.routes[navigation.state.index].routeName;
-  
+  // console.log(
+  //   navigation.state.routes[navigation.state.index].routes
+  //     ? navigation.state.routes[navigation.state.index].routes.length
+  //     : ""
+  // );
+  if (
+    navigation.state.routes[navigation.state.index].routes &&
+    navigation.state.routes[navigation.state.index].routes.length > 1
+  ) {
+    if (
+      navigation.state.routes[navigation.state.index].routes[1].routeName ===
+      "MealView"
+    ) {
+      tabBarVisible = false;
+    }
+  }
   if (
     routeName === "MealView" ||
     routeName === "PlannerInitQuestions" ||
@@ -273,7 +284,7 @@ PlannerSwitchNavigator.navigationOptions = ({navigation}) => {
       />
     )
   };
-}
+};
 const TransactionsStack = createStackNavigator(
   {
     TransactionsScreen: TransactionsScreen,
@@ -406,7 +417,7 @@ const TabNavigator = createBottomTabNavigator(
     TransactionsStack,
     SettingsStack
   },
-  {tabBarComponent: CustomTabNav},
+  { tabBarComponent: CustomTabNav },
   {
     tabBarOptions: {
       showLabel: false,
