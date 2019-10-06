@@ -7,9 +7,10 @@ import {
   StatusBar,
   Dimensions,
   TouchableOpacity,
-  Animated
+  Animated,
+  Button
 } from "react-native";
-import { Button, ButtonProps } from "react-native-ui-kitten";
+// import { Button, ButtonProps } from "react-native-ui-kitten";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import TransitionView from '../../components/TransitionView';
 import { LineChart, Grid } from "react-native-svg-charts";

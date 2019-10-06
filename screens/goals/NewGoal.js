@@ -26,6 +26,12 @@ import { NavigationActions } from 'react-navigation'
 import * as firebase from "firebase";
 
 import "firebase/firestore";
+import { dispatch, connect } from "../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors,
+});
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -147,7 +153,7 @@ class NewGoal extends Component {
       extrapolate: "clamp"
     });
     return (
-      <View style={styles.fill}>
+      <View style={[styles.fill,{backgroundColor: this.props.colors.back }]}>
         <StatusBar hidden={true} />
         <ActivityIndicator
           animating={this.state.saving}
@@ -170,7 +176,7 @@ class NewGoal extends Component {
           <Icon
             name="ios-close-circle"
             size={36}
-            color={theme.colors.inactive}
+            color={this.props.colors.inactive}
           />
         </TouchableOpacity>
 
@@ -196,7 +202,7 @@ class NewGoal extends Component {
                 marginTop: 20
               }}
             >
-              <Text style={styles.inputTitle}>Goal type</Text>
+              <Text style={[styles.inputTitle,{color: this.props.colors.gray }]}>Goal type</Text>
               <View
                 style={{
                   flexDirection: "row",
@@ -222,7 +228,7 @@ class NewGoal extends Component {
                   marginTop: 20
                 }}
               >
-                <Text style={styles.inputTitle}>Save ${this.state.value}</Text>
+                <Text style={[styles.inputTitle,{color: this.props.colors.gray }]}>Save ${this.state.value}</Text>
                 <View
                   style={{
                     flexDirection: "row",
@@ -247,7 +253,7 @@ class NewGoal extends Component {
                   marginTop: 20
                 }}
               >
-                <Text style={styles.inputTitle}>Spending Category</Text>
+                <Text style={[styles.inputTitle,{color: this.props.colors.gray }]}>Spending Category</Text>
                 <View
                   style={{
                     flexDirection: "row",
@@ -278,7 +284,7 @@ class NewGoal extends Component {
                   marginTop: 20
                 }}
               >
-                <Text style={styles.inputTitle}>
+                <Text style={[styles.inputTitle,{color: this.props.colors.gray }]}>
                   Spend ${this.state.value} max on {this.state.selectedCat}
                 </Text>
                 <View
@@ -309,7 +315,7 @@ class NewGoal extends Component {
                   marginTop: 20
                 }}
               >
-                <Text style={styles.inputTitle}>Within</Text>
+                <Text style={[styles.inputTitle,{color: this.props.colors.gray }]}>Within</Text>
                 <View
                   style={{
                     flexDirection: "row",
@@ -383,7 +389,7 @@ class NewGoal extends Component {
         <Animated.View
           style={[
             styles.header,
-            { transform: [{ translateY: headerTranslate }] }
+            { backgroundColor: this.props.colors.back, transform: [{ translateY: headerTranslate }] }
           ]}
         >
           <Animated.View
@@ -392,10 +398,10 @@ class NewGoal extends Component {
             }}
           >
             <TextInput
-              style={styles.input}
+              style={[styles.input,{color: this.props.colors.gray }]}
               autoFocus
-              inputStyle={{ fontSize: 30, color: "#FFF" }}
-              placeholderTextColor={theme.colors.inactive}
+              inputStyle={{ fontSize: 30, color: this.props.colors.white }}
+              placeholderTextColor={this.props.colors.inactive}
               keyboardType="default"
               placeholder="Goal title"
               onChangeText={text => {
@@ -418,12 +424,11 @@ class NewGoal extends Component {
     );
   }
 }
-export default NewGoal;
+export default connect(mapStateToProps)(NewGoal);
 
 const styles = StyleSheet.create({
   fill: {
     flex: 1,
-    backgroundColor: theme.colors.back
   },
   toggleFill: {
     height: 5,

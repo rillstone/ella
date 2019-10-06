@@ -22,7 +22,11 @@ import { NavigationActions } from "react-navigation";
 import { getInset } from "react-native-safe-area-view";
 
 import PropTypes from "prop-types";
-
+import { dispatch, connect } from "../../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -59,7 +63,7 @@ class PlannerInitQuestions extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: this.props.colors.back }}>
         <StatusBar barStyle="dark-content" />
         <TouchableOpacity
           onPress={() => {
@@ -93,7 +97,7 @@ class PlannerInitQuestions extends Component {
               fontWeight: "400",
               fontSize: 25,
 
-              color: theme.colors.gray
+              color: this.props.colors.gray
             }}
           >
             What do you want to achieve?
@@ -116,7 +120,7 @@ class PlannerInitQuestions extends Component {
         >
           <Button
             buttonStyle={styles.button}
-            titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+            titleStyle={{ fontWeight: "bold", color: this.props.colors.white }}
             disabled={this.state.selected === ""}
             icon={<Icon name="ios-arrow-forward" size={30} color="white" />}
             onPress={() =>
@@ -134,8 +138,8 @@ class PlannerInitQuestions extends Component {
     );
   }
 }
-export default PlannerInitQuestions;
 
+export default connect(mapStateToProps)(PlannerInitQuestions);
 const styles = StyleSheet.create({
   backgroundImage: {
     // position: "absolute",

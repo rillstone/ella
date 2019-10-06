@@ -27,6 +27,12 @@ import MealServicePlanSliderEntry, {
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
 import { Button, Input } from "react-native-elements";
+import { dispatch, connect } from "../../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -95,7 +101,7 @@ class MealSizeCount extends Component {
           <Icon
             name="ios-arrow-dropleft-circle"
             size={36}
-            color={theme.colors.white}
+            color={this.props.colors.white}
           />
         </TouchableOpacity>
         <ImageBackground
@@ -124,7 +130,7 @@ class MealSizeCount extends Component {
                 textAlign: "center",
                 fontWeight: "800",
                 fontSize: 50,
-                color: "#FFF"
+                color: this.props.colors.white
 
               }}
             >
@@ -149,7 +155,7 @@ class MealSizeCount extends Component {
           duration={600}
           delay={50}
           useNativeDriver
-          style={styles.scrollOver}
+          style={[styles.scrollOver,{backgroundColor: this.props.colors.back }]}
         >
           <View
             style={{
@@ -191,7 +197,7 @@ class MealSizeCount extends Component {
     );
   }
 }
-export default MealSizeCount;
+export default connect(mapStateToProps)(MealSizeCount);
 
 const styles = StyleSheet.create({
   fill: {

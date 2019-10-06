@@ -24,6 +24,11 @@ import { getInset } from "react-native-safe-area-view";
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
 import { Button, Input } from "react-native-elements";
+import { dispatch, connect } from "../../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -103,7 +108,7 @@ class DietaryReq extends Component {
           <Icon
             name="ios-arrow-dropleft-circle"
             size={36}
-            color={theme.colors.white}
+            color={this.props.colors.white}
           />
         </TouchableOpacity>
         <View
@@ -132,7 +137,7 @@ class DietaryReq extends Component {
                 fontWeight: "400",
                 fontSize: 25,
 
-                color: "#FFF"
+                color: '#fff'
               }}
             >
               What food types do you not eat?
@@ -175,7 +180,7 @@ class DietaryReq extends Component {
           duration={600}
           delay={50}
           useNativeDriver
-          style={styles.scrollOver}
+          style={[styles.scrollOver,{backgroundColor: this.props.colors.back }]}
         >
           <View
             style={{
@@ -216,7 +221,7 @@ class DietaryReq extends Component {
           >
             <Button
               buttonStyle={styles.button}
-              titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+              titleStyle={{ fontWeight: "bold", color: this.props.colors.white }}
               icon={<Icon name="ios-arrow-forward" size={30} color="white" />}
               onPress={() =>
                 this.props.navigation.navigate("MealServicesList", {
@@ -243,8 +248,7 @@ class DietaryReq extends Component {
     );
   }
 }
-export default DietaryReq;
-
+export default connect(mapStateToProps)(DietaryReq);
 const styles = StyleSheet.create({
   fill: {
     flex: 1

@@ -20,6 +20,7 @@ import * as theme from "../../theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getInset } from "react-native-safe-area-view";
 import { NavigationActions } from "react-navigation";
+import { dispatch, connect } from "../../store";
 import {
   Menu,
   MenuOptions,
@@ -27,6 +28,10 @@ import {
   MenuTrigger,
   renderers
 } from "react-native-popup-menu";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors,
+});
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -143,7 +148,7 @@ class MealView extends Component {
           }}
           imageStyle={{ resizeMode: "cover" }}
         />
-        <View style={styles.scrollOver}>
+        <View style={[styles.scrollOver,{backgroundColor: this.props.colors.back }]}>
           <ScrollView
             borderRadius={10}
             style={{
@@ -162,8 +167,8 @@ class MealView extends Component {
                 marginTop: 30
               }}
             >
-              <Text style={styles.title}>{meal.name}</Text>
-              <Text style={styles.date}>
+              <Text style={[styles.title, { color: this.props.colors.gray}]}>{meal.name}</Text>
+              <Text style={[styles.date, { color: this.props.colors.gray}]}>
                 Preparation time: {meal.readyInTime} mins
               </Text>
             </View>
@@ -206,7 +211,7 @@ class MealView extends Component {
                     padding: 10,
                     fontSize: 30}}
               >
-                <Text style={recipeStyle}>Recipe</Text>
+                <Text style={[recipeStyle, { color: this.props.colors.gray}]}>Recipe</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -223,7 +228,7 @@ class MealView extends Component {
                     padding: 10,
                     fontSize: 30}}
                 >
-                <Text style={nutritionStyle}>Nutrition</Text>
+                <Text style={[nutritionStyle, { color: this.props.colors.gray}]}>Nutrition</Text>
                 
               </TouchableOpacity>
             </View>
@@ -247,21 +252,21 @@ class MealView extends Component {
                         paddingRight: 40,
                         fontSize: 18,
                         fontWeight: "300",
-                        color: theme.colors.inactive,
+                        color: this.props.colors.inactive,
                         width: viewportWidth -20,
                       }}
                     >
                       <Icon
                         name="md-square-outline"
                         size={12}
-                        color={theme.colors.inactive}
+                        color={this.props.colors.inactive}
                       />{"   "}
                       {item.key}{" "}
                     </Text>
                   )}
                 />
               ) : (
-                <Text style={styles.recipe}>{this.state.text}</Text>
+                <Text style={[styles.recipe, { color: this.props.colors.gray}]}>{this.state.text}</Text>
               )}
             </View>
           </ScrollView>
@@ -270,7 +275,7 @@ class MealView extends Component {
     );
   }
 }
-export default MealView;
+export default connect(mapStateToProps)(MealView);
 
 const styles = StyleSheet.create({
   fill: {

@@ -19,6 +19,11 @@ import * as Animatable from "react-native-animatable";
 import { Button, Input } from "react-native-elements";
 import PropTypes from "prop-types";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { dispatch, connect } from "../../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -111,7 +116,7 @@ class PlannerIntro extends Component {
   render() {
     return (
       <Transition shared="back">
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.back }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: this.props.colors.back }}>
           <StatusBar barStyle="dark-content" />
 
           <Animatable.View
@@ -168,7 +173,7 @@ class PlannerIntro extends Component {
                   textAlign: "center",
                   fontWeight: "600",
                   fontSize: 30,
-                  color: theme.colors.gray
+                  color: this.props.colors.gray
                 }}
               >
                 {this.state.slides[this.state.activeSlide].title}
@@ -179,7 +184,7 @@ class PlannerIntro extends Component {
                   fontWeight: "400",
                   fontSize: 20,
 
-                  color: theme.colors.gray
+                  color: this.props.colors.gray
                 }}
               >
                 {this.state.slides[this.state.activeSlide].text}
@@ -214,7 +219,7 @@ class PlannerIntro extends Component {
                 style={{
                   fontWeight: "400",
                   fontSize: 15,
-                  color: "#C1C1C2"
+                  color: this.props.colors.inactive
                 }}
               >
                 Skip
@@ -235,7 +240,7 @@ class PlannerIntro extends Component {
                 style={{
                   fontWeight: "600",
                   fontSize: 19,
-                  color: theme.colors.white
+                  color: this.props.colors.white
                 }}
               >
                 Get started
@@ -269,7 +274,8 @@ class PlannerIntro extends Component {
     );
   }
 }
-export default PlannerIntro;
+
+export default connect(mapStateToProps)(PlannerIntro);
 
 const styles = StyleSheet.create({
   backgroundImage: {

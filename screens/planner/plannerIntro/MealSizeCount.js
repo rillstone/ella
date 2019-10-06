@@ -22,6 +22,11 @@ import { getInset } from "react-native-safe-area-view";
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
 import { Button, Input } from "react-native-elements";
+import { dispatch, connect } from "../../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
@@ -79,7 +84,7 @@ class MealSizeCount extends Component {
             opacity: 0.5
           }}
         >
-          <Icon name="ios-arrow-dropleft-circle" size={36} color={theme.colors.white} />
+          <Icon name="ios-arrow-dropleft-circle" size={36} color={this.props.colors.white} />
         </TouchableOpacity>
         <View
           style={{
@@ -107,7 +112,7 @@ class MealSizeCount extends Component {
                 fontWeight: "400",
                 fontSize: 25,
 
-                color: "#FFF"
+                color: this.props.colors.white
               }}
             >
               How many people do you cook for or with?
@@ -127,7 +132,7 @@ class MealSizeCount extends Component {
                 fontWeight: "600",
                 fontSize: 40,
                 marginBottom: 10,
-                color: "#FFF"
+                color: this.props.colors.white
               }}
             >
               {this.state.value >=4 ? Object.values(nouns)[3] : Object.values(nouns)[this.state.value - 1]}
@@ -138,7 +143,7 @@ class MealSizeCount extends Component {
                 fontWeight: "300",
                 fontSize: 16,
 
-                color: "#FFF"
+                color: this.props.colors.white
               }}
             >
               meal deliveries for {ntw.toWords(this.state.value)} {this.state.value==1? 'person' : 'people'} per night
@@ -150,7 +155,7 @@ class MealSizeCount extends Component {
           duration={600}
           delay={50}
           useNativeDriver
-          style={styles.scrollOver}
+          style={[styles.scrollOver,{backgroundColor: this.props.colors.back }]}
         >
           <View
             style={{
@@ -175,7 +180,7 @@ class MealSizeCount extends Component {
                 }}
               >
                 {this.state.value}
-                <Text style={{ color: theme.colors.gray }}> {this.state.value==1? ' person' : ' people'}</Text>
+                <Text style={{ color: this.props.colors.gray }}> {this.state.value==1? ' person' : ' people'}</Text>
               </Text>
               <View
               style={{
@@ -192,7 +197,7 @@ class MealSizeCount extends Component {
 
                 <Button
                   buttonStyle={styles.button}
-                  titleStyle={{ fontWeight: "bold", color: "#FFF" }}
+                  titleStyle={{ fontWeight: "bold", color: this.props.colors.white }}
                   icon={
                     <Icon name="ios-arrow-forward" size={30} color="white" />
                   }
@@ -237,8 +242,8 @@ class MealSizeCount extends Component {
     );
   }
 }
-export default MealSizeCount;
 
+export default connect(mapStateToProps)(MealSizeCount);
 const styles = StyleSheet.create({
   fill: {
     flex: 1

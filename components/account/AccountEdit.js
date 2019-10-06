@@ -27,7 +27,8 @@ import "firebase/storage";
 import "firebase/firestore";
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  colors: state.colors,
 });
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -69,7 +70,7 @@ class AccountEdit extends Component {
       this.db
         .collection("users")
         .doc(user.uid)
-        .set({
+        .update({
           name: this.state.firstName
             ? this.state.firstName +
               " " +
@@ -194,11 +195,11 @@ class AccountEdit extends Component {
 
     return (
       <DismissKeyboard>
-        <View style={styles.container}>
+        <View style={[styles.container,{backgroundColor: this.props.colors.backModal }]}>
           <View style={styles.dragHandler}>
             <View
               style={{
-                backgroundColor: "#F5F5F5",
+                backgroundColor: this.props.colors.backModal,
                 width: viewportWidth,
                 height: 64,
                 borderTopRightRadius: 10,
@@ -215,7 +216,7 @@ class AccountEdit extends Component {
                     fontSize: 35,
                     left: 20,
                     top: 40,
-                    color: theme.colors.gray,
+                    color: this.props.colors.gray,
                     textAlign: "left"
                   }}
                 >
@@ -289,18 +290,18 @@ class AccountEdit extends Component {
             </TouchableOpacity>
 
             <View style={styles.nameHeader}>
-              <Text style={styles.name}>{firstName + " " + lastName}</Text>
+              <Text style={[styles.name,{color: this.props.colors.gray }]}>{firstName + " " + lastName}</Text>
 
-              <Text style={styles.email}>{email}</Text>
+              <Text style={[styles.email,{color: this.props.colors.inactive }]}>{email}</Text>
             </View>
           </View>
 
           <View style={{ top: 10 }}>
             <TextInput
-              style={styles.input}
+              style={[styles.input,{color: this.props.colors.gray }]}
               autoCapitalize="none"
               autoCompleteType="name"
-              placeholderTextColor={theme.colors.inactive}
+              placeholderTextColor={this.props.colors.inactive}
               autoCompleteType="email"
               keyboardType="default"
               placeholder={firstName}
@@ -312,7 +313,7 @@ class AccountEdit extends Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              placeholderTextColor={theme.colors.inactive}
+              placeholderTextColor={this.props.colors.inactive}
               keyboardType="default"
               autoCompleteType="name"
               placeholder={lastName}
@@ -322,9 +323,9 @@ class AccountEdit extends Component {
               }}
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input,{color: this.props.colors.gray }]}
               autoCapitalize="none"
-              placeholderTextColor={theme.colors.inactive}
+              placeholderTextColor={this.props.colors.inactive}
               keyboardType="email-address"
               autoCompleteType="email"
               placeholder={email}
@@ -339,7 +340,7 @@ class AccountEdit extends Component {
             style={{
               height: 1,
               width: viewportWidth - 50,
-              backgroundColor: "#F5F5F5"
+              backgroundColor: this.props.colors.backModal
             }}
           />
           <View
