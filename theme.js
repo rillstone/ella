@@ -10,7 +10,8 @@ const colors = {
   active: "#007BFA",
   warn: "#D4455C",
   back: "#f6f5f7",
-  header: "#3F4F5A"
+  header: "#3F4F5A",
+  backModal: "#f6f5f7"
 };
 
 const colorsDark = {
@@ -23,7 +24,8 @@ const colorsDark = {
   active: "#007BFA",
   warn: "#D4455C",
   back: "#0f0f0f",
-  header: "#000"
+  header: "#000",
+  backModal: "#141414"
 };
 const scheme = {
   cerise: '#eb3b5a',

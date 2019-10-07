@@ -25,6 +25,12 @@ import { getInset } from "react-native-safe-area-view";
 import * as ntw from "number-to-words";
 import { NavigationActions } from "react-navigation";
 import { Button, Input } from "react-native-elements";
+
+import { dispatch, connect } from "../../../store";
+const mapStateToProps = state => ({
+  user: state.user,
+  colors: state.colors
+});
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -108,7 +114,7 @@ class MealServicesList extends Component {
           <Icon
             name="ios-arrow-dropleft-circle"
             size={36}
-            color={theme.colors.white}
+            color={this.props.colors.white}
           />
         </TouchableOpacity>
         <View
@@ -137,7 +143,7 @@ class MealServicesList extends Component {
                 fontWeight: "400",
                 fontSize: 25,
 
-                color: "#FFF"
+                color: this.props.colors.white
               }}
             >
               Select a meal service provider
@@ -149,7 +155,7 @@ class MealServicesList extends Component {
           duration={600}
           delay={50}
           useNativeDriver
-          style={styles.scrollOver}
+          style={[styles.scrollOver,{backgroundColor: this.props.colors.back }]}
         >
           <View
             style={{
@@ -184,7 +190,7 @@ class MealServicesList extends Component {
                         width: viewportWidth / 2.5,
 
                         height: viewportWidth / 2.5,
-                        backgroundColor: theme.colors.white
+                        backgroundColor: this.props.colors.white
                       }
                     ]}
                     onPress={() =>
@@ -209,7 +215,7 @@ class MealServicesList extends Component {
                           height: viewportWidth / 2.6,
                           backgroundColor: this.state.loaded
                             ? "transparent"
-                            : theme.colors.lightGray
+                            : this.props.colors.lightGray
                         }}
                         onLoad={this._onLoad}
                       />
@@ -224,7 +230,7 @@ class MealServicesList extends Component {
     );
   }
 }
-export default MealServicesList;
+export default connect(mapStateToProps)(MealServicesList);
 
 const styles = StyleSheet.create({
   fill: {

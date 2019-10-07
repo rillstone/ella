@@ -1,7 +1,7 @@
 import React from "react";
-import { YellowBox, AsyncStorage, StatusBar } from "react-native";
+import { YellowBox, AsyncStorage, StatusBar,Platform } from "react-native";
 import { mapping, light as lightTheme } from "@eva-design/eva";
-import { ApplicationProvider } from "react-native-ui-kitten";
+// import { ApplicationProvider } from "react-native-ui-kitten";
 import payments from "./assets/payments.json"
 import AppNavigator from "./navigator/AppNavigator";
 import ApiKeys from "./constants/ApiKeys";
@@ -14,13 +14,14 @@ import _ from 'lodash';
 import moment from "moment";
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 const mapStateToProps = state => ({
   user: state.user
   // put the stuff here you want to access from the global store
   // then instead of calling it from "this.state.<var>" call it from "this.props.<var>"
 });
-
+const IS_IOS = Platform.OS === "ios";
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = message => {
@@ -39,6 +40,8 @@ class App extends React.Component {
       isAuthenticated: false,
       user: null,
       dark: false,
+      hasHardware: null,
+      isEnrolled: null,
     };
     firebase.initializeApp(ApiKeys.FirebaseConfig);
     if (!firebase.apps.length) {
@@ -52,13 +55,38 @@ class App extends React.Component {
   }
   componentDidMount() {
     this.mounted = true;
+    this._testHardwareAsync();
+  }
+
+  _testHardwareAsync = async () => {
+    let hasHardware = await LocalAuthentication.hasHardwareAsync();
+    this.setState({ hasHardware });
+
+    let isEnrolled = await LocalAuthentication.isEnrolledAsync();
+    this.setState({ isEnrolled });
     
+    await this._authenticateAsync();
+  };
+  
+  _authenticateAsync = async () => {
+    let authenticationResult = await LocalAuthentication.authenticateAsync();
+    console.log(authenticationResult);
   }
 
   getTheme = async () => {
     const currentTheme = await AsyncStorage.getItem("currentTheme");
     currentTheme && dispatch("SET_COLORS", currentTheme);
     this.setState({dark: currentTheme==='dark'})
+    // if(IS_IOS) {
+    //   var colorScheme = Appearance.getColorScheme();
+    //   if (colorScheme === 'dark') {
+    //     this.setState({dark: currentTheme==='dark'})
+    //   } else {
+    //     this.setState({dark: currentTheme==='light'})
+    //   }
+    // }
+
+
   };
 
    registerForPushNotificationsAsync = async () => {
@@ -172,7 +200,7 @@ class App extends React.Component {
     var x = payments;
     var y = [x.Transport, x.Leisure, x.Food, x.Bills];
     // console.log(y);
-    // console.log("---BREAK---");
+    console.log("---BREAK---");
 
     y.forEach(e => {
       e._id='new_'+Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -196,10 +224,10 @@ class App extends React.Component {
       }
     });
     // console.log(y);
-    // updated is what you'd return (overwrites x)
+    // updated is what you'd return ( overwrites x)
     var updated = { Transport: y[0], Leisure: y[1], Food: y[2], Bills: y[3] };
     console.log("---BREAK---");
-    console.log(updated)
+    console.log(JSON.stringify(updated))
     console.log("---BREAK---");
   }
 
@@ -208,12 +236,12 @@ class App extends React.Component {
     if (this.state.isLoadingComplete) {
       return (
         <MenuProvider >
-          <ApplicationProvider mapping={mapping} theme={lightTheme}>
+
             <Provider>
             <StatusBar barStyle={this.state.dark? 'dark-content' : 'light-content'} translucent />
               <AppNavigator />
             </Provider>
-          </ApplicationProvider>
+
         </MenuProvider>
       );
     } else return null;

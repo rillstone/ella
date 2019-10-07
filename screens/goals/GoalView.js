@@ -254,7 +254,7 @@ class GoalView extends Component {
           }}
           imageStyle={{ resizeMode: "repeat" }}
         />
-        <View style={styles.scrollOver}>
+        <View style={[styles.scrollOver,{backgroundColor: this.props.colors.back }]}>
           <ScrollView
             borderRadius={10}
             style={{
@@ -286,8 +286,8 @@ class GoalView extends Component {
               <View
                 style={{ flexDirection: "column", marginLeft: 15, flex: 1 }}
               >
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.date}>
+                <Text style={[styles.title, { color: this.props.colors.gray}]}>{title}</Text>
+                <Text style={[styles.date, { color: this.props.colors.gray}]}>
                   {" "}
                   {new Date(date)
                     .toLocaleDateString("en-NZ", DATE_OPTIONS)
@@ -310,9 +310,9 @@ class GoalView extends Component {
                     : "ios-rocket"
                 }
                 size={30}
-                color={theme.colors.inactive}
+                color={this.props.colors.inactive}
               />
-              <Text style={[styles.date, { left: 15, top: 5 }]}>
+              <Text style={[styles.date, { left: 15, top: 5, color: this.props.colors.gray }]}>
                 {category != null
                   ? category.charAt(0).toUpperCase() +
                     category.slice(1) +

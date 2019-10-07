@@ -19,7 +19,8 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
 const mapStateToProps = state => ({
-  transaction: state.activeTransaction
+  transaction: state.activeTransaction,
+  colors: state.colors,
 });
 class TransactionModal extends Component {
   modal = React.createRef();
@@ -133,7 +134,7 @@ class TransactionModal extends Component {
         modalStyle={{
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
-          backgroundColor: theme.colors.back,
+          backgroundColor: this.props.colors.backModal,
           zIndex: 99999
         }}
       >
@@ -154,7 +155,7 @@ class TransactionModal extends Component {
                 fontSize: 35,
                 paddingLeft: 20,
                 paddingTop: 40,
-                color: theme.colors.gray,
+                color: this.props.colors.gray,
                 textAlign: "left"
               }}
             >
@@ -210,7 +211,7 @@ class TransactionModal extends Component {
                   style={{
                     fontSize: 22,
                     fontWeight: "600",
-                    color: theme.colors.gray
+                    color: this.props.colors.gray
                   }}
                 >
                   {this.props.transaction.name}
@@ -219,7 +220,7 @@ class TransactionModal extends Component {
                   style={{
                     fontSize: 18,
                     fontWeight: "500",
-                    color: "#5B7282"
+                    color: this.props.colors.gray
                   }}
                 >
                   {/* {this.state.email} */}
@@ -244,7 +245,7 @@ class TransactionModal extends Component {
                   alignSelf: "flex-end",
                   justifyContent: "center",
                   borderWidth: 1,
-                  borderColor: theme.colors.lightGray,
+                  borderColor: this.props.colors.lightGray,
                   borderRadius: 5
                 }}
               >
@@ -254,7 +255,7 @@ class TransactionModal extends Component {
                     textTransform: "uppercase",
                     fontSize: 18,
                     textAlign: "right",
-                    color: theme.colors.inactive
+                    color: this.props.colors.inactive
                   }}
                 >
                   {this.props.transaction.type}
@@ -305,7 +306,7 @@ class TransactionModal extends Component {
                       style={{
                         fontSize: 16,
                         fontWeight: "500",
-                        color: theme.colors.gray
+                        color: this.props.colors.gray
                       }}
                     >
                       {item.value}
@@ -319,7 +320,7 @@ class TransactionModal extends Component {
             dashThickness={1}
             dashGap={4}
             dashLength={5}
-            dashColor={theme.colors.inactive}
+            dashColor={this.props.colors.inactive}
             style={{
 
               width: viewportWidth - 60,
@@ -347,7 +348,7 @@ class TransactionModal extends Component {
                 fontSize: 35,
                 paddingLeft: 25,
 
-                color: theme.colors.gray,
+                color: this.props.colors.gray,
                 textAlign: "left"
               }}
             >
@@ -360,7 +361,7 @@ class TransactionModal extends Component {
                 paddingRight: 25,
                 alignSelf: "flex-end",
                 flexGrow: 1,
-                color: theme.colors.gray,
+                color: this.props.colors.gray,
                 textAlign: "right"
               }}
             >

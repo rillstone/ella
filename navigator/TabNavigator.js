@@ -257,7 +257,12 @@ PlannerSwitchNavigator.navigationOptions = ({ navigation }) => {
   ) {
     if (
       navigation.state.routes[navigation.state.index].routes[1].routeName ===
-      "MealView"
+      "MealView" || navigation.state.routes[navigation.state.index].routes[1].routeName ===
+      "PlannerInitQuestions" ||  navigation.state.routes[navigation.state.index].routes[1].routeName ===
+      "MealSizeCount" || navigation.state.routes[navigation.state.index].routes[1].routeName ===
+      "DietaryReq" || navigation.state.routes[navigation.state.index].routes[1].routeName ===
+      "MealServicesList" || navigation.state.routes[navigation.state.index].routes[1].routeName ===
+      "MealServicePlans"
     ) {
       tabBarVisible = false;
     }
